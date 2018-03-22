@@ -1,0 +1,117 @@
+html {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100%;
+  margin: 0 auto 0 auto;
+  background: #002a55;
+  font-family: -apple-system, 'Segoe UI', sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+h2 {
+  margin: 0 0 1em;
+  font-size: 19px;
+}
+
+.container {
+  background: #fff;
+  border-radius: 5px;
+  border: #1980b9 2px solid;
+  padding: 2em;
+  width: 300px;
+  text-align: center;
+}
+
+.form-header {
+  width: 100%;
+  max-width: 300px;
+}
+
+form {
+  padding: 10px;
+  background: #f8f8f8;
+  border: 1px solid rgba(0,0,0,.1);
+  border-color: rgba(0,0,0,.05) rgba(0,0,0,.08) rgba(0,0,0,.1);
+  border-radius: 3px;
+  box-shadow: 0 3px 4px rgba(0,0,0,.05);
+}
+
+label {
+  display: block;
+  padding-bottom: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ff0076;
+  text-transform: uppercase;
+}
+
+input {
+  width: 200px;
+  padding: 8px;
+  margin: 3px;
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 3px;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+  display: block;
+}
+
+input:focus {
+  outline: none;
+  border-color: rgba(0,0,0,.3);
+}
+
+.form-field {
+  margin: 5px;
+}
+
+.btn {
+  float: left;
+  width: 110px;
+  padding: 8px;
+  background: #00aa56;
+  border: 1px solid rgba(0,0,0,.1);
+  border-width: 1px 1px 3px;
+  border-radius: 3px;
+  font: inherit;
+  font-size: 0.7em;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
+  color: rgb(218, 218, 218);
+  cursor: pointer;
+  text-shadow: 0 1px 0 rgba(0,0,0,.3), 0 1px 1px rgba(0,0,0,.2);
+}
+
+.btn:hover,
+.btn:focus {
+  outline: none;
+  background: #002a55;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+#hidebtn {
+  background: #666;
+}
+
+#showbtn {
+  float: center;
+  width: 200px;
+  background: #666;
+  margin: 10px;
+}
+
+#session {
+  width: 210px !important;
+}

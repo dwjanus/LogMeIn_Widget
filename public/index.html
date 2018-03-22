@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Samanage LogMeIn Widget</title>
+    <link rel="icon" href="/img/samanage_icon.png" type="image/png"/>
+    <link rel="stylesheet" href="/css/style.css" type="text/css"/>
+    <script type="text/javascript" src="/js/platformWidgetHelper.js"></script>
+</head>
+
+<body>
+    <button type="button" class="btn" id="showbtn" onclick="platformWidgetHelper.show()">Show</button>
+
+    <div class="container" id="widget" style="visibility: visible;">
+        <div name="logmein">
+            <div class="form-header">
+                <h2>LogMeIn Rescue v3</h2>
+            </div>
+            
+            <form id="logmein_auth">
+                <div class="form-field">
+                    <input type="email" id="email" name="email" placeholder="Email" onFocus="this.placeholder=''" onblur="this.placeholder='Email'" />
+                    <input type="password" id="pw" name="pw" placeholder="Password" onFocus="this.placeholder=''" onblur="this.placeholder='Password'" />
+                </div>
+            </form>
+
+            <div>
+                <button type="submit" class="btn" form="logmein_auth">Create Session</button>
+                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="visibility: hidden;">
+        <button type="button" class="btn" id="session">Go to Session</button>
+    </div>
+    
+
+<script>
+  setlocal = (response) => {
+    console.log('local storage set: ' + JSON.stringify(response))
+  }
+
+  contextRecievedHandler = (response) => {
+    if (response.context_type == 'Incident') {
+      console.log('Context type is incident - calling show()')
+      platformWidgetHelper.setStorage(setlocal, { id: response.context_id })
+      platformWidgetHelper.show()
+      return { id: response.context_id }
+    }
+  }
+
+  platformWidgetHelper.getContextObject(contextRecievedHandler)
+
+  document.getElementById("logmein_auth").addEventListener("submit", logmein)
+
+  function logmein(event) {
+    event.preventDefault()
+    console.log('>>> logmein() called')
+    var email = document.getElementById("email").value
+    var pw = document.getElementById("pw").value
+    var url = `https://secure.logmeinrescue.com/api/requestAuthCode.aspx?email=${email}&pwd=${pw}`
+
+
+    getAuth(url)
+      .then(getPin)
+      .then(postComment)
+  }
+
+  function getAuth(url) {
+    console.log('>>> retrieving logmein authcode')
+    return fetch(url).then((res) => {
+      return res.text()
+    }).then((data) => {
+      var code = data.split('AUTHCODE:')[1]
+      return code
+    }).catch((err) => {
+      console.log(`Error! >> ${err}`)
+    })
+  }
+
+  function getPin(code) {
+    var url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}`
+
+    return fetch(url).then((res) => {
+      console.log('>>> requesting pin')
+      return res.text()
+    }).then((data) => {
+      var pin = data.split('PINCODE:')[1]
+      var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
+      var click = "window.open('" + link + "', '_blank')"
+      console.log('>>> link built')
+      document.getElementById("session").style.visibility = "visible"
+      document.getElementById("session").setAttribute("onclick", click)
+      return link
+    }).catch((err) => {
+      console.log(`Error! >> ${err}`)
+    })
+  }
+
+  function postComment(link) {
+    var id
+    var test_id
+
+    platformWidgetHelper.getStorage((incident) => id = incident.id)
+    platformWidgetHelper.getContextObject((incident) => test_id = incident.context_id)
+
+    var comment_json = {
+      comment: {
+        body: `Go here to launch your Rescue session: ${link}`,
+        is_private: false
+      }
+    }
+
+    console.log(`>>> incident id: ${id} retrieved from localstorage`)
+    console.log(`>>> test incident id: ${test_id} retrieved from context handler`)
+    console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
+
+    platformWidgetHelper.callSamanageAPI((response) => {
+      console.log('>>> Samanage API response:\n' + response)
+    }, 'POST', `https://api.samanage.com/incidents/${id}/comments.json`, JSON.stringify(comment_json))
+  }
+</script>
+
+</body>
+</html>
+
