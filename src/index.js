@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 
 const server = app.listen(app.get('port'), () => {
   console.log(`> App listening on port: ${server.address().port}`)
-  console.log('Press Ctrl+C to quit')
+  console.log('  Press Ctrl+C to quit')
 })
 
 
