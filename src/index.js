@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import util from 'util'
 
 const app = express()
-const port = process.env.port || 8080
+const port = process.env.port ||  process.env.PORT || 8000
 
 if (!port) {
   console.log('Error: Port not found')
