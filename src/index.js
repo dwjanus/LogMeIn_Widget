@@ -17,10 +17,20 @@ app.set('port', port)
 app.use(express.static(path.join(__dirname, '/../public')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ type: 'application/json' }))
+app.use(bodyParser.xml())
 app.options('*', cors())
 
 app.get('/', (req, res) => {
   res.sendFile('index.html')
+})
+
+app.post('/data', (req, res) => {
+  console.log(`[POST] at /data\,==> request: ${util.inspect(req)}`)
+  res.redirect('/') // { data: req.data }  ?
+})
+
+app.get('/data', (req, res) => {
+  console.log(`[GET] at /data`)
 })
 
 const server = app.listen(app.get('port'), () => {
