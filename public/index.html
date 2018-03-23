@@ -17,17 +17,20 @@
                 <h2>LogMeIn Rescue v3</h2>
             </div>
             
-            <form id="logmein_auth">
-                <div class="form-field">
-                    <input type="email" id="email" name="email" placeholder="Email" onFocus="this.placeholder=''" onblur="this.placeholder='Email'" />
-                    <input type="password" id="pw" name="pw" placeholder="Password" onFocus="this.placeholder=''" onblur="this.placeholder='Password'" />
-                </div>
-            </form>
+            <div id="logmein_form">
+                <form id="logmein_auth">
+                    <div class="form-field">
+                        <input type="email" id="email" name="email" placeholder="Email" onFocus="this.placeholder=''" onblur="this.placeholder='Email'" />
+                        <input type="password" id="pw" name="pw" placeholder="Password" onFocus="this.placeholder=''" onblur="this.placeholder='Password'" />
+                    </div>
+                </form>
 
-            <div>
-                <button type="submit" class="btn" form="logmein_auth">Create Session</button>
-                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+                <div>
+                    <button type="submit" class="btn" form="logmein_auth">Create Session</button>
+                    <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+                </div>
             </div>
+            
         </div>
     </div>
 
@@ -91,7 +94,7 @@
       var click = "window.open('" + link + "', '_blank')"
       console.log('>>> link built')
       document.getElementById("session").style.visibility = "visible"
-      document.getElementById("session").setAttribute("onclick", click)
+      document.getElementById("session").setAttribute("onclick", click) 
       return link
     }).catch((err) => {
       console.log(`Error! >> ${err}`)
@@ -101,6 +104,7 @@
   function postComment(link) {
     var id
     var test_id
+    var pin = link.split('Code=')[1]
 
     platformWidgetHelper.getStorage((incident) => id = incident.id)
     platformWidgetHelper.getContextObject((incident) => test_id = incident.context_id)
@@ -119,6 +123,11 @@
     platformWidgetHelper.callSamanageAPI((response) => {
       console.log('>>> Samanage API response:\n' + response)
     }, 'POST', `https://api.samanage.com/incidents/${id}/comments.json`, JSON.stringify(comment_json))
+  
+    var form = document.getElementById('logmein_form')
+    var success = document.createElement('div')
+    success.innerHTML = `<p>Success! Your Pin for this session is:</p><p>${pin}</p>`
+    form.parentNode.replaceChild(success, form)
   }
 </script>
 
