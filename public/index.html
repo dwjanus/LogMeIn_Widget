@@ -92,6 +92,8 @@
       var pin = data.split('PINCODE:')[1]
       var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
       var click = "window.open('" + link + "', '_blank')"
+      document.getElementById("session").style.visibility = "visible"
+      document.getElementById("session").setAttribute("onclick", click) 
       console.log('>>> link built')
       return link
     }).catch((err) => {
@@ -127,8 +129,7 @@
     success.innerHTML = `<p>Success! Your Pin for this session is:</p><p>${pin}</p>`
     success.classList.add('success')
     form.parentNode.replaceChild(success, form)
-    document.getElementById("session").style.visibility = "visible"
-    document.getElementById("session").setAttribute("onclick", click) 
+    
   }
 </script>
 
