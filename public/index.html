@@ -116,7 +116,9 @@
     var success = document.createElement('div')
     success.innerHTML = `
       <div class="success">
-          <p>Success! Your Pin for this session is:</p><p>${pin}</p>
+          <p id="success">Success!</p> 
+          <p style="font-size: 12px">Your session Pin is:</p>
+          <p id="pin">${pin}</p>
       </div>
       <div>
           <button type="button" class="btn" id="session" onclick=${click}>Go to Session</button>

@@ -121,3 +121,14 @@ input:focus {
   border-radius: 25px;
   color: #155724;
 }
+
+.success #success {
+  font-size: 14px;
+  font-weight: 300;
+  color: #0d3b18
+}
+
+.success #pin {
+  font-size: 15px;
+  font-weight: 500;
+}
