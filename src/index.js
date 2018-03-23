@@ -1,6 +1,7 @@
 import express from 'express'
 import path from 'path'
 import bodyParser from 'body-parser'
+require('body-parser-xml')(bodyParser)
 import util from 'util'
 import cors from 'cors'
 
@@ -25,8 +26,8 @@ app.get('/', (req, res) => {
 })
 
 app.post('/data', (req, res) => {
-  console.log(`[POST] at /data\,==> request: ${util.inspect(req)}`)
-  res.redirect('/') // { data: req.data }  ?
+  console.log(`[POST] at /data\,==> request: ${util.inspect(req.body)}`)
+  res.redirect('/') // { data: req.body }  ?
 })
 
 app.get('/data', (req, res) => {
