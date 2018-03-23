@@ -1,7 +1,6 @@
 import express from 'express'
 import path from 'path'
 import bodyParser from 'body-parser'
-import html from 'html'
 require('body-parser-xml')(bodyParser)
 import util from 'util'
 import cors from 'cors'
@@ -14,12 +13,14 @@ if (!port) {
   process.exit(1)
 }
 
+app.engine('html', require('hogan-express'))
+
 app.set('port', port)
 app.set('view engine', 'html')
 app.set('layout', 'layout')
-app.set('views', path.join(__dirname, '/../views'))
+app.set('views', path.join(__dirname, './../views'))
 
-app.use(express.static(path.join(__dirname, '/../public')))
+app.use(express.static(path.join(__dirname, './../public')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ type: 'application/json' }))
 app.use(bodyParser.xml({xmlParseOptions: {
