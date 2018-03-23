@@ -1,6 +1,7 @@
 import express from 'express'
 import path from 'path'
 import bodyParser from 'body-parser'
+import html from 'html'
 require('body-parser-xml')(bodyParser)
 import util from 'util'
 import cors from 'cors'
@@ -36,7 +37,7 @@ app.post('/data', (req, res) => {
   res.locals = {
     data: req.body
   }
-  
+
   res.render('index')
 })
 
