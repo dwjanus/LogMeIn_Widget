@@ -125,14 +125,15 @@ input:focus {
 
 .success #success {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   color: #0e411a;
-  margin-top: 1em;
-  margin-bottom: 5px;
+  margin-top: 18px;
+  margin-bottom: 3px;
 }
 
 .success #pin {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  letter-spacing: 2px;
 }
