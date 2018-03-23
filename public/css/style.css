@@ -73,7 +73,6 @@ input:focus {
 }
 
 .btn {
-  float: left;
   width: 110px;
   padding: 8px;
   background: #00aa56;
@@ -118,6 +117,7 @@ input:focus {
 
 .success {
   background-color: #d4edda;
-  border-color: #c3e6cb;
+  border: 1px solid #c3e6cb;
+  border-radius: 25px;
   color: #155724;
 }
