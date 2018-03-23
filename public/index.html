@@ -34,10 +34,6 @@
         </div>
     </div>
 
-    <div style="visibility: hidden;">
-        <button type="button" class="btn" id="session">Go to Session</button>
-    </div>
-    
 
 <script>
   setlocal = (response) => {
@@ -46,10 +42,8 @@
 
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
-      console.log('Context type is incident - calling show()')
-      platformWidgetHelper.setStorage(setlocal, { id: response.context_id })
+      console.log('Context type is incident --> calling show()')
       platformWidgetHelper.show()
-      return { id: response.context_id }
     }
   }
 
@@ -68,6 +62,7 @@
     getAuth(url)
       .then(getPin)
       .then(postComment)
+      .catch(e => console.log(`> Error: ${e}`))
   }
 
   function getAuth(url) {
@@ -90,24 +85,18 @@
       return res.text()
     }).then((data) => {
       var pin = data.split('PINCODE:')[1]
-      var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
-      var click = "window.open('" + link + "', '_blank')"
-      document.getElementById("session").style.visibility = "visible"
-      document.getElementById("session").setAttribute("onclick", click) 
-      console.log('>>> link built')
-      return link
+      return pin
     }).catch((err) => {
       console.log(`Error! >> ${err}`)
     })
   }
 
-  function postComment(link) {
+  function postComment(pin) {
+    var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
+    var click = "window.open('" + link + "', '_blank')"
     var id
-    var test_id
-    var pin = link.split('Code=')[1]
 
-    platformWidgetHelper.getStorage((incident) => id = incident.id)
-    platformWidgetHelper.getContextObject((incident) => test_id = incident.context_id)
+    platformWidgetHelper.getContextObject((incident) => id = incident.context_id)
 
     var comment_json = {
       comment: {
@@ -116,8 +105,7 @@
       }
     }
 
-    console.log(`>>> incident id: ${id} retrieved from localstorage`)
-    console.log(`>>> test incident id: ${test_id} retrieved from context handler`)
+    console.log(`>>> incident id: ${id} retrieved from context handler`)
     console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
 
     platformWidgetHelper.callSamanageAPI((response) => {
@@ -126,10 +114,15 @@
   
     var form = document.getElementById('logmein_form')
     var success = document.createElement('div')
-    success.innerHTML = `<p>Success! Your Pin for this session is:</p><p>${pin}</p>`
-    success.classList.add('success')
+    success.innerHTML = `
+      <div class="success">
+          <p>Success! Your Pin for this session is:</p><p>${pin}</p>
+      </div>
+      <div>
+          <button type="button" class="btn" id="session" onclick=${click}>Go to Session</button>
+      </div>
+    `
     form.parentNode.replaceChild(success, form)
-    
   }
 </script>
 
