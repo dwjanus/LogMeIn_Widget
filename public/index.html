@@ -93,8 +93,6 @@
       var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
       var click = "window.open('" + link + "', '_blank')"
       console.log('>>> link built')
-      document.getElementById("session").style.visibility = "visible"
-      document.getElementById("session").setAttribute("onclick", click) 
       return link
     }).catch((err) => {
       console.log(`Error! >> ${err}`)
@@ -125,9 +123,11 @@
     }, 'POST', `https://api.samanage.com/incidents/${id}/comments.json`, JSON.stringify(comment_json))
   
     var form = document.getElementById('logmein_form')
-    var success = document.createElement('div')
+    var success = document.createElement('div').className = 'success'
     success.innerHTML = `<p>Success! Your Pin for this session is:</p><p>${pin}</p>`
     form.parentNode.replaceChild(success, form)
+    document.getElementById("session").style.visibility = "visible"
+    document.getElementById("session").setAttribute("onclick", click) 
   }
 </script>
 

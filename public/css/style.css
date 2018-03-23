@@ -115,3 +115,9 @@ input:focus {
 #session {
   width: 210px !important;
 }
+
+.success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
