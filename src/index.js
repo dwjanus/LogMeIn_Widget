@@ -16,6 +16,7 @@ if (!port) {
 app.set('port', port)
 app.set('view engine', 'html')
 app.set('layout', 'layout')
+app.enable('view cache')
 app.engine('html', require('hogan-express'))
 app.set('views', path.join(__dirname, './../views'))
 
@@ -29,7 +30,7 @@ app.options('*', cors())
 
 
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index.html')
 })
 
 app.post('/data', (req, res) => {
@@ -38,7 +39,7 @@ app.post('/data', (req, res) => {
     data: req.body
   }
 
-  res.render('index')
+  res.render('index.html')
 })
 
 
