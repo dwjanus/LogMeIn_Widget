@@ -73,6 +73,7 @@ input:focus {
 }
 
 .btn {
+  float: left;
   width: 110px;
   padding: 8px;
   background: #00aa56;
@@ -112,23 +113,26 @@ input:focus {
 }
 
 #session {
+  float: none;
   width: 210px !important;
 }
 
 .success {
   background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  border-radius: 25px;
-  color: #155724;
+  border: 2px solid #9fe2ae;
+  border-radius: 20px;
 }
 
 .success #success {
-  font-size: 14px;
-  font-weight: 300;
-  color: #0d3b18
+  font-size: 16px;
+  font-weight: 400;
+  color: #0e411a;
+  margin-top: 1em;
+  margin-bottom: 5px;
 }
 
 .success #pin {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
 }
