@@ -1,36 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Samanage LogMeIn Widget</title>
-    <link rel="icon" href="/img/samanage_icon.png" type="image/png"/>
-    <link rel="stylesheet" href="/css/style.css" type="text/css"/>
-    <script type="text/javascript" src="/js/platformWidgetHelper.js"></script>
-</head>
-
-<body>
-    <div class="container" id="widget" style="visibility: visible;">
-        <div name="logmein">
-            <div class="form-header">
-                <h2>LogMeIn Remote Session</h2>
-            </div>
-            
-            <div id="logmein_form">
-                <form id="logmein_auth">
-                    <div class="form-field">
-                        <input type="email" id="email" name="email" placeholder="Rescue Username" onFocus="this.placeholder=''" onblur="this.placeholder='Email'" />
-                        <input type="password" id="pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Password'" />
-                    </div>
-                </form>
-
-                <div>
-                    <button type="submit" class="btn" form="logmein_auth">Create Session</button>
-                    <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+<div class="container" id="widget" style="visibility: visible;">
+    <div name="logmein">
+        <div class="form-header">
+            <h2>LogMeIn Remote Session</h2>
+        </div>
+        
+        <div id="logmein_form">
+            <form id="logmein_auth">
+                <div class="form-field">
+                    <input type="email" id="email" name="email" placeholder="Rescue Username" onFocus="this.placeholder=''" onblur="this.placeholder='Email'" />
+                    <input type="password" id="pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Password'" />
                 </div>
+            </form>
+
+            <div>
+                <button type="submit" class="btn" form="logmein_auth">Create Session</button>
+                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
             </div>
-            
         </div>
     </div>
+</div>
+
+<div>{{ data }}</div>
 
 
 <script>
@@ -119,13 +109,12 @@
           <p id="pin">${pin}</p>
       </div>
       <div style="padding-top: 15px;">
-          <button type="button" class="btn" id="session" onclick=${click}>Go to Session</button>
+          <button type="button" class="btn" id="session" onclick="${click}">
+              Go to Session
+          </button>
       </div>
     `
     form.parentNode.replaceChild(success, form)
   }
 </script>
-
-</body>
-</html>
 

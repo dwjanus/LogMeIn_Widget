@@ -14,25 +14,48 @@ if (!port) {
 }
 
 app.set('port', port)
+app.set('view engine', 'html')
+app.set('layout', 'layout')
+app.set('views', path.join(__dirname, '/../views'))
 
 app.use(express.static(path.join(__dirname, '/../public')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ type: 'application/json' }))
-app.use(bodyParser.xml())
+app.use(bodyParser.xml({xmlParseOptions: {
+  explicitArray: false
+}}))
 app.options('*', cors())
 
+
 app.get('/', (req, res) => {
-  res.sendFile('index.html')
+  res.render('index')
 })
 
 app.post('/data', (req, res) => {
   console.log(`[POST] at /data\,==> request: ${util.inspect(req.body)}`)
-  res.redirect('/') // { data: req.body }  ?
+  res.locals = {
+    data: req.body
+  }
+  
+  res.render('index')
 })
 
-app.get('/data', (req, res) => {
-  console.log(`[GET] at /data`)
-})
+
+// const homeCtrl = (req, res) => {
+//   let data = req.data
+//   res.render('index.html', data)
+// }
+
+// const handlePost = (req, res, next) => {
+//   req.data = req.body
+//   return next()
+// }
+
+// app.get('/', homeCtrl)
+// app.post('/data', handlePost, homeCtrl)
+
+
+
 
 const server = app.listen(app.get('port'), () => {
   console.log(`> App listening on port: ${server.address().port}`)
