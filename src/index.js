@@ -17,7 +17,6 @@ app.set('port', port)
 app.use(express.static(path.join(__dirname, '/../public')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ type: 'application/json' }))
-app.use(cors())
 app.options('*', cors())
 
 app.get('/', (req, res) => {
