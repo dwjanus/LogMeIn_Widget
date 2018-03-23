@@ -134,6 +134,7 @@ input:focus {
 .success #pin {
   font-size: 19px;
   font-weight: 600;
+  margin-top: 16px;
   margin-bottom: 18px;
   letter-spacing: 2px;
 }
