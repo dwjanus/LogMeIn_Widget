@@ -13,11 +13,10 @@ if (!port) {
   process.exit(1)
 }
 
-app.engine('html', require('hogan-express'))
-
 app.set('port', port)
 app.set('view engine', 'html')
 app.set('layout', 'layout')
+app.engine('html', require('hogan-express'))
 app.set('views', path.join(__dirname, './../views'))
 
 app.use(express.static(path.join(__dirname, './../public')))
