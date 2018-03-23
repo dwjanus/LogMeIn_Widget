@@ -123,8 +123,9 @@
     }, 'POST', `https://api.samanage.com/incidents/${id}/comments.json`, JSON.stringify(comment_json))
   
     var form = document.getElementById('logmein_form')
-    var success = document.createElement('div').className += ' success'
+    var success = document.createElement('div')
     success.innerHTML = `<p>Success! Your Pin for this session is:</p><p>${pin}</p>`
+    success.classList.add('success')
     form.parentNode.replaceChild(success, form)
     document.getElementById("session").style.visibility = "visible"
     document.getElementById("session").setAttribute("onclick", click) 
