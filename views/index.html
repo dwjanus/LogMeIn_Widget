@@ -138,22 +138,20 @@
   const handleError = (e) => {
     var parsedError = e.toString().split('Error: ')[1].trim()
     var details
-    console.log(`>> Error code to handle: ${parsedError}`)
+    console.log(`> Error code to handle: ${parsedError}`)
     if (parsedError in logmein_errors) {
-      console.log('>> parsedError found in error array')
       details = logmein_errors[parsedError]
     } else {
       details = 'An unknown error occured'
     }
     
-    console.log(`>> Details: ${details}`)
+    console.log(`> Details: ${details}`)
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
     error.innerHTML =  `<div class="error" id="error"><p>${e}</p><p>${details}</p></div>`
     
     var error_message = document.getElementById('error')
     if (document.contains(error_message)) {
-      console.log('Error Message Already being displayed --> replacing')
       parent = error_message.parentNode
       parent.replaceChild(error, error_message)
     } else {
