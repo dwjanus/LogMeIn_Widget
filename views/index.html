@@ -18,8 +18,6 @@
             </div>
         </div>    
     </div>
-
-    <div id="error_message"></div>
 </div>
 
 <script>
@@ -120,14 +118,14 @@
   }
 
   const handleError = (e) => {
-    var hold = document.getElementById('error_message')
+    var form = document.getElementById('logmein_form')
     var error = document.createElement('div')
     error.innerHTML =  `
       <div class="error">
         <p>${e}</p>
       </div>
     `
-    hold.parentNode.replaceChild(error, hold)
+    form.parentNode.appendChild(error)
   }
 </script>
 
