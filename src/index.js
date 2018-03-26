@@ -28,12 +28,8 @@ app.use(bodyParser.xml({xmlParseOptions: {
 app.options('*', cors())
 
 
-app.get('/', (req, res) => {
-  res.render('index.html')
-})
-
 app.post('/data', (req, res) => {
-  console.log(`[POST] at /data\,==> request: ${util.inspect(req.body)}`)
+  
   res.locals = {
     data: req.body
   }
@@ -42,18 +38,19 @@ app.post('/data', (req, res) => {
 })
 
 
-// const homeCtrl = (req, res) => {
-//   let data = req.data
-//   res.render('index.html', data)
-// }
+const homeCtrl = (req, res) => {
+  let data = req.data
+  res.render('index.html', data)
+}
 
-// const handlePost = (req, res, next) => {
-//   req.data = req.body
-//   return next()
-// }
+const handlePost = (req, res, next) => {
+  console.log(`[POST] at /data\,==> request: ${util.inspect(req.body)}`)
+  req.data = req.body
+  return next()
+}
 
-// app.get('/', homeCtrl)
-// app.post('/data', handlePost, homeCtrl)
+app.get('/', homeCtrl)
+app.post('/data', handlePost, homeCtrl)
 
 
 

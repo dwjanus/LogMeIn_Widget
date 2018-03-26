@@ -24,6 +24,8 @@
 
 
 <script>
+  var context_id
+
   setlocal = (response) => {
     console.log('local storage set: ' + JSON.stringify(response))
   }
@@ -31,6 +33,7 @@
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
       console.log('Context type is incident --> calling show()')
+      context_id = response.context_id
       platformWidgetHelper.show()
     }
   }
@@ -66,7 +69,7 @@
   }
 
   function getPin(code) {
-    var url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}`
+    var url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
 
     return fetch(url).then((res) => {
       console.log('>>> requesting pin')
