@@ -28,32 +28,15 @@ app.use(bodyParser.xml({xmlParseOptions: {
 app.options('*', cors())
 
 
-// app.post('/data', (req, res) => {
-  
-//   res.locals = {
-//     data: req.body
-//   }
+app.get('/', (req, res) => {
+  res.render('index.html')
+})
 
-//   res.render('index.html')
-// })
-
-
-const homeCtrl = (req, res) => {
-  let data = req.data
-  if (data) console.log(`[home] ==> data: ${util.inspect(data)}`)
-  res.render('index.html', data)
-}
-
-const handlePost = (req, res, next) => {
-  console.log(`[POST] at /data\,==> request: ${util.inspect(req.body)}`)
-  req.data = req.body
-  return next()
-}
-
-app.get('/', homeCtrl)
-app.post('/data', handlePost, homeCtrl)
-
-
+// this is going to be the endopint that needs a backend function to handle the data to comment
+app.post('/data', (req, res) => {
+  console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
+  res.send(200)
+})
 
 
 const server = app.listen(app.get('port'), () => {

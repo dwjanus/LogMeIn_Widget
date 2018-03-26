@@ -18,10 +18,9 @@
             </div>
         </div>
     </div>
+
+    <div id=error_message></div>
 </div>
-
-<div>{{ data }}</div>
-
 
 <script>
   var context_id
@@ -42,13 +41,13 @@
 
   document.getElementById("logmein_auth").addEventListener("submit", logmein)
 
-  function logmein(event) {
+  const logmein = (event) => {
     event.preventDefault()
     console.log('>>> logmein() called')
+    
     var email = document.getElementById("email").value
     var pw = document.getElementById("pw").value
     var url = `https://secure.logmeinrescue.com/api/requestAuthCode.aspx?email=${email}&pwd=${pw}`
-
 
     getAuth(url)
       .then(getPin)
@@ -61,6 +60,11 @@
     return fetch(url).then((res) => {
       return res.text()
     }).then((data) => {
+      if (data.indexOf('OK') == -1) {
+        displayError(data)
+        return Promise.reject(data)
+      }
+
       var code = data.split('AUTHCODE:')[1]
       return code
     }).catch((err) => {
@@ -68,13 +72,17 @@
     })
   }
 
-  function getPin(code) {
+  const getPin = (code) => {
     var url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
 
     return fetch(url).then((res) => {
       console.log('>>> requesting pin')
       return res.text()
     }).then((data) => {
+      if (data.indexOf('OK') == -1) {
+        displayError(data)
+        return Promise.reject(data)
+      }
       var pin = data.split('PINCODE:')[1]
       return pin
     }).catch((err) => {
@@ -82,13 +90,9 @@
     })
   }
 
-  function postComment(pin) {
+  const postComment = (pin) => {
     var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
     var click = "window.open('" + link + "', '_blank')"
-    var id
-
-    platformWidgetHelper.getContextObject((incident) => id = incident.context_id)
-
     var comment_json = {
       comment: {
         body: `Go here to launch your Rescue session: ${link}`,
@@ -96,12 +100,12 @@
       }
     }
 
-    console.log(`>>> incident id: ${id} retrieved from context handler`)
+    console.log(`>>> incident id: ${context_id} retrieved from context handler`)
     console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
 
     platformWidgetHelper.callSamanageAPI((response) => {
       console.log('>>> Samanage API response:\n' + response)
-    }, 'POST', `https://api.samanage.com/incidents/${id}/comments.json`, JSON.stringify(comment_json))
+    }, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
   
     var form = document.getElementById('logmein_form')
     var success = document.createElement('div')
@@ -118,6 +122,14 @@
       </div>
     `
     form.parentNode.replaceChild(success, form)
+  }
+
+  const handleError = (e) => {
+    document.getElementById('error_message').innerHTML =  `
+      <div class="error">
+        <p>${e}</p>
+      </div>
+    `
   }
 </script>
 
