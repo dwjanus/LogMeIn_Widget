@@ -12,7 +12,7 @@
                 </div>
             </form>
 
-            <div style="height:60px;">
+            <div style="height:65px;">
                 <button type="submit" class="btn" form="logmein_auth">Create Session</button>
                 <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
             </div>
@@ -137,6 +137,8 @@
     if (parsedError in logmein_errors) {
       console.log('>> parsedError found in error array')
       details = logmein_errors[parsedError]
+    } else {
+      details = 'An unknown error occured'
     }
     
     console.log(`>> Details: ${details}`)
