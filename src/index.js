@@ -40,6 +40,7 @@ app.options('*', cors())
 
 const homeCtrl = (req, res) => {
   let data = req.data
+  if (data) console.log(`[home] ==> data: ${util.inspect(data)}`)
   res.render('index.html', data)
 }
 
