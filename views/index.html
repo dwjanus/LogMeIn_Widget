@@ -61,7 +61,7 @@
       return res.text()
     }).then((data) => {
       if (data.indexOf('OK') == -1) {
-        displayError(data)
+        handleError(data)
         return Promise.reject(data)
       }
 
@@ -80,7 +80,7 @@
       return res.text()
     }).then((data) => {
       if (data.indexOf('OK') == -1) {
-        displayError(data)
+        handleError(data)
         return Promise.reject(data)
       }
       var pin = data.split('PINCODE:')[1]
