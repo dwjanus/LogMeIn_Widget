@@ -131,7 +131,7 @@
   }
 
   const handleError = (e) => {
-    var parsedError = e.split('Error: ')[1]
+    var parsedError = e.toString().split('Error: ')[1]
     console.log(`>> Error code to handle: ${parsedError}`)
     var details = logmein_errors[parsedError]
     console.log(`>> Details: ${details}`)
