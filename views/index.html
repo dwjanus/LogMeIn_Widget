@@ -150,7 +150,15 @@
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
     error.innerHTML =  `<div class="error" id="error"><p>${e}</p><p>${details}</p></div>`
-    logmein.parentNode.appendChild(error)
+    
+    var error_message = document.getElementById('error')
+    if (document.contains(error_message)) {
+      console.log('Error Message Already being displayed --> replacing')
+      parent = error_message.parentNode
+      parent.replaceChild(error, error_message)
+    } else {
+      logmein.parentNode.appendChild(error)
+    }
   }
 </script>
 
