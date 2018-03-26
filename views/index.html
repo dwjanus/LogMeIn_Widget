@@ -52,7 +52,7 @@
     getAuth(url)
       .then(getPin)
       .then(postComment)
-    .catch(e => console.log(`>> Error: ${e}`))
+    .catch(e => console.log(`>> ${e}`))
   }
 
   function getAuth(url) {
@@ -65,7 +65,7 @@
       return code
     }).catch((err) => {
       handleError(err)
-      return Promise.reject(err)
+      return Promise.reject('>> Login ' + err)
     })
   }
 
@@ -81,7 +81,7 @@
       return pin
     }).catch((err) => {
       handleError(err)
-      return Promise.reject(err)
+      return Promise.reject('>> Pin Request ' + err)
     })
   }
 
@@ -120,11 +120,14 @@
   }
 
   const handleError = (e) => {
-    document.getElementById('error_message').innerHTML =  `
+    var hold = document.getElementById('error_message')
+    var error = document.createElement('div')
+    error.innerHTML =  `
       <div class="error">
         <p>${e}</p>
       </div>
     `
+    hold.parentNode.replaceChild(hold, error)
   }
 </script>
 

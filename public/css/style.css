@@ -141,7 +141,7 @@ input:focus {
 }
 
 .error {
-  background-color: #f0cdcd;
-  border: 2px solid #dd7575;
+  background-color: #eea3a3;
+  border: 2px solid #db5353;
   border-radius: 20px;
 }
