@@ -12,7 +12,7 @@
                 </div>
             </form>
 
-            <div style="position: relative; height:35px;">
+            <div style="height:60px;">
                 <button type="submit" class="btn" form="logmein_auth">Create Session</button>
                 <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
             </div>
@@ -120,7 +120,7 @@
   const handleError = (e) => {
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
-    error.innerHTML =  `<div class="error">${e}</div>`
+    error.innerHTML =  `<div class="error"><p>${e}</p></div>`
     logmein.parentNode.appendChild(error)
   }
 </script>
