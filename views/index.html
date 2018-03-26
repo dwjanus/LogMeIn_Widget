@@ -23,17 +23,17 @@
 <script>
   var context_id
   var logmein_errors = {
-    ERROR: 'An unspecified error occured',
-    INVALID: 'The password or email were incorrect',
-    INVALIDPARAM_NODE: 'The node (id) provided is not the id of the existing user',
-    NOTLOGGEDIN: 'Current user is not logged in',
-    NOTTECHNICIAN: 'PIN was not requested by a technician',
-    OUTOFPINCODES: 'Out of PIN codes - contact your administrator',
-    POLLRATEEXCEEDED: 'You have concurrently requested too many PINs',
-    INVALID_SECRETAUTHCODE: 'Authcode was invalid',
-    USER_IS_DELETED: 'The user whose authorization code was specified is deleted',
-    USER_DELETED_OR_DISABLED: 'The user whose authorization code was specified is deleted or disabled',
-    INVALIDPINFORMAT: 'The format of the PIN code is incorrect'
+    'ERROR': 'An unspecified error occured',
+    'INVALID': 'The password or email were incorrect',
+    'INVALIDPARAM_NODE': 'The node (id) provided is not the id of the existing user',
+    'NOTLOGGEDIN': 'Current user is not logged in',
+    'NOTTECHNICIAN': 'PIN was not requested by a technician',
+    'OUTOFPINCODES': 'Out of PIN codes - contact your administrator',
+    'POLLRATEEXCEEDED': 'You have concurrently requested too many PINs',
+    'INVALID_SECRETAUTHCODE': 'Authcode was invalid',
+    'USER_IS_DELETED': 'The user whose authorization code was specified is deleted',
+    'USER_DELETED_OR_DISABLED': 'The user whose authorization code was specified is deleted or disabled',
+    'INVALIDPINFORMAT': 'The format of the PIN code is incorrect'
   }
 
   setlocal = (response) => {
@@ -131,9 +131,14 @@
   }
 
   const handleError = (e) => {
-    var parsedError = e.toString().split('Error: ')[1]
+    var parsedError = e.toString().split('Error: ')[1].trim()
+    var details
     console.log(`>> Error code to handle: ${parsedError}`)
-    var details = logmein_errors[parsedError]
+    if (parsedError in logmein_errors) {
+      console.log('>> parsedError found in error array')
+      details = logmein_errors[parsedError]
+    }
+    
     console.log(`>> Details: ${details}`)
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
