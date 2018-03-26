@@ -7,8 +7,8 @@
         <div id="logmein_form">
             <form id="logmein_auth">
                 <div class="form-field">
-                    <input type="email" id="email" name="email" placeholder="Rescue Username" onFocus="this.placeholder=''" onblur="this.placeholder='Email'" />
-                    <input type="password" id="pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Password'" />
+                    <input type="email" id="email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
+                    <input type="password" id="pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
                 </div>
             </form>
 
@@ -17,9 +17,9 @@
                 <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
             </div>
         </div>
-    </div>
 
-    <div id=error_message></div>
+        <div id=error_message></div>
+    </div>
 </div>
 
 <script>
@@ -64,7 +64,6 @@
       var code = data.split('AUTHCODE:')[1]
       return code
     }).catch((err) => {
-      console.log(`Error! >> ${err}`)
       handleError(err)
       return Promise.reject(err)
     })
@@ -81,7 +80,6 @@
       var pin = data.split('PINCODE:')[1]
       return pin
     }).catch((err) => {
-      console.log(`Error! >> ${err}`)
       handleError(err)
       return Promise.reject(err)
     })
