@@ -140,7 +140,7 @@ input:focus {
   letter-spacing: 2px;
 }
 
-.error_message {
+.error {
   background-color: #f0cdcd;
   border: 2px solid #dd7575;
   border-radius: 20px;

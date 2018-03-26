@@ -52,7 +52,7 @@
     getAuth(url)
       .then(getPin)
       .then(postComment)
-      .catch(e => console.log(`> Error: ${e}`))
+    .catch(e => console.log(`>> Error: ${e}`))
   }
 
   function getAuth(url) {
@@ -60,15 +60,12 @@
     return fetch(url).then((res) => {
       return res.text()
     }).then((data) => {
-      if (data.indexOf('OK') == -1) {
-        handleError(data)
-        return Promise.reject(data)
-      }
-
       var code = data.split('AUTHCODE:')[1]
       return code
     }).catch((err) => {
       console.log(`Error! >> ${err}`)
+      handleError(err)
+      return Promise.reject(err)
     })
   }
 
@@ -79,14 +76,12 @@
       console.log('>>> requesting pin')
       return res.text()
     }).then((data) => {
-      if (data.indexOf('OK') == -1) {
-        handleError(data)
-        return Promise.reject(data)
-      }
       var pin = data.split('PINCODE:')[1]
       return pin
     }).catch((err) => {
       console.log(`Error! >> ${err}`)
+      handleError(err)
+      return Promise.reject(err)
     })
   }
 
