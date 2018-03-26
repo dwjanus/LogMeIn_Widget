@@ -22,7 +22,7 @@
 
 <script>
   var context_id
-  const logmein_errors = {
+  var logmein_errors = {
     ERROR: 'An unspecified error occured',
     INVALID: 'The password or email were incorrect',
     INVALIDPARAM_NODE: 'The node (id) provided is not the id of the existing user',
@@ -63,7 +63,7 @@
     getAuth(url)
       .then(getPin)
       .then(postComment)
-    .catch(e => console.log(`>> ${e}`))
+    .catch(e => console.log(`${e}`))
   }
 
   function getAuth(url) {
