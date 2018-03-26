@@ -28,14 +28,14 @@ app.use(bodyParser.xml({xmlParseOptions: {
 app.options('*', cors())
 
 
-app.post('/data', (req, res) => {
+// app.post('/data', (req, res) => {
   
-  res.locals = {
-    data: req.body
-  }
+//   res.locals = {
+//     data: req.body
+//   }
 
-  res.render('index.html')
-})
+//   res.render('index.html')
+// })
 
 
 const homeCtrl = (req, res) => {
