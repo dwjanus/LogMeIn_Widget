@@ -113,6 +113,11 @@
       console.log('>>> Samanage API response:\n' + response)
     }, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
   
+    var error_message = document.getElementById('error')
+    if (document.contains(error_message)) {
+      error_message.remove()
+    }
+
     var form = document.getElementById('logmein_form')
     var success = document.createElement('div')
     success.innerHTML = `
@@ -144,7 +149,7 @@
     console.log(`>> Details: ${details}`)
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
-    error.innerHTML =  `<div class="error"><p>${e}</p><p>${details}</p></div>`
+    error.innerHTML =  `<div class="error" id="error"><p>${e}</p><p>${details}</p></div>`
     logmein.parentNode.appendChild(error)
   }
 </script>

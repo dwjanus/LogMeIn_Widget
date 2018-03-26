@@ -84,8 +84,8 @@ input:focus {
   font-size: 0.7em;
   font-weight: 500;
   margin-top: 15px;
-  margin-left: 3px;
-  margin-right: 3px;
+  margin-left: 11px;
+  margin-right: 11px;
   color: rgb(218, 218, 218);
   cursor: pointer;
   text-shadow: 0 1px 0 rgba(0,0,0,.3), 0 1px 1px rgba(0,0,0,.2);
