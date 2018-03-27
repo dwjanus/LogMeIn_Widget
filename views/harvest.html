@@ -1,18 +1,20 @@
 <div class="container" id="widget" style="visibility: visible;">
     <div name="harvest" id="harvest">
           <form id=harvest_form>
-              <input type="number" id="client_id" name="client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
-              <label class="switch" value="Billable?">
+              <input type="text" id="client_id" name="client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
+              <label class="switch">
+                  Is this billable?
                   <input type="checkbox" id="billable" name="billable">
                   <span class="slider round"/>
               </label>
-              <label class="switch" value="Send Samanage Tasks to Harvest Project">
+              <label class="switch">
+                  Send Samanage Tasks to Harvest Project
                   <input type="checkbox" id="send_tasks" name="send_tasks">
                   <span class="slider round"/>
               </label>
           </form>
           
-          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="create()">Create Project in Harvest</button>
+          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="harvest()">Create Project in Harvest</button>
           <!-- <button type="button" class="btn" id="send_time" form="harvest_form" onclick="update_time()">Update Time Tracking in Harvest</button> -->
     </div>
 </div>
@@ -68,12 +70,25 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  function create() {
-    console.log('>>> create() called')
-    
-    var client = document.getElementById("client_id").value
-    var billable = document.getElementById("billable").value
+  function harvest() {
     var tasks = document.getElementById("send_tasks").value
+    var client = document.getElementById("client_id").value
+
+    create_project(client).then((id) => { //.then(assign_project)
+      if (tasks) {
+        console.log('>>> send_task = true')
+        // create_tasks() //.then(assign_tasks)
+        //   .then(update_project_tasks)
+      } else {
+        console.log('>>> send_task = false')
+      }
+    }).catch((e) => console.log(e))
+  }
+
+  function create_project(client) {
+    console.log('>>> creating project in Harvest')
+    
+    var billable = document.getElementById("billable").value
     var url = `https://api.harvestapp.com/v2/projects`
 
     var project = {
@@ -100,6 +115,7 @@
       return res.json()
     }).then((data) => {
       console.log(`>>> Harvest response: ${JSON.stringify(data)}`)
+      return data.id
     }).catch((err) => {
       handleError(err)
       return Promise.reject('>> Login ' + err)
