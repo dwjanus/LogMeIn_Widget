@@ -5,23 +5,25 @@
         </div>
 
         <form id=harvest_form>
-            <div class="form-field">
+            <div class="form-field" style="">
                 <input type="text" id="client_id" name="client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
-                <div>
+                
+                <div style="display: block">
                     <label style="float: left;">Billable?</label>
                     <label class="switch" style="float: right;">
                         <input type="checkbox" id="billable" name="billable">
                         <span class="slider round"/>
                     </label>
-                </div>
                 
-                <div>
+                    <br />
+                
                     <label style="float: left;">Send Tasks to Project</label>
                     <label class="switch" style="float: right;">
                         <input type="checkbox" id="send_tasks" name="send_tasks">
                         <span class="slider round"/>
                     </label>
-                </div> 
+                </div>
+                
             </div>
         </form>
           
