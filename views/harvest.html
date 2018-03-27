@@ -2,23 +2,22 @@
     <div name="harvest" id="harvest">
           <form id=harvest_form>
               <input type="text" id="client_id" name="client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
-              <div>
+              <div class="form-field">
+                  <label>Billable?</label>
                   <label class="switch">
-                      Is this billable?
                       <input type="checkbox" id="billable" name="billable">
                       <span class="slider round"/>
                   </label>
-              </div>
-              <div>
+
+                  <label>Send Samanage Tasks to Harvest Project</label>
                   <label class="switch">
-                      Send Samanage Tasks to Harvest Project
                       <input type="checkbox" id="send_tasks" name="send_tasks">
                       <span class="slider round"/>
                   </label>
               </div>
           </form>
           
-          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="harvest()">Create Project in Harvest</button>
+          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="harvest()" style="width: 220px;">Create Project in Harvest</button>
           <!-- <button type="button" class="btn" id="send_time" form="harvest_form" onclick="update_time()">Update Time Tracking in Harvest</button> -->
     </div>
 </div>
