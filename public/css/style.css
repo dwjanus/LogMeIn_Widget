@@ -32,11 +32,6 @@ h2 {
   column-gap: 10px;
 }
 
-#widgets #widget {
-  width: 100% !important;
-  height: auto !important;
-}
-
 .container {
   background: #fff;
   border-radius: 5px;
@@ -44,6 +39,7 @@ h2 {
   padding: 1em;
   width: 300px;
   text-align: center;
+  height: auto !important;
 }
 
 .form-header {
