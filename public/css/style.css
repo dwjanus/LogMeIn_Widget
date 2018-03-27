@@ -3,10 +3,10 @@ html {
 }
 
 body {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
   min-height: 100%;
   margin: 0 auto 0 auto;
   background: #002a55;
@@ -28,6 +28,7 @@ h2 {
   border: #1980b9 2px solid;
   padding: 1em;
   width: 300px;
+  margin: inherit;
   text-align: center;
   height: auto !important;
 }
