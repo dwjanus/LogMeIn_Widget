@@ -29,10 +29,15 @@ app.options('*', cors())
 
 
 app.get('/', (req, res) => {
+  res.locals = {
+    harvest_token: process.env.HARVEST_TOKEN,
+    harvest_account: process.env.HARVEST_ACCOUNT
+  }
   res.render('layout', {
     partials: { 
       logmein: 'logmein.html',
-      bomgar: 'bomgar.html'
+      bomgar: 'bomgar.html',
+      harvest: 'harvest.html'
    }
   })
 })

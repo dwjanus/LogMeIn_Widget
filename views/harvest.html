@@ -1,0 +1,109 @@
+<div class="container" id="widget" style="visibility: visible;">
+    <div name="harvest" id="harvest">
+          <form id=harvest_form>
+              <input type="number" id="client_id" name="client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
+              <label class="switch" value="Billable?">
+                  <input type="checkbox" id="billable" name="billable">
+                  <span class="slider round"/>
+              </label>
+              <label class="switch" value="Send Samanage Tasks to Harvest Project">
+                  <input type="checkbox" id="send_tasks" name="send_tasks">
+                  <span class="slider round"/>
+              </label>
+          </form>
+          
+          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="create()">Create Project in Harvest</button>
+          <!-- <button type="button" class="btn" id="send_time" form="harvest_form" onclick="update_time()">Update Time Tracking in Harvest</button> -->
+    </div>
+</div>
+
+
+<script>
+  var context = {
+    context_type: 'Incident', 
+    context_id: '23529800', 
+    name: 'Harvest Project',
+    description: 'Testing Harvest integration',
+    assignee: {
+      group_id: 3031154,
+      name: 'Devin'
+    },
+    requester: {
+      user_id: 2821593,
+      name: 'Devin'
+    },
+    created_at: "2018-03-27T13:52:03.000-04:00",
+    updated_at: "2018-03-27T13:52:03.000-04:00",
+    due_at: "2018-04-20T00:00:00.000-04:00",
+    tasks: [
+      {
+        id: 5306069,
+        "href": "https://devinstestaroo.samanage.com/incidents/23529800/tasks/5306069.json"
+      }
+    ]  
+  }
+
+  var tasks = [{
+    id: 5306069,
+    name: "Harvest Task 1",
+    description: "Non-billable task in Harvest",
+    assignee: {
+      group_id: 3031154,
+      name: "Devin",
+      email: "devin.janus+admin@samanage.com"
+    },
+    due_at: "2018-03-29T13:52:03.000-04:00"
+  }]
+
+  setlocal = (response) => {
+    console.log('local storage set: ' + JSON.stringify(response))
+  }
+
+  contextRecievedHandler = (response) => {
+    if (response.context_type == 'Incident') {
+      console.log('Context type is incident --> calling show()')
+      platformWidgetHelper.show()
+    }
+  }
+
+  platformWidgetHelper.getContextObject(contextRecievedHandler)
+
+  function create() {
+    console.log('>>> create() called')
+    
+    var client = document.getElementById("client_id").value
+    var billable = document.getElementById("billable").value
+    var tasks = document.getElementById("send_tasks").value
+    var url = `https://api.harvestapp.com/v2/projects`
+
+    var project = {
+      client_id: client,
+      name: context.name,
+      is_billable: billable,
+      bill_by: 'none',   // we will make this dynamic later
+      budget_by: 'none', // ...same here
+      notes: `${context.description}\nrequested by: ${context.requester.name}`,
+      starts_on: context.created_at,
+      ends_on: context.due_at
+    }
+
+    fetch(url, {
+      body: project,
+      headers: {
+        "Authorization": `Bearer ${ENV['HARVEST_TOKEN']}`,
+        "Harvest-Account-Id": `${ENV['HARVEST_ACCOUNT']}`,
+        "User-Agent": "SamanageWidget (devin.janus@samanage.com)",
+        "Content-Type": "application/json"
+      },
+      method: 'POST'
+    }).then((res) => {
+      return res.json()
+    }).then((data) => {
+      console.log(`>>> Harvest response: ${JSON.stringify(data)}`)
+    }).catch((err) => {
+      handleError(err)
+      return Promise.reject('>> Login ' + err)
+    })
+  }
+  
+</script>

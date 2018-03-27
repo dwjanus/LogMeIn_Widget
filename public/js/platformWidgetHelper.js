@@ -13,7 +13,7 @@ var platformWidgetHelper = (function() {
     },
 
     getContextObject: function(callback) {
-      callback({ context_type: 'Incident', context_id: 23307325 })
+      callback({ context_type: 'Incident', context_id: 23529800 })
     },
 
     callSamanageAPI: function(callback, HTTPMethod, url, payload) {
