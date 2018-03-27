@@ -1,23 +1,27 @@
 <div class="container" id="widget" style="visibility: visible;">
     <div name="harvest" id="harvest">
-          <form id=harvest_form>
-              <input type="text" id="client_id" name="client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
-              <div class="form-field">
-                  <label>Billable?</label>
-                  <label class="switch">
-                      <input type="checkbox" id="billable" name="billable">
-                      <span class="slider round"/>
-                  </label>
+        <div class="form-header">
+            <h2>Harvest Tracking</h2>
+        </div>
 
-                  <label>Send Samanage Tasks to Harvest Project</label>
-                  <label class="switch">
-                      <input type="checkbox" id="send_tasks" name="send_tasks">
-                      <span class="slider round"/>
-                  </label>
-              </div>
-          </form>
+        <form id=harvest_form>
+            <input type="text" id="client_id" name="client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
+            <div class="form-field">
+                <label>Billable?</label>
+                <label class="switch">
+                    <input type="checkbox" id="billable" name="billable">
+                    <span class="slider round"/>
+                </label>
+
+                <label>Send Samanage Tasks to Harvest Project</label>
+                <label class="switch">
+                    <input type="checkbox" id="send_tasks" name="send_tasks">
+                    <span class="slider round"/>
+                </label>
+            </div>
+        </form>
           
-          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="harvest()" style="width: 220px;">Create Project in Harvest</button>
+          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="harvest()" style="width: 220px; float: center;">Create Project in Harvest</button>
           <!-- <button type="button" class="btn" id="send_time" form="harvest_form" onclick="update_time()">Update Time Tracking in Harvest</button> -->
     </div>
 </div>
