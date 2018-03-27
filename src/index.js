@@ -29,7 +29,12 @@ app.options('*', cors())
 
 
 app.get('/', (req, res) => {
-  res.render('index.html')
+  res.render('layout', {
+    partials: { 
+      logmein: 'logmein.html',
+      bomgar: 'bomgar.html'
+   }
+  })
 })
 
 // this is going to be the endopint that needs a backend function to handle the data to comment

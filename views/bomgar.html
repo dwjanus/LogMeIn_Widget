@@ -1,0 +1,21 @@
+<div class="container" id="widget" style="visibility: visible;">
+    <div name="bomgar" id="bomgar">
+        <div class="form-header">
+            <h2>Bomgar Remote Session</h2>
+        </div>
+        
+        <div id="bomgar_form">
+            <form id="bomgar_auth">
+                <div class="form-field">
+                    <input type="email" id="email" name="email" placeholder="Username" onFocus="this.placeholder=''" onblur="this.placeholder='Username'" />
+                    <input type="password" id="pw" name="pw" placeholder="Password" onFocus="this.placeholder=''" onblur="this.placeholder='Password'" />
+                </div>
+            </form>
+
+            <div style="height:65px;">
+                <button type="submit" class="btn" form="bomgar_auth">Create Session</button>
+                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+            </div>
+        </div>    
+    </div>
+</div>
