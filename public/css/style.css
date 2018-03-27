@@ -28,7 +28,7 @@ h2 {
   border: #1980b9 2px solid;
   padding: 1em;
   width: 300px;
-  margin: inherit;
+  margin: 10px;
   text-align: center;
   height: auto !important;
 }
