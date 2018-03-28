@@ -130,7 +130,8 @@
         "User-Agent": "SamanageWidget (devin.janus@samanage.com)",
         "Content-Type": "application/json"
       },
-      method: 'POST'
+      method: 'POST',
+      mode: 'cors'
     }).then((res) => {
       return res.json()
     }).then((data) => {
