@@ -137,8 +137,8 @@
       console.log(`>>> Harvest response: ${JSON.stringify(data)}`)
       return data.id
     }).catch((err) => {
-      handleError(err)
-      return Promise.reject('>> Login ' + err)
+      console.log(err)
+      return Promise.reject('>> ' + err)
     })
   }
   
