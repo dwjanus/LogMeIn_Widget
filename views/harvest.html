@@ -32,6 +32,9 @@
           <button type="button" class="btn" id="create_project" form="harvest_form" onclick="harvest()" style="width: 220px; float: none;">Create Project in Harvest</button>
           <!-- <button type="button" class="btn" id="send_time" form="harvest_form" onclick="update_time()">Update Time Tracking in Harvest</button> -->
     </div>
+
+    <div style="visibility: hidden" id="token">{{harvest_token}}</div>
+    <div style="visibility: hidden" id="account">{{harvest_account}}</div>
 </div>
 
 
@@ -105,6 +108,8 @@
     
     var billable = document.getElementById("billable").value
     var url = `https://api.harvestapp.com/v2/projects`
+    var token = document.getElementById("token").value
+    var account = document.getElementById("account").value
 
     var project = {
       client_id: client,
@@ -120,8 +125,8 @@
     fetch(url, {
       body: project,
       headers: {
-        "Authorization": `Bearer ${ENV['HARVEST_TOKEN']}`,
-        "Harvest-Account-Id": `${ENV['HARVEST_ACCOUNT']}`,
+        "Authorization": `Bearer ${token}`,
+        "Harvest-Account-Id": `${account}`,
         "User-Agent": "SamanageWidget (devin.janus@samanage.com)",
         "Content-Type": "application/json"
       },
