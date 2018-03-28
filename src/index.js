@@ -25,7 +25,8 @@ app.use(bodyParser.json({ type: 'application/json' }))
 app.use(bodyParser.xml({xmlParseOptions: {
   explicitArray: false
 }}))
-app.options('api.harvestapp.com/', cors())
+app.use(cors())
+app.options('*', cors())
 
 
 app.get('/', (req, res) => {
