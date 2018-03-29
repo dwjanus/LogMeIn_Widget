@@ -1,0 +1,159 @@
+<div class="container" id="tv_widget" style="visibility: visible;">
+    <div name="logmein" id="logmein">
+        <div class="form-header">
+            <h2>LogMeIn Remote Session</h2>
+        </div>
+        
+        <div id="logmein_form">
+            <form id="logmein_auth">
+                <div class="form-field">
+                    <input type="email" id="logmein_email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
+                    <input type="password" id="logmein_pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
+                </div>
+            </form>
+
+            <div style="height:65px;">
+                <button type="submit" class="btn" form="logmein_auth" onclick="logmein()">Create Session</button>
+                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+            </div>
+        </div>    
+    </div>
+</div>
+
+<script>
+  var context_id
+  var logmein_errors = {
+    'ERROR': 'An unspecified error occured',
+    'INVALID': 'The password or email were incorrect',
+    'INVALIDPARAM_NODE': 'The node (id) provided is not the id of the existing user',
+    'NOTLOGGEDIN': 'Current user is not logged in',
+    'NOTTECHNICIAN': 'PIN was not requested by a technician',
+    'OUTOFPINCODES': 'Out of PIN codes - contact your administrator',
+    'POLLRATEEXCEEDED': 'You have concurrently requested too many PINs',
+    'INVALID_SECRETAUTHCODE': 'Authcode was invalid',
+    'USER_IS_DELETED': 'The user whose authorization code was specified is deleted',
+    'USER_DELETED_OR_DISABLED': 'The user whose authorization code was specified is deleted or disabled',
+    'INVALIDPINFORMAT': 'The format of the PIN code is incorrect'
+  }
+
+  setlocal = (response) => {
+    console.log('local storage set: ' + JSON.stringify(response))
+  }
+
+  contextRecievedHandler = (response) => {
+    if (response.context_type == 'Incident') {
+      console.log('Context type is incident --> calling show()')
+      context_id = response.context_id
+      platformWidgetHelper.show()
+    }
+  }
+
+  platformWidgetHelper.getContextObject(contextRecievedHandler)
+
+  function logmein() {
+    console.log('>>> logmein() called')
+    
+    var email = document.getElementById("logmein_email").value
+    var pw = document.getElementById("logmein_pw").value
+    var url = `https://secure.logmeinrescue.com/api/requestAuthCode.aspx?email=${email}&pwd=${pw}`
+
+    getAuth(url)
+      .then(getPin)
+      .then(postComment)
+    .catch(e => console.log(`${e}`))
+  }
+
+  function getAuth(url) {
+    console.log('>>> retrieving logmein authcode')
+    return fetch(url).then((res) => {
+      return res.text()
+    }).then((data) => {
+      if (data.indexOf('OK') == -1) throw new Error(data)
+      var code = data.split('AUTHCODE:')[1]
+      return code
+    }).catch((err) => {
+      handleError(err)
+      return Promise.reject('>> Login ' + err)
+    })
+  }
+
+  function getPin(code) {
+    var url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
+
+    return fetch(url).then((res) => {
+      console.log('>>> requesting pin')
+      return res.text()
+    }).then((data) => {
+      if (data.indexOf('OK') == -1) throw new Error(data)
+      var pin = data.split('PINCODE:')[1]
+      return pin
+    }).catch((err) => {
+      handleError(err)
+      return Promise.reject('>> Pin Request ' + err)
+    })
+  }
+
+  function postComment(pin) {
+    var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
+    var click = "window.open('" + link + "', '_blank')"
+    var comment_json = {
+      comment: {
+        body: `Go here to launch your Rescue session: ${link}`,
+        is_private: false
+      }
+    }
+
+    console.log(`>>> incident id: ${context_id} retrieved from context handler`)
+    console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
+
+    platformWidgetHelper.callSamanageAPI((response) => {
+      console.log('>>> Samanage API response:\n' + response)
+    }, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
+  
+    var error_message = document.getElementById('error')
+    if (document.contains(error_message)) {
+      error_message.remove()
+    }
+
+    var form = document.getElementById('logmein_form')
+    var success = document.createElement('div')
+    success.innerHTML = `
+      <div class="success">
+          <p id="success">Success!</p> 
+          <p style="font-size: 12px; margin-top: 5px;">Your session Pin is:</p>
+          <p id="pin">${pin}</p>
+      </div>
+      <div style="padding-top: 15px;">
+          <button type="button" class="btn" id="session" onclick="${click}">
+              Go to Session
+          </button>
+      </div>
+    `
+    form.parentNode.replaceChild(success, form)
+  }
+
+  const handleError = (e) => {
+    var parsedError = e.toString().split('Error: ')[1].trim()
+    var details
+    console.log(`> Error code to handle: ${parsedError}`)
+    if (parsedError in logmein_errors) {
+      details = logmein_errors[parsedError]
+    } else {
+      details = 'An unknown error occured'
+    }
+    
+    console.log(`> Details: ${details}`)
+    var logmein = document.getElementById('logmein')
+    var error = document.createElement('div')
+    error.innerHTML =  `<div class="error" id="error"><p>${e}</p><p>${details}</p></div>`
+    
+    var error_message = document.getElementById('error')
+    if (document.contains(error_message)) {
+      parent = error_message.parentNode
+      parent.replaceChild(error, error_message)
+    } else {
+      logmein.parentNode.appendChild(error)
+    }
+  }
+</script>
+
