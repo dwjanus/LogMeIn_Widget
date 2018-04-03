@@ -7,7 +7,7 @@
         <form id=harvest_form>
             <div class="form-field">
                 <!-- 6647369 -->
-                <input type="text" id="client_id" name="client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
+                <input type="text" id="harvest_id" name="harvest_client_id" placeholder="Client Id for Harvest Project" onFocus="this.placeholder=''" onblur="this.placeholder='Client Id for Harvest Project'"/> 
                 
                 <div style="display: inline-block; width: 220px; margin: 5px;">
                     <label style="float: left;">Billable?</label>
@@ -90,7 +90,7 @@
 
   function harvest() {
     var tasks = document.getElementById("send_tasks").value
-    var client = document.getElementById("client_id").value
+    var client = document.getElementById("harvest_client_id").value
 
     create_project(client).then((id) => { //.then(assign_project)
       if (tasks) {

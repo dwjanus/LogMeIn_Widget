@@ -9,7 +9,7 @@
             <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
         </div>   
 
-        <div id="id" style="visibility: hidden;">{{tv_id}}</div>
+        <div id="teamviewer_id" style="visibility: hidden;">{{tv_id}}</div>
     </div>
 </div>
 
@@ -33,9 +33,9 @@
   function teamviewer() {
     console.log('>>> teamviewer() called')
     
-    var client_id = document.getElementById("id").value
+    var teamviewer_client_id = document.getElementById("teamviewer_id").value
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
-    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}`
+    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${teamviewer_client_id}&redirect_uri=${redirect}`
 
     console.log(`>>> client_id: ${client_id}`)
     console.log(`>>> url: ${url}`)
