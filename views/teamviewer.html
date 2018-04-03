@@ -13,7 +13,7 @@
 
 <script>
   var context_id
-  var teamviewer_client_id = fetch('/tv/data')
+  var teamviewer_client_id = fetch('/tv/data').then((res) => res.json())
   console.log(`>>> client_id: ${teamviewer_client_id}`)
 
   setlocal = (response) => {
