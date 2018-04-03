@@ -37,7 +37,7 @@
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
     var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${teamviewer_client_id}&redirect_uri=${redirect}`
 
-    console.log(`>>> client_id: ${client_id}`)
+    console.log(`>>> client_id: ${teamviewer_client_id}`)
     console.log(`>>> url: ${url}`)
     window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
 
