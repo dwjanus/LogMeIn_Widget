@@ -12,9 +12,7 @@
 </div>
 
 <script>
-  var context_id
-  var teamviewer_client_id = fetch('/tv/data').then((res) => { return Promise.resolve(res.json()) })  
-  
+  var context_id    
 
   setlocal = (response) => {
     console.log('local storage set: ' + JSON.stringify(response))
@@ -32,14 +30,20 @@
 
   function teamviewer() {
     console.log('>>> teamviewer() called')
-    console.log(`>>> client_id: ${teamviewer_client_id}`)
+
+    fetch('/tv/data').then((res) => {
+      return res.json()
+    }).then((data) => {
+      var tv_id = data.tv_id
+      var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
+      var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${tv_id}&redirect_uri=${redirect}`
+
+      console.log(`>>> client_id: ${tv_id}`)
+      console.log(`>>> url: ${url}`)
+      return window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
+    }).catch(e => console.log(`>> ERROR >>  ${e}`))
+
     
-    var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
-    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${teamviewer_client_id.tv_id}&redirect_uri=${redirect}`
-
-    console.log(`>>> url: ${url}`)
-    window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
-
     // getCode(url)
     //   .catch(e => console.log(`${e}`))
   }
