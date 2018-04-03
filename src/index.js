@@ -5,6 +5,7 @@ require('body-parser-xml')(bodyParser)
 import util from 'util'
 import cors from 'cors'
 import monk from 'monk'
+import request from 'request'
 
 const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
@@ -58,10 +59,24 @@ app.post('/data', (req, res) => {
   res.send(200)
 })
 
-app.post('/tv/oauth/', (req, res) => {
-  console.log('>>> saving oauth token')
-  console.log(`>>> data: \n${util.inspect(req.body)}`)
-  // teamviewer.insert()
+app.get('/tv/oauth/', (req, res) => {
+  console.log(`>>> body: \n${util.inspect(req.body)}`)
+  console.log(`>>> params: \n${util.inspect(req.params)}`)
+  // make request with the code 
+
+  let code = req.params.code
+  let redirect = 'https://samanage-widgets.herokuapp.com/tv/oauth'
+  if (code) {
+    let options = {
+      url: `https://webapi.teamviewer.com/grant_type=authorization_code&code=${code}&redirect_uri=${redirect}&client_id=${process.env.TEAMVIEWER_ID}`,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }
+
+    console.log('>>> code: ' + code + '\n>>> this is where we would make our post request')
+    // request.post(options, (res) => {
+    //   console.log(util.inspect(res))
+    // })
+  }
 })
 
 
