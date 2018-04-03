@@ -2,7 +2,7 @@
     <div name="teamviewer" id="teamviewer">
         <div class="form-header">
             <h2>TeamViewer Remote Session</h2>
-            <div id="tv_id" style="visibility: hidden;">{{tv_id}}</div>
+            <div id="id" style="visibility: hidden;">{{tv_id}}</div>
         </div>
 
         <div style="height:65px;">
@@ -32,7 +32,7 @@
   function teamviewer() {
     console.log('>>> teamviewer() called')
     
-    var client_id = document.getElementById("tv_id").value
+    var client_id = document.getElementById("id").value
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
     var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}`
 
