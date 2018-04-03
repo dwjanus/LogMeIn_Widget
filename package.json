@@ -26,6 +26,7 @@
     "body-parser-xml": "^1.1.0",
     "cors": "^2.8.4",
     "express": "^4.16.2",
-    "hogan-express": "^0.5.2"
+    "hogan-express": "^0.5.2",
+    "monk": "^6.0.5"
   }
 }
