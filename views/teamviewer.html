@@ -28,15 +28,6 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  function getClientId() {
-    return fetch('/tv/data').then((res) => {
-      return res.json()
-    }).then((data) => {
-      var tv_id = data.tv_id
-      return tv_id
-    }).catch(e => console.log(`>> ERROR >>  ${e}`))
-  }
-
   function teamviewer() {
     console.log('>>> teamviewer() called')
 
@@ -45,11 +36,21 @@
       .catch(e => console.log(`>> ERROR >>  ${e}`))
   }
 
+  function getClientId() {
+    return fetch('/tv/data').then((res) => {
+      return res.json()
+    }).then((data) => {
+      console.log('> data: ' + JSON.stringify(data))
+      var tv_id = data.tv_id
+      return tv_id
+    }).catch(e => console.log(`>> ERROR >>  ${e}`))
+  }
+
   function launchAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
     var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}`
 
-    console.log(`>>> client_id: ${tv_id}`)
+    console.log(`>>> client_id: ${client_id}`)
     console.log(`>>> url: ${url}`)
 
     return fetch(url).then((res) => {
