@@ -53,13 +53,14 @@
     console.log(`>>> client_id: ${client_id}`)
     console.log(`>>> url: ${url}`)
 
-    return fetch(url).then((res) => {
-      return res.json()
-    }).then((data) => {
-      console.log(`>>> response: ${data}`)
-      var win = window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
-      return win
-    }).catch(e => console.log(`>> ERROR >>  ${e}`))
+    window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
+
+    // return fetch(url).then((res) => {
+    //   return res.json()
+    // }).then((data) => {
+    //   console.log(`>>> response: ${data}`)
+    //   window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
+    // }).catch(e => console.log(`>> ERROR >>  ${e}`))
   }
 
   // function getCode(url) {
