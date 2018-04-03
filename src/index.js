@@ -36,8 +36,7 @@ app.options('*', cors())
 app.get('/', (req, res) => {
   res.locals = {
     harvest_token: process.env.HARVEST_TOKEN,
-    harvest_account: process.env.HARVEST_ACCOUNT,
-    tv_id: process.env.TEAMVIEWER_ID
+    harvest_account: process.env.HARVEST_ACCOUNT
   }
   res.render('layout', {
     partials: { 
@@ -47,6 +46,10 @@ app.get('/', (req, res) => {
       teamviewer: 'teamviewer.html'
    }
   })
+})
+
+app.get('/tv/data', (req, res) => {
+  res.send({ tv_id: process.env.TEAMVIEWER_ID })
 })
 
 // this is going to be the endopint that needs a backend function to handle the data to comment
