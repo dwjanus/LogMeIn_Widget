@@ -40,7 +40,6 @@
     return fetch('/tv/data').then((res) => {
       return res.json()
     }).then((data) => {
-      console.log('> data: ' + JSON.stringify(data))
       var tv_id = data.tv_id
       return tv_id
     }).catch(e => console.log(`>> ERROR >>  ${e}`))
@@ -53,7 +52,7 @@
     console.log(`>>> client_id: ${client_id}`)
     console.log(`>>> url: ${url}`)
 
-    window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
+    return window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
 
     // return fetch(url).then((res) => {
     //   return res.json()
