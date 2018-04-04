@@ -12,7 +12,8 @@
 </div>
 
 <script>
-  var context_id    
+  var context_id
+  var oauthParams    
 
   setlocal = (response) => {
     console.log('local storage set: ' + JSON.stringify(response))
@@ -60,6 +61,11 @@
     //   console.log(`>>> response: ${data}`)
     //   window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
     // }).catch(e => console.log(`>> ERROR >>  ${e}`))
+  }
+
+  function setOauthParams(oauthParamsPassed) {
+    console.log(`>>> oauth params passed: ${JSON.stringify(oauthParamsPassed)}`)
+    this.oauthParams = oauthParamsPassed
   }
 
   // function getCode(url) {

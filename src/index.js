@@ -53,15 +53,11 @@ app.get('/tv/data', (req, res) => {
   res.send({ tv_id: process.env.TEAMVIEWER_ID })
 })
 
-// this is going to be the endopint that needs a backend function to handle the data to comment
-app.post('/data', (req, res) => {
-  console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
-  res.send(200)
-})
-
 app.get('/tv/oauth/', (req, res) => {
+  console.log('[GET] /tv/oauth/')
   console.log(`>>> body: \n${util.inspect(req.body)}`)
   console.log(`>>> params: \n${util.inspect(req.params)}`)
+  console.log(`>>> query: \n${util.inspect(req.query)}`)
   // make request with the code 
 
   let code = req.params.code
@@ -78,6 +74,21 @@ app.get('/tv/oauth/', (req, res) => {
     // })
   }
 })
+
+app.post('/tv/oauth/', (req, res) => {
+  console.log('[POST] /tv/oauth/')
+  console.log(`>>> body: \n${util.inspect(req.body)}`)
+  console.log(`>>> params: \n${util.inspect(req.params)}`)
+  res.send('Success!')
+})
+
+// this is going to be the endopint that needs a backend function to handle the data to comment
+app.post('/data', (req, res) => {
+  console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
+  res.send(200)
+})
+
+
 
 
 const server = app.listen(app.get('port'), () => {
