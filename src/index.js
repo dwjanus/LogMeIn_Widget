@@ -11,7 +11,7 @@ import querystring from 'querystring'
 const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
 const db = monk(process.env.MONGODB_URI)
-const teamviewer = db.get('teamviewer') // used for storage of teamviewer oauth data
+const teamviewer_db = db.get('teamviewer') // used for storage of teamviewer oauth data
 
 
 if (!port) {
@@ -36,6 +36,11 @@ app.options('*', cors())
 
 
 app.get('/', (req, res) => {
+  let tv_auth = 'teamviewer_auth.html'
+  teamviewer_db.findOne({account: '42909'}).then((tv_tokens) => {
+    if (tv_tokens) tv_auth = 'teamviewer.html'
+  })
+
   res.locals = {
     harvest_token: process.env.HARVEST_TOKEN,
     harvest_account: process.env.HARVEST_ACCOUNT
@@ -45,13 +50,17 @@ app.get('/', (req, res) => {
       logmein: 'logmein.html',
       bomgar: 'bomgar.html',
       harvest: 'harvest.html',
-      teamviewer: 'teamviewer.html'
+      teamviewer: tv_auth 
    }
   })
 })
 
 app.get('/tv/data', (req, res) => {
   res.send({ tv_id: process.env.TEAMVIEWER_ID })
+})
+
+app.get('/tv/authorized', (req, res) => {
+  res.sendFile('/html/oauth2callback.html')
 })
 
 app.get('/tv/oauth/', (req, res) => {
@@ -86,7 +95,15 @@ app.get('/tv/oauth/', (req, res) => {
 
     response.on('end', () => {
       console.log(`>>> success!\n${util.inspect(result)}`)
-      res.redirect('/html/oauth2callback.html')
+      teamviewer_db.insert({account: "42909", result}) // this would be the Samanage account id
+      let query = querystring.stringify({
+        access_token: result.access_token,
+        token_type: result.token_type,
+        expires_in: result.expires_in,
+        refresh_token: result.refresh_token
+      })
+
+      res.redirect('/tv/authorized?' + query)
     })
 
     response.on('error', (e) => {
@@ -102,13 +119,6 @@ app.get('/tv/oauth/', (req, res) => {
   request.end()
 })
 
-app.post('/tv/oauth/', (req, res) => {
-  console.log('[POST] /tv/oauth/')
-  console.log(`>>> body: \n${util.inspect(req.body)}`)
-  console.log(`>>> params: \n${util.inspect(req.params)}`)
-  console.log(`>>> query: \n${util.inspect(req.query)}`)
-  res.sendFile('/html/oauth2callback.html')
-})
 
 // this is going to be the endopint that needs a backend function to handle the data to comment
 app.post('/data', (req, res) => {

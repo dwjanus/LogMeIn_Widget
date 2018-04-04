@@ -1,0 +1,88 @@
+<div class="container" id="tv_widget_auth" style="visibility: visible;">
+    <div name="teamviewer_auth" id="teamviewer_auth">
+        <div class="form-header">
+            <h2>TeamViewer Remote Session</h2>
+        </div>
+
+        <div style="height:65px;">
+            <button type="button" class="btn" form="tv_auth" onclick="teamviewer()">Install</button>
+            <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+        </div>   
+    </div>
+</div>
+
+<script>
+  var context_id
+  var oauthParams
+  
+
+  setlocal = (response) => {
+    console.log('local storage set: ' + JSON.stringify(response))
+  }
+
+  contextRecievedHandler = (response) => {
+    if (response.context_type == 'Incident') {
+      console.log('Context type is incident --> calling show()')
+      context_id = response.context_id
+      platformWidgetHelper.show()
+    }
+  }
+
+  platformWidgetHelper.getContextObject(contextRecievedHandler)
+
+  function teamviewer() {
+    console.log('>>> teamviewer() called')
+
+    getClientId()
+      .then(launchAuth)
+      .catch(e => console.log(`>> ERROR >>  ${e}`))
+  }
+
+  function getClientId() {
+    return fetch('/tv/data').then((res) => {
+      return res.json()
+    }).then((data) => {
+      var tv_id = data.tv_id
+      return tv_id
+    }).catch(e => console.log(`>> ERROR >>  ${e}`))
+  }
+
+  function launchAuth(client_id) {
+    var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
+    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}`
+
+    console.log(`>>> client_id: ${client_id}`)
+    console.log(`>>> url: ${url}`)
+
+    return window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
+  }
+
+  function setOauthParams(oauthParamsPassed) {
+    console.log(`>>> oauth params passed: ${JSON.stringify(oauthParamsPassed)}`)
+    this.oauthParams = oauthParamsPassed
+    // setlocal storage with oauth params
+  }
+
+  // function toggleAuthorizedView() {
+  //   var auth_view = document.getElementById('teamviewer_auth')
+  //   var widget_view = document.createElement('div')
+
+  //   widget_view.className = 'widget_view'
+  //   widget_view.id = 'widget_view'
+  //   widget_view.innerHTML = `
+  //     <div class="session_code" style="display: inline-block; width: 220px; margin: 5px;">
+  //         <label style="float: left;">Session Code</label> 
+  //         <p id="code">${pin}</p>
+  //     </div>
+  //     <div style="padding-top: 15px;">
+  //         <button type="button" class="btn" id="session" onclick="${click}">
+  //             Go to Session
+  //         </button>
+  //     </div>
+  //   `
+    
+  //   auth_view.parentNode.replaceChild(success, form)
+  // }
+
+</script>
+

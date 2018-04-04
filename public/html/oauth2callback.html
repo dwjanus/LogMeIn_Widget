@@ -14,7 +14,7 @@
   }
 
   window.opener.setOauthParams(oauthParams)
-  //window.opener.callApi() --> here we make the last request for the authcode
+  window.opener.location.reload()
   window.close()
 </script>
 

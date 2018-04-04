@@ -4,17 +4,28 @@
             <h2>TeamViewer Remote Session</h2>
         </div>
 
-        <div style="height:65px;">
-            <button type="button" class="btn" form="tv_auth" onclick="teamviewer()">Install</button>
-            <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
-        </div>   
+        <div class="session_code" style="display: inline-block; width: 220px; margin: 5px;">
+            <label style="float: left;">Session Code</label> 
+            <p id="code"> t h e c o d e </p>
+        </div>
+
+        <div style="padding-top: 15px;">
+            <button type="button" class="btn" id="insert" onclick="">
+                Insert Link
+            </button>
+        </div>
+
+        <div style="padding-top: 15px;">
+            <button type="button" class="btn" id="connect" onclick="">
+                Connect to Session
+            </button>
+        </div>
     </div>
 </div>
 
 <script>
-  var context_id
-  var oauthParams    
-
+  var context
+  
   setlocal = (response) => {
     console.log('local storage set: ' + JSON.stringify(response))
   }
@@ -22,83 +33,15 @@
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
       console.log('Context type is incident --> calling show()')
-      context_id = response.context_id
+      context = response
       platformWidgetHelper.show()
     }
   }
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  function teamviewer() {
-    console.log('>>> teamviewer() called')
 
-    getClientId()
-      .then(launchAuth)
-      .catch(e => console.log(`>> ERROR >>  ${e}`))
-  }
-
-  function getClientId() {
-    return fetch('/tv/data').then((res) => {
-      return res.json()
-    }).then((data) => {
-      var tv_id = data.tv_id
-      return tv_id
-    }).catch(e => console.log(`>> ERROR >>  ${e}`))
-  }
-
-  function launchAuth(client_id) {
-    var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
-    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}`
-
-    console.log(`>>> client_id: ${client_id}`)
-    console.log(`>>> url: ${url}`)
-
-    return window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
-
-    // return fetch(url).then((res) => {
-    //   return res.json()
-    // }).then((data) => {
-    //   console.log(`>>> response: ${data}`)
-    //   window.open(url, "", "width=650px, height=400px, alwaysRaised=yes")
-    // }).catch(e => console.log(`>> ERROR >>  ${e}`))
-  }
-
-  function setOauthParams(oauthParamsPassed) {
-    console.log(`>>> oauth params passed: ${JSON.stringify(oauthParamsPassed)}`)
-    this.oauthParams = oauthParamsPassed
-  }
-
-  // function getCode(url) {
-  //   console.log('>>> retrieving teamviewer code')
-  //   return fetch(url).then((res) => {
-  //     return res.text()
-  //   }).then((data) => {
-  //     console.log('>>> ' + data)
-  //     return data
-  //   }).catch((err) => {
-  //     handleError(err)
-  //     return Promise.reject('>>> ' + err)
-  //   })
-  // }
-
-  // function getAuth(code) {
-  //   console.log('>>> posting for teamviewer oauth token')
-
-  //   var client_id = document.getElementById("tv_id").value
-  //   var redirect = "https://samanage-widgets.herokuapp.com/"
-  //   var url = `webapi.teamviewer.com/grant_type=authorization_code&code=${code}&redirect_uri=${redirect}&client_id=${client_id}`
-    
-  //   fetch(url, {
-  //     headers: {
-  //       "Content-Type": "application/x-www-form-urlencoded"
-  //     },
-  //     method: 'POST'
-  //   }).then((res) => {
-  //     return res.json()
-  //   }).then((data) => {
-  //     console.log('>>> data: ' + data)
-  //   })
-  // }
-  
 </script>
+
+
 
