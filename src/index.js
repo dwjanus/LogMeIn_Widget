@@ -73,13 +73,15 @@ app.get('/tv/oauth/', (req, res) => {
     //   console.log(util.inspect(res))
     // })
   }
+  res.sendFile('oauth2callback.html')
 })
 
 app.post('/tv/oauth/', (req, res) => {
   console.log('[POST] /tv/oauth/')
   console.log(`>>> body: \n${util.inspect(req.body)}`)
   console.log(`>>> params: \n${util.inspect(req.params)}`)
-  res.send('Success!')
+  console.log(`>>> query: \n${util.inspect(req.query)}`)
+  res.sendFile('oauth2callback.html')
 })
 
 // this is going to be the endopint that needs a backend function to handle the data to comment
