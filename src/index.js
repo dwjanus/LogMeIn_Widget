@@ -63,7 +63,8 @@ app.get('/tv/oauth/', (req, res) => {
     grant_type: 'authorization_code',
     code: code,
     redirect_uri: 'https://samanage-widgets.herokuapp.com/tv/oauth',
-    client_id: process.env.TEAMVIEWER_ID
+    client_id: process.env.TEAMVIEWER_ID,
+    client_secret: process.env.TEAMVIEWER_SECRET
   })
     
   let options = {
