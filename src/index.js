@@ -58,14 +58,14 @@ app.get('/tv/oauth/', (req, res) => {
 
   let code = req.query.code
   let options = {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: { 'Content-Type': 'application/json' },
     body: {
       grant_type: 'authorization_code',
       code: code,
       redirect_uri: 'https://samanage-widgets.herokuapp.com/tv/oauth',
       client_id: process.env.TEAMVIEWER_ID
     },
-    url: `https://webapi.teamviewer.com/api/v1/oauth2/token`
+    url: 'https://webapi.teamviewer.com/api/v1/oauth2/token'
   }
 
   console.log(`>>> code: ${code}`)
