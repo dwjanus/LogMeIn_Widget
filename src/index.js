@@ -55,25 +55,21 @@ app.get('/tv/data', (req, res) => {
 
 app.get('/tv/oauth/', (req, res) => {
   console.log('[GET] /tv/oauth/')
-  console.log(`>>> body: \n${util.inspect(req.body)}`)
-  console.log(`>>> params: \n${util.inspect(req.params)}`)
   console.log(`>>> query: \n${util.inspect(req.query)}`)
   // make request with the code 
 
-  let code = req.params.code
+  let code = req.query.code
   let redirect = 'https://samanage-widgets.herokuapp.com/tv/oauth'
-  if (code) {
-    let options = {
-      url: `https://webapi.teamviewer.com/api/v1/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}&client_id=${process.env.TEAMVIEWER_ID}`,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }
-
-    console.log('>>> code: ' + code + '\n>>> this is where we would make our post request')
-    // request.post(options, (res) => {
-    //   console.log(util.inspect(res))
-    // })
+  let options = {
+    url: `https://webapi.teamviewer.com/api/v1/oauth2/token?grant_type=authorization_code&code=${code}&redirect_uri=${redirect}&client_id=${process.env.TEAMVIEWER_ID}`,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   }
-  res.sendFile('oauth2callback.html')
+
+  console.log('>>> code: ' + code + '\n>>> this is where we would make our post request')
+
+  request.post(options, (err, response) => {
+    console.log(util.inspect(response.body))
+  })
 })
 
 app.post('/tv/oauth/', (req, res) => {
@@ -81,7 +77,7 @@ app.post('/tv/oauth/', (req, res) => {
   console.log(`>>> body: \n${util.inspect(req.body)}`)
   console.log(`>>> params: \n${util.inspect(req.params)}`)
   console.log(`>>> query: \n${util.inspect(req.query)}`)
-  res.sendFile('oauth2callback.html')
+  res.sendFile('/html/oauth2callback.html')
 })
 
 // this is going to be the endopint that needs a backend function to handle the data to comment
