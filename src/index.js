@@ -86,6 +86,7 @@ app.get('/tv/oauth/', (req, res) => {
 
     response.on('end', () => {
       console.log(`>>> success!\n${util.inspect(result)}`)
+      res.redirect('/html/oauth2callback.html')
     })
 
     response.on('error', (e) => {
