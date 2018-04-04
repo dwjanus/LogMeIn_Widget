@@ -5,7 +5,8 @@ require('body-parser-xml')(bodyParser)
 import util from 'util'
 import cors from 'cors'
 import monk from 'monk'
-import request from 'request'
+import https from 'https'
+import querystring from 'querystring'
 
 const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
@@ -55,25 +56,48 @@ app.get('/tv/data', (req, res) => {
 
 app.get('/tv/oauth/', (req, res) => {
   console.log('[GET] /tv/oauth/')
+  console.log(`>>> code: ${req.query.code}`)
 
   let code = req.query.code
+  let postData = querystring.stringify({
+    grant_type: 'authorization_code',
+    code: code,
+    redirect_uri: 'https://samanage-widgets.herokuapp.com/tv/oauth',
+    client_id: process.env.TEAMVIEWER_ID
+  })
+    
   let options = {
-    headers: { 'Content-Type': 'application/json' },
-    body: {
-      grant_type: 'authorization_code',
-      code: code,
-      redirect_uri: 'https://samanage-widgets.herokuapp.com/tv/oauth',
-      client_id: process.env.TEAMVIEWER_ID
-    },
-    url: 'https://webapi.teamviewer.com/api/v1/oauth2/token'
+    host: 'https://webapi.teamviewer.com',
+    path: '/api/v1/oauth2/token',
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': postData.length
+    }
   }
 
-  console.log(`>>> code: ${code}`)
+  const request = https.request(options, (response) => {
+    let result = ''
 
-  request.post(options, (err, response) => {
-    if (err) console.log('ERROR: ' + err)
-    else console.log(util.inspect(response.body))
+    response.on('data', (chunk) => {
+      result += chunk
+    })
+
+    response.on('end', () => {
+      console.log(`>>> success!\n${util.inspect(result)}`)
+    })
+
+    response.on('error', (e) => {
+      console.log('[error in post response]' + e)
+    })
   })
+
+  request.on('error', (e) => {
+    console.log('[error in post request] >> ' + e)
+  })
+
+  request.write(postData)
+  request.end()
 })
 
 app.post('/tv/oauth/', (req, res) => {
