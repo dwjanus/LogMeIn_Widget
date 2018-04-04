@@ -67,7 +67,7 @@ app.get('/tv/oauth/', (req, res) => {
   })
     
   let options = {
-    host: 'https://webapi.teamviewer.com',
+    host: 'webapi.teamviewer.com',
     path: '/api/v1/oauth2/token',
     method: 'POST',
     headers: { 
