@@ -32,7 +32,7 @@ app.use(bodyParser.xml({xmlParseOptions: {
   explicitArray: false
 }}))
 app.use(cors())
-app.options('/', cors())
+app.options('*', cors())
 
 
 app.get('/', (req, res) => {
@@ -67,7 +67,7 @@ app.get('/tv/data', (req, res) => {
 })
 
 app.get('/tv/authorized', (req, res) => {
-  res.sendFile('/html/oauthcallback.html')
+  res.sendFile('./../public/html/oauthcallback.html')
 })
 
 app.get('/tv/oauth/', (req, res) => {
