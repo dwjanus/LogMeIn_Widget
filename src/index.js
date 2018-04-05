@@ -109,13 +109,15 @@ app.get('/tv/oauth', (req, res) => {
 
     response.on('end', () => {
       console.log(`>>> success!\n${util.inspect(result)}`)
-      teamviewer_db.insert({account: "42909", result}) // this would be the Samanage account id
-      let query = querystring.stringify({
+      
+      const query = querystring.stringify({
         access_token: result.access_token,
         token_type: result.token_type,
         expires_in: result.expires_in,
         refresh_token: result.refresh_token
       })
+
+      teamviewer_db.insert({account: "42909", result}) // this would be the Samanage account id
 
       res.redirect('/tv/authorized?' + query)
     })
