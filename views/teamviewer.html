@@ -54,6 +54,7 @@
     .then((res) => res.json())
     .then((data) => {
       this.context['tv_data'] = data
+      console.log('>> context object:\n' + JSON.stringify(context))
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
   
@@ -70,7 +71,7 @@
     fetch('https://webapi.teamviewer.com/api/v1/sessions', {
       method: 'POST',
       headers: { 
-        'Authorization': `Bearer ${context.teamviewer.access_token}`,
+        'Authorization': `Bearer ${context.tv_data.tokens.access_token}`,
         'Content-Type': 'application/json', 
       },
       body: JSON.stringify(body_json),

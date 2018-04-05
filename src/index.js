@@ -59,11 +59,10 @@ app.get('/tv/data', (req, res) => {
     tv_id: process.env.TEAMVIEWER_ID
   }
 
-  teamviewer_db.findOne({account: '42090'}).then((tv_tokens) => {
-    if (tv_tokens) response_json['tokens'] = tv_tokens
+  teamviewer_db.findOne({account: '42090'}).then((found) => {
+    if (tv_tokens) response_json['tokens'] = found.teamviewer
+    res.send(response_json)
   })
-
-  res.send(response_json)
 })
 
 app.get('/tv/authorized', (req, res, next) => {
