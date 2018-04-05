@@ -67,7 +67,7 @@ app.get('/tv/data', (req, res) => {
 })
 
 app.get('/tv/authorized', (req, res) => {
-  res.sendFile(__dirname + '/public/html/oauthcallback.html')
+  res.render('oauthcallback.html')
 })
 
 app.get('/tv/oauth/', (req, res) => {
