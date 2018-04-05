@@ -68,7 +68,7 @@ app.get('/tv/data', (req, res) => {
 
 app.get('/tv/authorized', (req, res, next) => {
   const options = {
-    root: __dirname + '../public/html/'
+    root: path.join(__dirname + '../public/html/')
   }
 
   res.sendFile('oauthcallback.html', options, (err) => {
