@@ -38,20 +38,19 @@ app.options('*', cors())
 app.get('/', (req, res) => {
   let tv_auth = 'teamviewer_auth.html'
   teamviewer_db.findOne({account: '42909'}).then((tv_tokens) => {
-    if (tv_tokens) tv_auth = 'teamviewer.html'
-  })
+    if (tv_tokens) {
+      console.log('> tv tokens found in storage')
+      tv_auth = 'teamviewer.html'
+    }
 
-  res.locals = {
-    harvest_token: process.env.HARVEST_TOKEN,
-    harvest_account: process.env.HARVEST_ACCOUNT
-  }
-  res.render('layout', {
-    partials: { 
-      logmein: 'logmein.html',
-      bomgar: 'bomgar.html',
-      harvest: 'harvest.html',
-      teamviewer: tv_auth 
-   }
+    res.render('layout', {
+      partials: { 
+        logmein: 'logmein.html',
+        bomgar: 'bomgar.html',
+        harvest: 'harvest.html',
+        teamviewer: tv_auth 
+      }
+    })
   })
 })
 
@@ -68,7 +67,7 @@ app.get('/tv/data', (req, res) => {
 })
 
 app.get('/tv/authorized', (req, res) => {
-  res.sendFile('oauthcallback.html')
+  res.sendFile('html/oauthcallback.html')
 })
 
 app.get('/tv/oauth/', (req, res) => {
