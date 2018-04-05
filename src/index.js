@@ -32,7 +32,7 @@ app.use(bodyParser.xml({xmlParseOptions: {
   explicitArray: false
 }}))
 app.use(cors())
-app.options('*', cors())
+app.options('/', cors())
 
 
 app.get('/', (req, res) => {
