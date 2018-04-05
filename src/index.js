@@ -68,7 +68,7 @@ app.get('/tv/data', (req, res) => {
 
 app.get('/tv/authorized', (req, res, next) => {
   const options = {
-    root: path.join(__dirname + '../public/html/')
+    root: path.join(__dirname, '../public/html/')
   }
 
   res.sendFile('oauthcallback.html', options, (err) => {
@@ -100,6 +100,8 @@ app.get('/tv/oauth', (req, res) => {
     }
   }
 
+  let query = ''
+
   const request = https.request(options, (response) => {
     let result = ''
 
@@ -110,7 +112,7 @@ app.get('/tv/oauth', (req, res) => {
     response.on('end', () => {
       console.log(`>>> success!\n${util.inspect(result)}`)
       
-      const query = querystring.stringify({
+      query = querystring.stringify({
         access_token: result.access_token,
         token_type: result.token_type,
         expires_in: result.expires_in,
@@ -118,8 +120,6 @@ app.get('/tv/oauth', (req, res) => {
       })
 
       teamviewer_db.insert({account: "42909", result}) // this would be the Samanage account id
-
-      res.redirect('/tv/authorized?' + query)
     })
 
     response.on('error', (e) => {
@@ -132,7 +132,7 @@ app.get('/tv/oauth', (req, res) => {
   })
 
   request.write(postData)
-  request.end()
+  request.end(() => res.redirect('/tv/authorized?' + query))
 })
 
 
