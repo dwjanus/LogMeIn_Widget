@@ -31,8 +31,8 @@ app.use(bodyParser.json({ type: 'application/json' }))
 app.use(bodyParser.xml({xmlParseOptions: {
   explicitArray: false
 }}))
-// app.use(cors())
-// app.options('*', cors())
+app.use(cors())
+app.options('*', cors())
 
 
 app.get('/', (req, res) => {
@@ -100,8 +100,6 @@ app.get('/tv/oauth', (req, res) => {
     }
   }
 
-  let query = ''
-
   const request = https.request(options, (response) => {
     let result = ''
 
@@ -111,15 +109,19 @@ app.get('/tv/oauth', (req, res) => {
 
     response.on('end', () => {
       console.log(`>>> success!\n${util.inspect(result)}`)
-      
-      query = querystring.stringify({
+      result = JSON.parse(result)
+
+      let query = querystring.stringify({
         access_token: result.access_token,
         token_type: result.token_type,
         expires_in: result.expires_in,
         refresh_token: result.refresh_token
       })
 
-      teamviewer_db.insert({account: "42909", result}) // this would be the Samanage account id
+      teamviewer = result
+
+      teamviewer_db.insert({account: "42909", teamviewer}) // this would be the Samanage account id
+      res.redirect('/tv/authorized?' + query)
     })
 
     response.on('error', (e) => {
@@ -132,11 +134,11 @@ app.get('/tv/oauth', (req, res) => {
   })
 
   request.write(postData)
-  request.end(() => res.redirect('/tv/authorized?' + query))
+  request.end()
 })
 
 
-// this is going to be the endopint that needs a backend function to handle the data to comment
+// this is going to be the endpoint that needs a backend function to handle the data to comment
 app.post('/data', (req, res) => {
   console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
   res.send(200)

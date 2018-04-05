@@ -69,7 +69,10 @@
 
     fetch('https://webapi.teamviewer.com/api/v1/sessions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Authorization': `Bearer ${context.teamviewer.access_token}`,
+        'Content-Type': 'application/json', 
+      },
       body: JSON.stringify(body_json),
       mode: 'cors'
     }).then((res) => res.json())
