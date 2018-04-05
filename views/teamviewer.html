@@ -5,11 +5,21 @@
         </div>
 
         <div class="session_code" style="display: inline-block; width: 220px; margin: 5px;">
-            <label style="float: left;">Session Code</label> 
-            <p id="code"> t h e c o d e </p>
+            <label style="float: left;">Session Code:</label> 
+            <p id="code"></p>
         </div>
 
-        <div style="padding-top: 15px;">
+        <div class="customer_link">
+            <label style="float: left;">Customer Link:</label> 
+            <p id="customer_link"></p>
+        </div>
+
+        <div class="tech_link">
+            <label style="float: left;">Supporter Link:</label> 
+            <p id="tech_link"></p>
+        </div>
+
+        <!-- <div style="padding-top: 15px;">
             <button type="button" class="btn" id="insert" onclick="">
                 Insert Link
             </button>
@@ -19,7 +29,7 @@
             <button type="button" class="btn" id="connect" onclick="">
                 Connect to Session
             </button>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -40,6 +50,40 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
+  fetch('/tv/data')
+    .then((res) => res.json())
+    .then((data) => {
+      this.context['tv_data'] = data
+    })
+  .catch(e => console.log(`>> ERROR >> ${e}`))
+  
+
+  function createSession() {
+    let body_json = {
+      description: context.description,
+      end_customer: {
+        name: context.requester.name
+      },
+      custom_api: { "incident_id": context.context_id }
+    }
+
+    fetch('https://webapi.teamviewer.com/api/v1/sessions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body_json)
+    }).then((res) => res.json())
+      .then((data) => {
+        console.log(`>>> response data: ${JSON.stringify(data)}`)
+        document.getElementById('code').value = data.code
+        document.getElementById('customer_link').value = data.end_customer_link
+        document.getElementById('tech_link').value = data.supporter_link
+      })
+    .catch(e => console.log(e))
+  }
+
+  if (!document.getElementById('code').value) {
+    createSession()
+  }
 
 </script>
 

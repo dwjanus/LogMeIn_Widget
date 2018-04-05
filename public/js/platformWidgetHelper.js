@@ -15,9 +15,15 @@ var platformWidgetHelper = (function() {
     getContextObject: function(callback) {
       callback({ 
         context_type: 'Incident', 
-        context_id: 23529800, 
+        context_id: 23529800,
+        name: 'Harvest Project',
+        description: 'Testing Harvest integration', 
         assignee: {
           group_id: 3031154,
+          name: 'Devin'
+        },
+        requester: {
+          user_id: 2821593,
           name: 'Devin'
         }
       })
