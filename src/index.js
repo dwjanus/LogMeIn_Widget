@@ -118,7 +118,7 @@ app.get('/tv/oauth', (req, res) => {
         refresh_token: result.refresh_token
       })
 
-      teamviewer = result
+      let teamviewer = result
 
       teamviewer_db.insert({account: "42909", teamviewer}) // this would be the Samanage account id
       res.redirect('/tv/authorized?' + query)
