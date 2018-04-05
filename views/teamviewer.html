@@ -53,8 +53,9 @@
   fetch('/tv/data')
     .then((res) => res.json())
     .then((data) => {
-      this.context['tv_data'] = data
+      context['tv_data'] = data
       console.log('>> context object:\n' + JSON.stringify(context))
+      if (!document.getElementById('code').value) createSession()
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
   
@@ -84,10 +85,6 @@
         document.getElementById('tech_link').value = data.supporter_link
       })
     .catch(e => console.log(e))
-  }
-
-  if (!document.getElementById('code').value) {
-    createSession()
   }
 
 </script>

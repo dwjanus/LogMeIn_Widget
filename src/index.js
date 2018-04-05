@@ -60,7 +60,10 @@ app.get('/tv/data', (req, res) => {
   }
 
   teamviewer_db.findOne({account: '42090'}).then((found) => {
-    if (found) response_json['tokens'] = found.teamviewer
+    if (found) {
+      console.log('[GET] /tv/data --> tokens found\n' + util.inspect(found))
+      response_json['tokens'] = found.teamviewer
+    }
     res.send(response_json)
   })
 })
