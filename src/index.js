@@ -26,7 +26,6 @@ app.engine('html', require('hogan-express'))
 app.set('views', path.join(__dirname, './../views'))
 
 app.use(express.static(path.join(__dirname, './../public')))
-app.use(express.static(path.join(__dirname, './../html')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ type: 'application/json' }))
 app.use(bodyParser.xml({xmlParseOptions: {
@@ -67,8 +66,15 @@ app.get('/tv/data', (req, res) => {
   res.send(response_json)
 })
 
-app.get('/tv/authorized', (req, res) => {
-  res.sendFile('/html/oauthcallback.html')
+app.get('/tv/authorized', (req, res, next) => {
+  const options = {
+    root: __dirname + '../public/html/'
+  }
+
+  res.sendFile('oauthcallback.html', options, (err) => {
+    if (err) next(err)
+    else (console.log('...sending oauthcallback page'))
+  })
 })
 
 app.get('/tv/oauth', (req, res) => {
