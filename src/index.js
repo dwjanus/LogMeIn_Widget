@@ -63,12 +63,12 @@ app.get('/tv/data', (req, res) => {
   teamviewer_db.findOne({account: '42090'}).then((tv_tokens) => {
     if (tv_tokens) response_json['tokens'] = tv_tokens
   })
-  
+
   res.send(response_json)
 })
 
 app.get('/tv/authorized', (req, res) => {
-  res.sendFile('/html/oauth2callback.html')
+  res.sendFile('oauthcallback.html')
 })
 
 app.get('/tv/oauth/', (req, res) => {
@@ -133,7 +133,6 @@ app.post('/data', (req, res) => {
   console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
   res.send(200)
 })
-
 
 
 
