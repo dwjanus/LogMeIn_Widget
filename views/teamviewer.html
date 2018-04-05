@@ -9,12 +9,12 @@
             <p id="code"></p>
         </div>
 
-        <div class="customer_link">
+        <div class="customer_link" style="display: inline-block; width: 220px; margin: 5px;">
             <label style="float: left;">Customer Link:</label> 
             <p id="customer_link"></p>
         </div>
 
-        <div class="tech_link">
+        <div class="tech_link" style="display: inline-block; width: 220px; margin: 5px;">
             <label style="float: left;">Supporter Link:</label> 
             <p id="tech_link"></p>
         </div>
@@ -70,7 +70,8 @@
     fetch('https://webapi.teamviewer.com/api/v1/sessions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body_json)
+      body: JSON.stringify(body_json),
+      mode: 'cors'
     }).then((res) => res.json())
       .then((data) => {
         console.log(`>>> response data: ${JSON.stringify(data)}`)
