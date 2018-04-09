@@ -35,37 +35,13 @@ app.use(cors())
 app.options('*', cors())
 
 
-// app.get('/', (req, res) => {
-//   let tv_auth = 'teamviewer_auth.html'
-
-//   if (req.params.id) {
-//     let id = req.param('id')
-    
-//     teamviewer_db.findOne({user: id}).then((found) => {
-//       if (found) {
-//         console.log('> tv tokens found in storage')
-//         tv_auth = 'teamviewer.html'
-//       }
-//     })
-//   } 
-  
-//   res.render('layout', {
-//     partials: { 
-//       logmein: 'logmein.html',
-//       bomgar: 'bomgar.html',
-//       harvest: 'harvest.html',
-//       teamviewer: tv_auth 
-//     }
-//   })
-// })
-
 app.get('/', (req, res) => {
   res.render('layout', {
     partials: {
       logmein: 'logmein.html',
       bomgar: 'bomgar.html',
       harvest: 'harvest.html',
-      teamviewer: 'teamviewer_auth.html'
+      teamviewer: 'teamviewer.html'
     }
   })
 })
