@@ -47,20 +47,8 @@
   function teamviewer() {
     console.log('>>> teamviewer() called')
 
-    // getClientId()
-    //   .then(launchAuth)
-    //   .catch(e => console.log(`>> ERROR >>  ${e}`))
     launchAuth(context.tv_data.tv_id)
-
   }
-
-  // function getClientId() {
-  //   return fetch(`/tv/data/${context.assignee.user_id}`).then((res) => {
-  //     return res.json()
-  //   }).then((data) => {
-  //     var tv_id = data.tv_id
-  //     return tv_id
-  //   }).catch(e => console.log(`>> ERROR >>  ${e}`))
 
   function launchAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
@@ -119,9 +107,9 @@
     }).then((res) => res.json())
       .then((data) => {
         console.log(`>>> Success! response data: ${JSON.stringify(data)}`)
-        document.getElementById('code').value = data.code
-        document.getElementById('customer_link').value = data.end_customer_link
-        document.getElementById('tech_link').value = data.supporter_link
+        document.getElementById('code').innerHTML = data.code
+        document.getElementById('customer_link').innerHTML = data.end_customer_link
+        document.getElementById('tech_link').innerHTML = data.supporter_link
       })
     .catch(e => console.log(e))
   }
