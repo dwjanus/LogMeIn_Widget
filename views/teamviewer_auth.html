@@ -17,14 +17,6 @@
 <script>
   var context
   var context_id
-  var oauthParams
-  
-  function setOauthParams(oauthParamsPassed) {
-    console.log(`>>> oauth params passed to tv_auth.html: ${JSON.stringify(oauthParamsPassed)}`)
-    oauthParams = oauthParamsPassed
-    context['tv_data'] = oauthParams
-    platformWidgetHelper.setStorage(setlocal, oauthParams)
-  }
 
   setlocal = (response) => {
     console.log('> local storage set: \n> ' + JSON.stringify(response))
@@ -41,22 +33,31 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
+  fetch(`/tv/data/${context.assignee.user_id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      context['tv_data'] = data
+      console.log('>> context object:\n' + JSON.stringify(context))
+    })
+  .catch(e => console.log(`>> ERROR >> ${e}`))
+
   function teamviewer() {
     console.log('>>> teamviewer() called')
 
-    getClientId()
-      .then(launchAuth)
-      .catch(e => console.log(`>> ERROR >>  ${e}`))
+    // getClientId()
+    //   .then(launchAuth)
+    //   .catch(e => console.log(`>> ERROR >>  ${e}`))
+    launchAuth(context.tv_data.tv_id)
+
   }
 
-  function getClientId() {
-    return fetch(`/tv/data/${context.assignee.user_id}`).then((res) => {
-      return res.json()
-    }).then((data) => {
-      var tv_id = data.tv_id
-      return tv_id
-    }).catch(e => console.log(`>> ERROR >>  ${e}`))
-  }
+  // function getClientId() {
+  //   return fetch(`/tv/data/${context.assignee.user_id}`).then((res) => {
+  //     return res.json()
+  //   }).then((data) => {
+  //     var tv_id = data.tv_id
+  //     return tv_id
+  //   }).catch(e => console.log(`>> ERROR >>  ${e}`))
 
   function launchAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
@@ -65,10 +66,10 @@
     console.log(`>>> client_id: ${client_id}`)
     console.log(`>>> url: ${url}`)
 
-    return window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
+    window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
   }
 
-  if (context.tv_data && context.tv_data.tokens) {
+  if (context.tv_data.tokens) {
     toggleAuthorizedView()
   }
 

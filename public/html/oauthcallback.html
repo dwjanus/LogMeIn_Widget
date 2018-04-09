@@ -1,7 +1,4 @@
 <html>
-    <head>
-        <script type="text/javascript" src="js/platformWidgetHelper.js"></script>
-    </head>    
 <body>
 
 <script>
@@ -15,11 +12,8 @@
     oauthParams[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
   }
 
-  setlocal = (response) => {
-    window.opener.location.reload()
-    window.close()
-  }
-  window.opener.platformWidgetHelper.setStorage(setlocal, oauthParams)
+  window.opener.location.reload()
+  window.close()
 </script>
 
 </body>

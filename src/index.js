@@ -35,10 +35,10 @@ app.use(cors())
 app.options('*', cors())
 
 
-// app.get(['/', '/:id'], (req, res) => {
+// app.get('/', (req, res) => {
 //   let tv_auth = 'teamviewer_auth.html'
 
-//   if (req.param('id')) {
+//   if (req.params.id) {
 //     let id = req.param('id')
     
 //     teamviewer_db.findOne({user: id}).then((found) => {
@@ -140,6 +140,7 @@ app.get('/tv/oauth', (req, res) => {
         token_type: result.token_type,
         expires_in: result.expires_in,
         refresh_token: result.refresh_token,
+        user_id: req.query.state
       })
 
       let teamviewer = result
