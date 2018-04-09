@@ -33,6 +33,14 @@ app.use(bodyParser.xml({xmlParseOptions: {
 }}))
 app.use(cors())
 app.options('*', cors())
+app.use(allowCrossOptions)
+
+const allowCrossOptions = function(req, res, next) {
+  if (req.method === 'OPTIONS') {
+    res.send(200)
+  }
+  next()
+}
 
 
 app.get('/', (req, res) => {
@@ -140,11 +148,17 @@ app.get('/tv/oauth', (req, res) => {
 })
 
 
+app.post('/tv/sessions', (req, res) => {
+
+})
+
+
 // this is going to be the endpoint that needs a backend function to handle the data to comment
 app.post('/data', (req, res) => {
   console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
   res.send(200)
 })
+
 
 
 
