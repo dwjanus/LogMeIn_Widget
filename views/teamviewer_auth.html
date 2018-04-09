@@ -111,7 +111,7 @@
       custom_api: { "incident_id": context.context_id }
     }
 
-    fetch(`/tv/session/new/${context.assignee.user_id}`, {
+    fetch(`/tv/sessions/new/${context.assignee.user_id}`, {
       method: 'POST',
       body: JSON.stringify(body_json)
     }).then((res) => res.json())
