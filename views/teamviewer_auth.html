@@ -108,7 +108,7 @@
       end_customer: {
         name: context.requester.name
       },
-      custom_api: { "incident_id": context.context_id }
+      custom_api: { incident_id: `${context.context_id}` }
     }
 
     fetch(`/tv/sessions/new/${context.assignee.user_id}`, {
