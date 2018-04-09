@@ -50,7 +50,7 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  fetch('/tv/data')
+  fetch(`/tv/data/${context.assignee.user_id}`)
     .then((res) => res.json())
     .then((data) => {
       context['tv_data'] = data
@@ -69,12 +69,8 @@
       custom_api: { "incident_id": context.context_id }
     }
 
-    fetch('https://webapi.teamviewer.com/api/v1/sessions', {
+    fetch(`/tv/session/new/${context.assignee.user_id}`, {
       method: 'POST',
-      headers: { 
-        'Authorization': `Bearer ${context.tv_data.tokens.access_token}`,
-        'Content-Type': 'application/json', 
-      },
       body: JSON.stringify(body_json)
     }).then((res) => res.json())
       .then((data) => {
@@ -84,6 +80,22 @@
         document.getElementById('tech_link').value = data.supporter_link
       })
     .catch(e => console.log(e))
+
+    // fetch('https://webapi.teamviewer.com/api/v1/sessions', {
+    //   method: 'POST',
+    //   headers: { 
+    //     'Authorization': `Bearer ${context.tv_data.tokens.access_token}`,
+    //     'Content-Type': 'application/json', 
+    //   },
+    //   body: JSON.stringify(body_json)
+    // }).then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(`>>> response data: ${JSON.stringify(data)}`)
+    //     document.getElementById('code').value = data.code
+    //     document.getElementById('customer_link').value = data.end_customer_link
+    //     document.getElementById('tech_link').value = data.supporter_link
+    //   })
+    // .catch(e => console.log(e))
   }
 
 </script>

@@ -65,12 +65,16 @@ app.get('/', (req, res) => {
   })
 })
 
-app.get('/tv/data', (req, res) => {
+app.get('/tv/data/:id', (req, res) => {
+  console.log('[GET] /tv/data --> user: ' + req.param('id'))
+
+  let id = req.param('id')
+
   let response_json = {
     tv_id: process.env.TEAMVIEWER_ID
   }
 
-  teamviewer_db.findOne({account: '42909'}).then((found) => {
+  teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
       console.log('[GET] /tv/data --> tokens found\n' + util.inspect(found))
       response_json['tokens'] = found.teamviewer
@@ -133,7 +137,7 @@ app.get('/tv/oauth', (req, res) => {
 
       let teamviewer = result
 
-      teamviewer_db.insert({account: "42909", teamviewer}) // this would be the Samanage account id
+      teamviewer_db.insert({user: "2821593", teamviewer}) // this would be the Samanage account id
       res.redirect('/tv/authorized?' + query)
     })
 
@@ -151,7 +155,57 @@ app.get('/tv/oauth', (req, res) => {
 })
 
 
-app.post('/tv/sessions', (req, res) => {
+app.post('/tv/sessions/new/:id', (req, res) => {
+  console.log('[POST] recieved at /tv/sessions/new/')
+
+  const request = https.request(options, (response) => {
+    let result = ''
+
+    response.on('data', (chunk) => {
+      result += chunk
+    })
+
+    response.on('end', () => {
+      console.log(`>>> success!\n${util.inspect(result)}`)
+      result = JSON.parse(result)
+      let teamviewer = result
+      res.json(teamviewer)
+    })
+
+    response.on('error', (e) => {
+      console.log('[error in post response]' + e)
+    })
+  })
+
+  request.on('error', (e) => {
+    console.log('[error in post request] >> ' + e)
+    res.status(500)
+  })
+
+  let id = req.param('id')
+
+  teamviewer_db.findOne({user: id}).then((found) => {
+    if (found) {
+      let postData = req.body
+      let options = {
+        host: 'webapi.teamviewer.com',
+        path: '/api/v1/sessions',
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Content-Length': postData.length,
+          'Authorization': `Bearer ${found.teamviewer.access_token}`
+        }
+      }
+      request.write(postData)
+      request.end()
+    } else {
+      res.send(500)
+    }
+  })
+  
+
+  console.log(`>> body: ${req.body}`)
 
 })
 

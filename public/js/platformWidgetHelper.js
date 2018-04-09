@@ -19,6 +19,7 @@ var platformWidgetHelper = (function() {
         name: 'Harvest Project',
         description: 'Testing Harvest integration', 
         assignee: {
+          user_id: 2821593,
           group_id: 3031154,
           name: 'Devin'
         },
