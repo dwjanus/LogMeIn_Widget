@@ -63,11 +63,14 @@
   // success ---> div class="session_code" style="display: inline-block; width: 220px; margin: 5px;"
 
   var authorized_view = `
-    <div class="sucess"> 
-        <p style="font-size: 12px; margin-top: 5px;">Session Code</p> 
-        <p id="code"></p>
-        <p id="customer_link" style="font-size: 4px;"></p>
-        <p id="tech_link" style="font-size: 4px;"></p>
+    <div class="success"> 
+        <p style="font-size: 15px; margin-top: 5px;">Session Code</p> 
+        <div>
+            <p style="float: left;">id="code"></p>
+            <input type="button" id="newCodeBtn" src="img/refresh_icon.png" type="image/png" width="15" height="15" onclick="createSession();" style="float: right;"/>
+        </div>
+        <p id="customer_link" style="font-size: 8px;"></p>
+        <p id="tech_link" style="font-size: 8px;"></p>
     </div>
 
     <div style="padding-top: 15px;">
