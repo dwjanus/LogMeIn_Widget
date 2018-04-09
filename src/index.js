@@ -205,7 +205,7 @@ app.post('/tv/sessions/new/:id', (req, res) => {
       })
     
       request.on('error', (e) => {
-        console.log('[error in post request] >> ' + e)
+        console.log('[Error in new session POST request]\n>> ' + e)
         res.status(500)
       })
 
