@@ -171,6 +171,8 @@ app.post('/tv/sessions/new/:id', (req, res) => {
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
       console.log('> user found in db')
+      console.log(`request body: ${util.inspect(req.body)}`)
+      console.log(`\nresolved request body: ${util.inspect(Promise.resolve(req.body))}`)
 
       let postData = req.body
       let options = {
