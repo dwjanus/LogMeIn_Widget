@@ -19,15 +19,6 @@ if (!port) {
   process.exit(1)
 }
 
-function allowCrossOptions(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With')
-  
-  if (req.method === 'OPTIONS') res.send(200)
-  else next()
-}
-
 app.set('port', port)
 app.set('view engine', 'html')
 app.set('layout', 'layout')
@@ -42,8 +33,6 @@ app.use(bodyParser.xml({xmlParseOptions: {
 }}))
 app.use(cors())
 app.options('*', cors())
-app.use(allowCrossOptions)
-
 
 
 // app.get(['/', '/:id'], (req, res) => {
@@ -113,6 +102,7 @@ app.get('/tv/authorized', (req, res, next) => {
 app.get('/tv/oauth', (req, res) => {
   console.log('[GET] /tv/oauth')
   console.log(`>>> code: ${req.query.code}`)
+  console.log(`>>> state: ${req.query.state}`)
 
   let code = req.query.code
 
@@ -154,7 +144,7 @@ app.get('/tv/oauth', (req, res) => {
 
       let teamviewer = result
 
-      // teamviewer_db.insert({user: user_id, teamviewer}) // this would be the Samanage account id
+      teamviewer_db.insert({user: req.query.state, teamviewer}) // this would be the Samanage account id
       res.redirect('/tv/authorized?' + query)
     })
 
