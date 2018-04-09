@@ -38,6 +38,9 @@
     .then((data) => {
       context['tv_data'] = data
       console.log('>> context object:\n' + JSON.stringify(context))
+      if (context.tv_data.tokens) {
+        toggleAuthorizedView()
+      }
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
 
@@ -67,10 +70,6 @@
     console.log(`>>> url: ${url}`)
 
     window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
-  }
-
-  if (context.tv_data.tokens) {
-    toggleAuthorizedView()
   }
 
   var authorized_view = `
