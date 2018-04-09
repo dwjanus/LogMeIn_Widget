@@ -194,7 +194,7 @@ app.post('/tv/sessions/new/:id', (req, res) => {
           console.log(`>>> success!\n${util.inspect(result)}`)
           result = JSON.parse(result)
           let teamviewer = result
-          res.send(Promise.resolve(teamviewer))
+          res.send(teamviewer)
         })
     
         response.on('error', (e) => {
