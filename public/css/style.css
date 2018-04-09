@@ -117,7 +117,7 @@ input:focus {
   margin: 10px;
 }
 
-#session {
+.session {
   float: none;
   width: 210px !important;
   margin-top: 3px;
