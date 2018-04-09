@@ -46,7 +46,7 @@ app.use(allowCrossOptions)
 
 
 
-app.get('/:id', (req, res) => {
+app.get(['/', '/:id'], (req, res) => {
   let tv_auth = 'teamviewer_auth.html'
 
   if (req.param('id')) {
