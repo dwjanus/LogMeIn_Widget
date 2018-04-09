@@ -33,15 +33,13 @@ app.use(bodyParser.xml({xmlParseOptions: {
 }}))
 app.use(cors())
 app.options('*', cors())
-app.use(allowCrossOptions)
 
-const allowCrossOptions = function(req, res, next) {
-  if (req.method === 'OPTIONS') {
-    res.send(200)
-  }
-  next()
+function allowCrossOptions(req, res, next) {
+  if (req.method === 'OPTIONS') res.send(200)
+  else next()
 }
 
+app.use(allowCrossOptions)
 
 app.get('/', (req, res) => {
   let tv_auth = 'teamviewer_auth.html'
