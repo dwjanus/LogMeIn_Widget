@@ -12,6 +12,7 @@
 </div>
 
 <script>
+  var context
   var context_id
   var oauthParams
   
@@ -28,6 +29,7 @@
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
       console.log('Context type is incident --> calling show()')
+      context = response
       context_id = response.context_id
       platformWidgetHelper.show()
     }
@@ -44,7 +46,7 @@
   }
 
   function getClientId() {
-    return fetch('/tv/data').then((res) => {
+    return fetch(`/tv/data/${context.assignee.user_id}`).then((res) => {
       return res.json()
     }).then((data) => {
       var tv_id = data.tv_id
