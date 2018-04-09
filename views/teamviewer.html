@@ -75,8 +75,7 @@
         'Authorization': `Bearer ${context.tv_data.tokens.access_token}`,
         'Content-Type': 'application/json', 
       },
-      body: JSON.stringify(body_json),
-      mode: 'cors'
+      body: JSON.stringify(body_json)
     }).then((res) => res.json())
       .then((data) => {
         console.log(`>>> response data: ${JSON.stringify(data)}`)
