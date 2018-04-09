@@ -21,9 +21,9 @@
   
   function setOauthParams(oauthParamsPassed) {
     console.log(`>>> oauth params passed to tv_auth.html: ${JSON.stringify(oauthParamsPassed)}`)
-    this.oauthParams = oauthParamsPassed
-    context.tv_data = this.oauthParams
-    platformWidgetHelper.setStorage(setlocal, this.oauthParams)
+    oauthParams = oauthParamsPassed
+    context['tv_data'] = oauthParams
+    platformWidgetHelper.setStorage(setlocal, oauthParams)
   }
 
   setlocal = (response) => {
