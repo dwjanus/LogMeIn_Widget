@@ -1,8 +1,10 @@
 <html>
+    <head>
+        <script type="text/javascript" src="js/platformWidgetHelper.js"></script>
+    </head>    
 <body>
 
 <script>
-  window.opener.console.log('oauthcallback >> getting params')
   var oauthParams = {}
   var params = {}, 
       queryString = location.hash.substring(1),
@@ -13,10 +15,11 @@
     oauthParams[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
   }
 
-  window.opener.console.log('>>> returning oauthParams: ' + JSON.stringify(oauthParams))
-  window.opener.setOauthParams(oauthParams)
-  window.opener.location.reload()
-  window.close()
+  setlocal = (response) => {
+    window.opener.location.reload()
+    window.close()
+  }
+  window.opener.platformWidgetHelper.setStorage(setlocal, oauthParams)
 </script>
 
 </body>
