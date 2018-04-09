@@ -170,6 +170,8 @@ app.post('/tv/sessions/new/:id', (req, res) => {
 
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
+      console.log('> user found in db')
+
       let postData = req.body
       let options = {
         host: 'webapi.teamviewer.com',
@@ -177,7 +179,6 @@ app.post('/tv/sessions/new/:id', (req, res) => {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Content-Length': postData.length,
           'Authorization': `Bearer ${found.teamviewer.access_token}`
         }
       }
