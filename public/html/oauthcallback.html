@@ -2,7 +2,7 @@
 <body>
 
 <script>
-  window.parent.console.log('oauthcallback >> getting params')
+  window.opener.console.log('oauthcallback >> getting params')
   var oauthParams = {}
   var params = {}, 
       queryString = location.hash.substring(1),
@@ -13,8 +13,8 @@
     oauthParams[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
   }
 
-  window.parent.console.log('>>> returning oauthParams: ' + JSON.stringify(oauthParams))
-  window.parent.setOauthParams(oauthParams)
+  window.opener.console.log('>>> returning oauthParams: ' + JSON.stringify(oauthParams))
+  window.opener.setOauthParams(oauthParams)
   window.opener.location.reload()
   window.close()
 </script>
