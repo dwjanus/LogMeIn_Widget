@@ -166,30 +166,6 @@ app.get('/tv/oauth', (req, res) => {
 app.post('/tv/sessions/new/:id', (req, res) => {
   console.log('[POST] recieved at /tv/sessions/new/')
 
-  const request = https.request(options, (response) => {
-    let result = ''
-
-    response.on('data', (chunk) => {
-      result += chunk
-    })
-
-    response.on('end', () => {
-      console.log(`>>> success!\n${util.inspect(result)}`)
-      result = JSON.parse(result)
-      let teamviewer = result
-      res.json(teamviewer)
-    })
-
-    response.on('error', (e) => {
-      console.log('[error in post response]' + e)
-    })
-  })
-
-  request.on('error', (e) => {
-    console.log('[error in post request] >> ' + e)
-    res.status(500)
-  })
-
   let id = req.param('id')
 
   teamviewer_db.findOne({user: id}).then((found) => {
@@ -205,6 +181,31 @@ app.post('/tv/sessions/new/:id', (req, res) => {
           'Authorization': `Bearer ${found.teamviewer.access_token}`
         }
       }
+
+      const request = https.request(options, (response) => {
+        let result = ''
+    
+        response.on('data', (chunk) => {
+          result += chunk
+        })
+    
+        response.on('end', () => {
+          console.log(`>>> success!\n${util.inspect(result)}`)
+          result = JSON.parse(result)
+          let teamviewer = result
+          res.json(teamviewer)
+        })
+    
+        response.on('error', (e) => {
+          console.log('[error in post response]' + e)
+        })
+      })
+    
+      request.on('error', (e) => {
+        console.log('[error in post request] >> ' + e)
+        res.status(500)
+      })
+
       request.write(postData)
       request.end()
     } else {
