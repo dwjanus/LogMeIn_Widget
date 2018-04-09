@@ -164,18 +164,17 @@ app.get('/tv/oauth', (req, res) => {
 
 
 app.post('/tv/sessions/new/:id', (req, res) => {
-  console.log('[POST] recieved at /tv/sessions/new/' + req.params.id)
+  console.log('\n[POST] recieved at /tv/sessions/new/' + req.params.id)
 
   let id = req.params.id
-  let postData = req.body
+  let postData = JSON.stringify(req.body)
 
-  console.log(`request body: ${util.inspect(req.body)}`)
+  console.log(`\nrequest body: ${util.inspect(req.body)}`)
 
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
       console.log('> user found in db')
       
-
       let options = {
         host: 'webapi.teamviewer.com',
         path: '/api/v1/sessions',
