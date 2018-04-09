@@ -164,9 +164,9 @@ app.get('/tv/oauth', (req, res) => {
 
 
 app.post('/tv/sessions/new/:id', (req, res) => {
-  console.log('[POST] recieved at /tv/sessions/new/')
+  console.log('[POST] recieved at /tv/sessions/new/' + req.params.id)
 
-  let id = req.param('id')
+  let id = req.params.id
 
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
@@ -193,7 +193,7 @@ app.post('/tv/sessions/new/:id', (req, res) => {
           console.log(`>>> success!\n${util.inspect(result)}`)
           result = JSON.parse(result)
           let teamviewer = result
-          res.json(teamviewer)
+          res.send(Promise.resolve(teamviewer))
         })
     
         response.on('error', (e) => {
@@ -212,10 +212,6 @@ app.post('/tv/sessions/new/:id', (req, res) => {
       res.send(500)
     }
   })
-  
-
-  console.log(`>> body: ${req.body}`)
-
 })
 
 
