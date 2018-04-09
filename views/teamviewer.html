@@ -35,7 +35,6 @@
 
 <script>
   var context
-  var oauthParams
   
   setlocal = (response) => {
     console.log('local storage set: ' + JSON.stringify(response))
@@ -60,11 +59,6 @@
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
   
-  function setOauthParams(oauthParamsPassed) {
-    console.log(`>>> oauth params passed to tv.html: ${JSON.stringify(oauthParamsPassed)}`)
-    oauthParams = oauthParamsPassed
-    // setlocal storage with oauth params
-  }
 
   function createSession() {
     let body_json = {
@@ -78,7 +72,7 @@
     fetch('https://webapi.teamviewer.com/api/v1/sessions', {
       method: 'POST',
       headers: { 
-        'Authorization': `Bearer ${oauthParams.access_token}`,
+        'Authorization': `Bearer ${context.tv_data.tokens.access_token}`,
         'Content-Type': 'application/json', 
       },
       body: JSON.stringify(body_json),
