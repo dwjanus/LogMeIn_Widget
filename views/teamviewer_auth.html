@@ -15,9 +15,14 @@
   var context_id
   var oauthParams
   
+  function setOauthParams(oauthParamsPassed) {
+    console.log(`>>> oauth params passed to tv_auth.html: ${JSON.stringify(oauthParamsPassed)}`)
+    this.oauthParams = oauthParamsPassed
+    platformWidgetHelper.setStorage(setlocal, this.oauthParams)
+  }
 
   setlocal = (response) => {
-    console.log('local storage set: ' + JSON.stringify(response))
+    console.log('> local storage set: \n> ' + JSON.stringify(response))
   }
 
   contextRecievedHandler = (response) => {

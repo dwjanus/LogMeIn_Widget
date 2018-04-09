@@ -61,8 +61,8 @@
   .catch(e => console.log(`>> ERROR >> ${e}`))
   
   function setOauthParams(oauthParamsPassed) {
-    console.log(`>>> oauth params passed: ${JSON.stringify(oauthParamsPassed)}`)
-    this.oauthParams = oauthParamsPassed
+    console.log(`>>> oauth params passed to tv.html: ${JSON.stringify(oauthParamsPassed)}`)
+    oauthParams = oauthParamsPassed
     // setlocal storage with oauth params
   }
 
