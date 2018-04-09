@@ -68,7 +68,7 @@
     return window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
   }
 
-  if (context.tv_data.tokens) {
+  if (context.tv_data && context.tv_data.tokens) {
     toggleAuthorizedView()
   }
 
