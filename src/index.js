@@ -46,26 +46,37 @@ app.use(allowCrossOptions)
 
 
 
-app.get(['/', '/:id'], (req, res) => {
-  let tv_auth = 'teamviewer_auth.html'
+// app.get(['/', '/:id'], (req, res) => {
+//   let tv_auth = 'teamviewer_auth.html'
 
-  if (req.param('id')) {
-    let id = req.param('id')
+//   if (req.param('id')) {
+//     let id = req.param('id')
     
-    teamviewer_db.findOne({user: id}).then((found) => {
-      if (found) {
-        console.log('> tv tokens found in storage')
-        tv_auth = 'teamviewer.html'
-      }
-    })
-  } 
+//     teamviewer_db.findOne({user: id}).then((found) => {
+//       if (found) {
+//         console.log('> tv tokens found in storage')
+//         tv_auth = 'teamviewer.html'
+//       }
+//     })
+//   } 
   
+//   res.render('layout', {
+//     partials: { 
+//       logmein: 'logmein.html',
+//       bomgar: 'bomgar.html',
+//       harvest: 'harvest.html',
+//       teamviewer: tv_auth 
+//     }
+//   })
+// })
+
+app.get('/', (req, res) => {
   res.render('layout', {
-    partials: { 
+    partials: {
       logmein: 'logmein.html',
       bomgar: 'bomgar.html',
       harvest: 'harvest.html',
-      teamviewer: tv_auth 
+      teamviewer: 'teamviewer_auth.html'
     }
   })
 })
@@ -73,7 +84,7 @@ app.get(['/', '/:id'], (req, res) => {
 app.get('/tv/data/:id', (req, res) => {
   console.log('[GET] /tv/data --> user: ' + req.param('id'))
 
-  let id = req.param('id')
+  let id = req.params.id
 
   let response_json = {
     tv_id: process.env.TEAMVIEWER_ID
@@ -104,7 +115,6 @@ app.get('/tv/oauth', (req, res) => {
   console.log(`>>> code: ${req.query.code}`)
 
   let code = req.query.code
-  let user_id = request.query.user
 
   let postData = querystring.stringify({
     grant_type: 'authorization_code',
@@ -140,12 +150,11 @@ app.get('/tv/oauth', (req, res) => {
         token_type: result.token_type,
         expires_in: result.expires_in,
         refresh_token: result.refresh_token,
-        user: user_id
       })
 
       let teamviewer = result
 
-      teamviewer_db.insert({user: user_id, teamviewer}) // this would be the Samanage account id
+      // teamviewer_db.insert({user: user_id, teamviewer}) // this would be the Samanage account id
       res.redirect('/tv/authorized?' + query)
     })
 

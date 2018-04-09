@@ -4,10 +4,13 @@
             <h2>TeamViewer Remote Session</h2>
         </div>
 
-        <div style="height:65px;">
-            <button type="button" class="btn" form="tv_auth" onclick="teamviewer()">Install</button>
-            <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
-        </div>   
+        <div id="auth_buttons">
+            <div style="height:65px;">
+                <button type="button" class="btn" form="tv_auth" onclick="teamviewer()">Install</button>
+                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+            </div>   
+        </div>
+        
     </div>
 </div>
 
@@ -19,6 +22,7 @@
   function setOauthParams(oauthParamsPassed) {
     console.log(`>>> oauth params passed to tv_auth.html: ${JSON.stringify(oauthParamsPassed)}`)
     this.oauthParams = oauthParamsPassed
+    context.tv_data = this.oauthParams
     platformWidgetHelper.setStorage(setlocal, this.oauthParams)
   }
 
@@ -55,7 +59,7 @@
   }
 
   function launchAuth(client_id) {
-    var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth?user=" + context.assignee.user_id
+    var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
     var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}`
 
     console.log(`>>> client_id: ${client_id}`)
@@ -64,32 +68,61 @@
     return window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
   }
 
-  function setOauthParams(oauthParamsPassed) {
-    console.log(`>>> oauth params passed: ${JSON.stringify(oauthParamsPassed)}`)
-    this.oauthParams = oauthParamsPassed
-    // setlocal storage with oauth params
+  if (context.tv_data.tokens) {
+    toggleAuthorizedView()
   }
 
-  // function toggleAuthorizedView() {
-  //   var auth_view = document.getElementById('teamviewer_auth')
-  //   var widget_view = document.createElement('div')
+  var authorized_view = `
+    <div class="session_code" style="display: inline-block; width: 220px; margin: 5px;">
+        <label style="float: left;">Session Code:</label> 
+        <p id="code"></p>
+    </div>
 
-  //   widget_view.className = 'widget_view'
-  //   widget_view.id = 'widget_view'
-  //   widget_view.innerHTML = `
-  //     <div class="session_code" style="display: inline-block; width: 220px; margin: 5px;">
-  //         <label style="float: left;">Session Code</label> 
-  //         <p id="code">${pin}</p>
-  //     </div>
-  //     <div style="padding-top: 15px;">
-  //         <button type="button" class="btn" id="session" onclick="${click}">
-  //             Go to Session
-  //         </button>
-  //     </div>
-  //   `
+    <div class="customer_link" style="display: inline-block; width: 220px; margin: 5px;">
+        <label style="float: left;">Customer Link:</label> 
+        <p id="customer_link"></p>
+    </div>
+
+    <div class="tech_link" style="display: inline-block; width: 220px; margin: 5px;">
+        <label style="float: left;">Supporter Link:</label> 
+        <p id="tech_link"></p>
+    </div>
+  `
+
+  function toggleAuthorizedView() {
+    var login_view = document.getElementById('auth_buttons')
+    var widget_view = document.createElement('div')
+
+    widget_view.className = 'widget_view'
+    widget_view.id = 'widget_view'
+    widget_view.innerHTML = authorized_view
     
-  //   auth_view.parentNode.replaceChild(success, form)
-  // }
+    login_view.parentNode.replaceChild(widget_view, login_view)
+
+    if (!document.getElementById('code').value) createSession()
+  }
+
+  function createSession() {
+    let body_json = {
+      description: context.description,
+      end_customer: {
+        name: context.requester.name
+      },
+      custom_api: { "incident_id": context.context_id }
+    }
+
+    fetch(`/tv/session/new/${context.assignee.user_id}`, {
+      method: 'POST',
+      body: JSON.stringify(body_json)
+    }).then((res) => res.json())
+      .then((data) => {
+        console.log(`>>> response data: ${JSON.stringify(data)}`)
+        document.getElementById('code').value = data.code
+        document.getElementById('customer_link').value = data.end_customer_link
+        document.getElementById('tech_link').value = data.supporter_link
+      })
+    .catch(e => console.log(e))
+  }
 
 </script>
 
