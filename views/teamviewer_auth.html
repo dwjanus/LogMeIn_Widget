@@ -55,7 +55,7 @@
   }
 
   function launchAuth(client_id) {
-    var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
+    var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth?user=" + context.assignee.user_id
     var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}`
 
     console.log(`>>> client_id: ${client_id}`)

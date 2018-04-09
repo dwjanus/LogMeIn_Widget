@@ -14,7 +14,7 @@
   }
 
   window.opener.setOauthParams(oauthParams)
-  window.opener.location.reload()
+  window.opener.location.replace(`https://samanage-widgets.herokuapp.com/${oauthParms.id}`)
   window.close()
 </script>
 
