@@ -19,6 +19,15 @@ if (!port) {
   process.exit(1)
 }
 
+function allowCrossOptions(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With')
+  
+  if (req.method === 'OPTIONS') res.send(200)
+  else next()
+}
+
 app.set('port', port)
 app.set('view engine', 'html')
 app.set('layout', 'layout')
@@ -33,13 +42,9 @@ app.use(bodyParser.xml({xmlParseOptions: {
 }}))
 app.use(cors())
 app.options('*', cors())
-
-function allowCrossOptions(req, res, next) {
-  if (req.method === 'OPTIONS') res.send(200)
-  else next()
-}
-
 app.use(allowCrossOptions)
+
+
 
 app.get('/', (req, res) => {
   let tv_auth = 'teamviewer_auth.html'
