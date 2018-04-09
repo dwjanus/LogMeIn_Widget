@@ -17,6 +17,7 @@ var platformWidgetHelper = (function() {
         context_type: 'Incident', 
         context_id: 23529800,
         name: 'Harvest Project',
+        number: '28',
         description: 'Testing Harvest integration', 
         assignee: {
           user_id: 2821593,
