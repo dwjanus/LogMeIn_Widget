@@ -65,12 +65,15 @@
   var authorized_view = `
     <div class="success"> 
         <p style="font-size: 15px; margin-top: 5px;">Session Code</p> 
-        <div>
+        <div style="display: block;">
             <p style="float: left;" id="code"></p>
-            <input type="button" id="newCodeBtn" src="img/refresh_icon.png" type="image/png" width="15" height="15" onclick="createSession();" style="float: right;"/>
+            <input type="button" id="newCodeBtn" src="/img/refresh_icon.png" type="image/png" onclick="createSession();" style="float:right;width:15px;height:15px;"/>
         </div>
-        <p id="customer_link" style="font-size: 8px;"></p>
-        <p id="tech_link" style="font-size: 8px;"></p>
+
+        <br />
+        <p id="customer_link" style="font-size: 10px;"></p>
+        <br />
+        <p id="tech_link" style="font-size: 10px;"></p>
     </div>
 
     <div style="padding-top: 15px;">
