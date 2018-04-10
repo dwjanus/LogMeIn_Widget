@@ -127,7 +127,7 @@
       })
     .catch((e) => {
       console.log('[Error caught at fetch().catch() in createSession]\n>> ' + e + '\n>>> attempting to refresh token now...')
-      fetch(`tv/oauth/${context.assignee.user_id}`)
+      fetch(`tv/${context.assignee.user_id}/oauth/`)
         .then((res) => res.json())
         .then((data) => {
           console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)

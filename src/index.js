@@ -194,7 +194,7 @@ app.post('/tv/sessions/new/:id', (req, res) => {
 })
 
 
-app.get('/tv/oauth/:id', (req, res) => {
+app.get('/tv/:id/oauth/', (req, res) => {
   console.log('[GET] /tv/oauth')
   console.log(`>>> id: ${req.params.id}`)
 
