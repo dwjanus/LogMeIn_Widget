@@ -253,16 +253,17 @@ input:checked + .slider:before {
 .session_code {
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: 180px 20px;
+  grid-template-columns: 190px 35px;
   padding: 5px;
   margin-top: 5px;
-  width: 220px;
+  width: 225px;
+  text-align: center;
 }
 
 .session_code#code {
   grid-column: 1;
   grid-row: 1;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .session_code#new_code_btn {
