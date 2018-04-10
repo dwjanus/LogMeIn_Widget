@@ -255,6 +255,7 @@ input:checked + .slider:before {
   grid-gap: 10px;
   padding: 5px;
   margin-top: 5px;
+  width: 220px;
 }
 
 .session_code#code {
