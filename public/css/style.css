@@ -211,6 +211,10 @@ input:checked + .slider:before {
 }
 
 /* tooltips */
+.tv_buttons {
+  position: relative;
+  display: inline-block;
+}
 
 .tv_buttons .tooltip {
   visibility: hidden;
@@ -220,11 +224,11 @@ input:checked + .slider:before {
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-  position: relative;
+  position: absolute;
   z-index: 1;
   bottom: 125%;
-  left: 11%;
-  margin-left: -60px;
+  left: 50%;
+  margin-left: -75px;
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -233,7 +237,7 @@ input:checked + .slider:before {
   content: "";
   position: relative;
   top: 100%;
-  left: 11%;
+  left: 50%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
