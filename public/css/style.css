@@ -211,13 +211,13 @@ input:checked + .slider:before {
 }
 
 /* tooltips */
+
 .tv_buttons .tooltip {
   visibility: hidden;
   width: 150px;
   background-color: #555;
   color: #fff;
   text-align: center;
-  font-size: 10px;
   border-radius: 6px;
   padding: 5px 0;
   position: relative;
