@@ -72,14 +72,14 @@
         <button type="button" id="customer_session" class="btn session" onclick="linkToTicket();">
             Post Customer Link to ticket
         </button> 
-        <span class="tooltip">${context.session_data.customer_link}</span>
+        <span class="tooltip" id="customer_link_tt"></span>
     </div>
 
     <div class="tv_buttons" style="padding-top: 15px;">
         <button type="button" id="tech_session" class="btn session" onclick="goToSession();>
             Go To Session
         </button>
-        <span class="tooltip">${context.session_data.tech_link}</span> 
+        <span class="tooltip" id="tech_link_tt"></span> 
     </div>
   `
 
@@ -115,8 +115,8 @@
         console.log(`>>> Success! response data: ${JSON.stringify(data)}`)
         context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
         document.getElementById('code').innerHTML = "Session Code: " + data.code
-        document.getElementById('customer_link').innerHTML = data.end_customer_link
-        document.getElementById('tech_link').innerHTML = data.supporter_link
+        document.getElementById('customer_link_tt').innerHTML = data.end_customer_link
+        document.getElementById('tech_link_tt').innerHTML = data.supporter_link
       })
     .catch(e => console.log(e))
   }
