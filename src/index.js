@@ -201,7 +201,7 @@ app.get('/tv/oauth/:id', (req, res) => {
   console.log('[GET] /tv/oauth')
   console.log(`>>> id: ${req.params.id}`)
 
-  let id = req.query.id
+  let id = req.params.id
 
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
