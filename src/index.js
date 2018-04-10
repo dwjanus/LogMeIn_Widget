@@ -25,8 +25,7 @@ app.set('layout', 'layout')
 app.engine('html', require('hogan-express'))
 app.set('views', path.join(__dirname, './../views'))
 
-app.use(express.static(path.join(__dirname, './../public')))
-app.use(express.static(path.join(__dirname, './../public/images')))
+app.use(express.static(path.join(__dirname, '../public')))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ type: 'application/json' }))
 app.use(bodyParser.xml({xmlParseOptions: {
@@ -48,7 +47,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/tv/data/:id', (req, res) => {
-  console.log('[GET] /tv/data --> user: ' + req.param('id'))
+  console.log('[GET] /tv/data --> user: ' + req.params.id)
 
   let id = req.params.id
 
