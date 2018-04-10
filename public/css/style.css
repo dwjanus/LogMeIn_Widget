@@ -252,16 +252,18 @@ input:checked + .slider:before {
 
 .session_code {
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 210px 50px;
-  width: 260px;
+  grid-gap: 0px;
+  grid-template-columns: 190px 50px;
+  width: 265px;
   text-align: center;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 #code {
   grid-column: 1;
   grid-row: 1;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .btn_item {
@@ -276,4 +278,5 @@ input:checked + .slider:before {
   cursor: pointer;
   height: 20px;
   width: 20px;
+  padding: 0px !important;
 }
