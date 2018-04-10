@@ -121,8 +121,15 @@ app.get('/tv/oauth', (req, res) => {
 
       let teamviewer = result
 
-      teamviewer_db.insert({user: req.query.state, teamviewer}) // this would be the Samanage account id
-      res.redirect('/tv/authorized?' + query)
+      teamviewer_db.findOne({user: req.query.state}).then((found) => {
+        if (found) {
+          teamviewer_db.insert({user: req.query.state, teamviewer})
+        } else {
+          console.log('> user already exists')
+        }
+
+        res.redirect('/tv/authorized?' + query)
+      })
     })
 
     response.on('error', (e) => {

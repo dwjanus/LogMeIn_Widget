@@ -98,6 +98,7 @@
       login_view.parentNode.replaceChild(widget_view, login_view)
     }).catch((e) => {
       console.log('[Error caught at createSession().catch() in toggleAuth]\n>> ' + e)
+      // refreshOauth()
     })
   }
 
@@ -127,18 +128,22 @@
       })
     .catch((e) => {
       console.log('[Error caught at fetch().catch() in createSession]\n>> ' + e + '\n>>> attempting to refresh token now...')
-      fetch(`tv/${context.assignee.user_id}/oauth/`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
-          context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
-          return
-        }).catch(err => console.log('\n> Its really broke.' + err))
+      refreshOauth()
     })
   }
 
   function linkToTicket() {
     console.log('!! This is where we would call the SamanageApi !!')
+  }
+
+  function refreshOauth() {
+    fetch(`tv/${context.assignee.user_id}/oauth/`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
+        context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
+        return
+      }).catch(err => console.log('\n> Its really broke.' + err))
   }
 </script>
 
