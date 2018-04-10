@@ -211,7 +211,7 @@ input:checked + .slider:before {
 }
 
 /* tooltips */
-.tooltip {
+.tv_buttons .tooltip {
   visibility: hidden;
   width: 120px;
   background-color: #555;
