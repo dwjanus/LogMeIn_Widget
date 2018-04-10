@@ -63,9 +63,9 @@
   // success ---> div class="session_code" style="display: inline-block; width: 220px; margin: 5px;"
 
   var authorized_view = `
-    <div class="session_code" style="display:inline-block; text-align:left;"> 
-        <p id="code" style="font-size: 14px; margin-top: 5px;"></p> 
-        <button id="newCodeBtn" style="float:right; cursor: pointer;">
+    <div class="session_code"> 
+        <p id="code"></p> 
+        <button id="new_code_btn">
             <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon.png" type="image/png" alt="New Code" width="14" height=14" onclick="createSession();" />
         </button>
     </div>
@@ -74,17 +74,18 @@
         <div class="tv_buttons"> 
             <button type="button" id="customer_session" class="btn session" onclick="linkToTicket();">
                 Post Customer Link to ticket
-                    <span class="tooltip" id="customer_link_tt" style="font-size: 10px;"></span>
+                    <span class="tooltip" id="customer_link_tt"></span>
             </button>
           </div>
     </div>
 
     <div style="padding-top: 15px;">
-        <button type="button" id="tech_session" class="btn session" onclick="goToSession();">
-            <div class="tv_buttons">Go To Session
-                <span class="tooltip" id="tech_link_tt" style="font-size: 10px;"></span>
-              </div>
-        </button>
+        <div class="tv_buttons">
+            <button type="button" id="tech_session" class="btn session" onclick="goToSession();">
+                Go To Session
+                    <span class="tooltip" id="tech_link_tt" style="font-size: 9px;"></span>
+            </button>
+        </div>
     </div>
   `
 

@@ -218,17 +218,18 @@ input:checked + .slider:before {
 
 .tv_buttons .tooltip {
   visibility: hidden;
-  width: 150px;
+  width: 200px;
   background-color: #555;
   color: #fff;
   text-align: center;
+  font-size: 11px;
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
   z-index: 1;
   bottom: 125%;
   left: 50%;
-  margin-left: -75px;
+  margin-left: -100px;
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -247,4 +248,23 @@ input:checked + .slider:before {
 .tv_buttons:hover .tooltip {
   visibility: visible;
   opacity: 1;
+}
+
+.session_code {
+  display: grid;
+  grid-gap: 10px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.session_code#code {
+  grid-column: 1 / span 5;
+  grid-row: 1;
+  font-size: 14px;
+}
+
+.session_code#new_code_btn {
+  grid-column: 6;
+  grid-row: 1;
+  cursor: pointer;
 }
