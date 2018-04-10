@@ -63,27 +63,23 @@
   // success ---> div class="session_code" style="display: inline-block; width: 220px; margin: 5px;"
 
   var authorized_view = `
-    <div class="success" style="display:inline-block; text-align:center;"> 
-        <p style="font-size: 15px; margin-top: 5px;">Session Code: </p> 
-        <p id="code"></p>
+    <div class="success" style="display:inline-block; text-align:left;"> 
+        <p id="code" style="font-size: 15px; margin-top: 5px;"></p> 
         <input type="button" id="newCodeBtn" src="images/refresh_icon.png" type="image/png" onclick="createSession();" style="float:right;width:15px;height:15px;"/>
-
-        <br />
-        <p id="customer_link" style="font-size: 11px;"></p>
-        <br />
-        <p id="tech_link" style="font-size: 11px;"></p>
     </div>
 
-    <div style="padding-top: 15px;">
-        <button type="button" class="btn session" onclick="linkToTicket()">
+    <div class="tv_buttons" style="padding-top: 15px;">
+        <button type="button" id="customer_session" class="btn session" onclick="linkToTicket();">
             Post Customer Link to ticket
         </button> 
+        <span class="tooltip">${context.session_data.customer_link}</span>
     </div>
 
-    <div style="padding-top: 15px;">
-        <button type="button" class="btn session" onclick="goToSession()">
+    <div class="tv_buttons" style="padding-top: 15px;">
+        <button type="button" id="tech_session" class="btn session" onclick="goToSession();>
             Go To Session
-        </button> 
+        </button>
+        <span class="tooltip">${context.session_data.tech_link}</span> 
     </div>
   `
 
@@ -118,7 +114,7 @@
       .then((data) => {
         console.log(`>>> Success! response data: ${JSON.stringify(data)}`)
         context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
-        document.getElementById('code').innerHTML = data.code
+        document.getElementById('code').innerHTML = "Session Code: " + data.code
         document.getElementById('customer_link').innerHTML = data.end_customer_link
         document.getElementById('tech_link').innerHTML = data.supporter_link
       })
