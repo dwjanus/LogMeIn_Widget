@@ -60,48 +60,43 @@
     window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
   }
 
-  // success ---> div class="session_code" style="display: inline-block; width: 220px; margin: 5px;"
-
-  var authorized_view = `
-    <div class="session_code"> 
-        <p id="code"></p> 
-        <div class="btn_item">
-            <button id="new_code_btn">
-                <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon.png" type="image/png" alt="New Code" width="14px;" height=14px;" onclick="createSession();" />
-            </button>
-        </div>
-    </div>
-
-    <div style="padding-top: 15px;">
-        <div class="tv_buttons"> 
-            <button type="button" id="customer_session" class="btn session" onclick="linkToTicket();">
-                Post Customer Link to ticket
-                <span class="tooltip" id="customer_link_tt"></span>
-            </button>
-        </div>
-    </div>
-
-    <div style="padding-top: 15px;">
-        <div class="tv_buttons">
-            <button type="button" id="tech_session" class="btn session" onclick="goToSession();">
-                Go To Session
-                <span class="tooltip" id="tech_link_tt" style="font-size: 9px;"></span>
-            </button>
-        </div>
-    </div>
-  `
-
   function toggleAuthorizedView() {
-    var login_view = document.getElementById('auth_buttons')
-    var widget_view = document.createElement('div')
+    createSession().then(() => {
+      var login_view = document.getElementById('auth_buttons')
+      var widget_view = document.createElement('div')
 
-    widget_view.className = 'widget_view'
-    widget_view.id = 'widget_view'
-    widget_view.innerHTML = authorized_view
-    
-    login_view.parentNode.replaceChild(widget_view, login_view)
+      widget_view.className = 'widget_view'
+      widget_view.id = 'widget_view'
+      widget_view.innerHTML = `
+        <div class="session_code"> 
+            <p id="code">Session Code: ${context.session_data.code}</p> 
+            <div class="btn_item">
+                <button id="new_code_btn">
+                    <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon.png" type="image/png" alt="New Code" width="14px;" height=14px;" onclick="createSession();" />
+                </button>
+            </div>
+        </div>
 
-    if (!document.getElementById('code').value) createSession()
+        <div style="padding-top: 15px;">
+            <div class="tv_buttons"> 
+                <button type="button" id="customer_session" class="btn session" onclick="linkToTicket();">
+                    Post Customer Link to ticket
+                    <span class="tooltip" id="customer_link_tt">${context.session_data.end_customer_link}</span>
+                </button>
+            </div>
+        </div>
+
+        <div style="padding-top: 15px;">
+            <div class="tv_buttons">
+                <button type="button" id="tech_session" class="btn session" onclick="window.open('${context.session_data.tech_link}', '_blank');">
+                    Go To Session
+                    <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${context.session_data.tech_link}</span>
+                </button>
+            </div>
+        </div>
+      `
+      login_view.parentNode.replaceChild(widget_view, login_view)
+    }).catch(e => console.log(e))
   }
 
   function createSession() {
@@ -114,7 +109,7 @@
       custom_api: `{ "incident_id": ${context.context_id} }`
     }
 
-    fetch(`/tv/sessions/new/${context.assignee.user_id}`, {
+    return fetch(`/tv/sessions/new/${context.assignee.user_id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body_json)
@@ -122,9 +117,7 @@
       .then((data) => {
         console.log(`>>> Success! response data: ${JSON.stringify(data)}`)
         context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
-        document.getElementById('code').innerHTML = "Session Code: " + data.code
-        document.getElementById('customer_link_tt').innerHTML = data.end_customer_link
-        document.getElementById('tech_link_tt').innerHTML = data.supporter_link
+        return
       })
     .catch(e => console.log(e))
   }
@@ -132,10 +125,5 @@
   function linkToTicket() {
     console.log('!! This is where we would call the SamanageApi !!')
   }
-
-  function goToSession() {
-    window.open(`${context.session_data.tech_link}`, '_blank')
-  }
-
 </script>
 
