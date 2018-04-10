@@ -65,21 +65,22 @@
   var authorized_view = `
     <div class="success" style="display:inline-block; text-align:left;"> 
         <p id="code" style="font-size: 15px; margin-top: 5px;"></p> 
-        <input type="button" id="newCodeBtn" src="https://samanage-widgets.herokuapp.com/images/refresh_icon.png" type="image/png" onclick="createSession();" style="float:right;width:15px;height:15px;"/>
+        <input type="button" id="newCodeBtn" src="https://samanage-widgets.herokuapp.com/images/refresh_icon.png" type="image" alt="New Code" onclick="createSession();" style="float:right;width:15px;height:15px;"/>
     </div>
 
-    <div class="tv_buttons" style="padding-top: 15px;">
-        <button type="button" id="customer_session" class="btn session" onclick="linkToTicket();">
+    <div style="padding-top: 15px;">
+        <button type="button" id="customer_session" class="btn session tv_buttons" onclick="linkToTicket();">
             Post Customer Link to ticket
+            <span class="tooltip" id="customer_link_tt"></span>
         </button> 
-        <span class="tooltip" id="customer_link_tt"></span>
     </div>
 
-    <div class="tv_buttons" style="padding-top: 15px;">
-        <button type="button" id="tech_session" class="btn session" onclick="goToSession();">
+    <div style="padding-top: 15px;">
+        <button type="button" id="tech_session" class="btn session tv_buttons" onclick="goToSession();">
             Go To Session
+            <span class="tooltip" id="tech_link_tt"></span> 
         </button>
-        <span class="tooltip" id="tech_link_tt"></span> 
+        
     </div>
   `
 
