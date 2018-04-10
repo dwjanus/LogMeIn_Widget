@@ -96,7 +96,9 @@
         </div>
       `
       login_view.parentNode.replaceChild(widget_view, login_view)
-    }).catch(e => console.log(e))
+    }).catch((e) => {
+      console.log('[Error caught at createSession().catch() in toggleAuth]\n>> ' + e)
+    })
   }
 
   function createSession() {
@@ -115,11 +117,20 @@
       body: JSON.stringify(body_json)
     }).then((res) => res.json())
       .then((data) => {
-        console.log(`>>> Success! response data: ${JSON.stringify(data)}`)
+        console.log(`>>> response data: ${JSON.stringify(data)}`)
         context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
         return
       })
-    .catch(e => console.log(e))
+    .catch((e) => {
+      console.log('[Error caught at fetch().catch() in createSession]\n>> ' + e + '\n>>> attempting to refresh token now...')
+      return fetch(`tv/oauth/${context.assignee.user_id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
+          context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
+          return
+        }).catch(err => console.log('\n> Its really broke.' + err))
+    })
   }
 
   function linkToTicket() {

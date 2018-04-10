@@ -171,6 +171,9 @@ app.post('/tv/sessions/new/:id', (req, res) => {
         response.on('end', () => {
           console.log(`>>> end\n${util.inspect(result)}`)
           result = JSON.parse(result)
+          if (result.error) {
+            throw new Error(result.error)
+          }
           let teamviewer = result
           res.send(teamviewer)
         })
@@ -192,6 +195,76 @@ app.post('/tv/sessions/new/:id', (req, res) => {
     }
   })
 })
+
+
+app.get('/tv/oauth/:id', (req, res) => {
+  console.log('[GET] /tv/oauth')
+  console.log(`>>> id: ${req.params.id}`)
+
+  let id = req.query.id
+
+  teamviewer_db.findOne({user: id}).then((found) => {
+    if (found) {
+      let postData = querystring.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: found.teamviewer.refresh_token,
+        client_id: process.env.TEAMVIEWER_ID,
+        client_secret: process.env.TEAMVIEWER_SECRET
+      })
+
+      let options = {
+        host: 'webapi.teamviewer.com',
+        path: '/api/v1/oauth2/token',
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': postData.length
+        }
+      }
+
+      const request = https.request(options, (response) => {
+        let result = ''
+    
+        response.on('data', (chunk) => {
+          result += chunk
+        })
+    
+        response.on('end', () => {
+          console.log(`>>> success!\n${util.inspect(result)}`)
+          result = JSON.parse(result)
+    
+          let query = querystring.stringify({
+            access_token: result.access_token,
+            token_type: result.token_type,
+            expires_in: result.expires_in,
+            refresh_token: result.refresh_token,
+            user_id: req.query.state
+          })
+    
+          let teamviewer = result
+    
+          teamviewer_db.insert({user: req.query.state, teamviewer}) // this would be the Samanage account id
+          res.end()
+        })
+    
+        response.on('error', (e) => {
+          console.log('[error in post response]' + e)
+        })
+      })
+    
+      request.on('error', (e) => {
+        console.log('[error in post request] >> ' + e)
+      })
+    
+      request.write(postData)
+      request.end()
+    } else {
+      console.log('ERROR: User not found')
+    }
+  })
+})
+
+
 
 
 // this is going to be the endpoint that needs a backend function to handle the data to comment
