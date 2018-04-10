@@ -118,12 +118,16 @@
     }).then((res) => res.json())
       .then((data) => {
         console.log(`>>> response data: ${JSON.stringify(data)}`)
-        context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
-        return
+        if (data.error) {
+          throw new Error(data.error)
+        } else {
+          context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
+          return
+        }
       })
     .catch((e) => {
       console.log('[Error caught at fetch().catch() in createSession]\n>> ' + e + '\n>>> attempting to refresh token now...')
-      return fetch(`tv/oauth/${context.assignee.user_id}`)
+      fetch(`tv/oauth/${context.assignee.user_id}`)
         .then((res) => res.json())
         .then((data) => {
           console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
