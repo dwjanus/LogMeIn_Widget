@@ -217,12 +217,13 @@ input:checked + .slider:before {
   background-color: #555;
   color: #fff;
   text-align: center;
+  font-size: 10px;
   border-radius: 6px;
   padding: 5px 0;
   position: relative;
   z-index: 1;
   bottom: 125%;
-  left: 16%;
+  left: 11%;
   margin-left: -60px;
   opacity: 0;
   transition: opacity 0.3s;
@@ -232,7 +233,7 @@ input:checked + .slider:before {
   content: "";
   position: relative;
   top: 100%;
-  left: 16%;
+  left: 11%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
