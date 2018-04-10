@@ -88,9 +88,9 @@
 
         <div style="padding-top: 15px;">
             <div class="tv_buttons">
-                <button type="button" id="tech_session" class="btn session" onclick="window.open('${context.session_data.tech_link}', '_blank');">
+                <button type="button" id="tech_session" class="btn session" onclick="window.open('${context.session_data.supporter_link}', '_blank');">
                     Go To Session
-                    <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${context.session_data.tech_link}</span>
+                    <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${context.session_data.supporter_link}</span>
                 </button>
             </div>
         </div>
@@ -122,7 +122,7 @@
         if (data.error) {
           throw new Error(data.error)
         } else {
-          context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
+          context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
           return
         }
       })
@@ -141,7 +141,7 @@
       .then((res) => res.json())
       .then((data) => {
         console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
-        context['session_data'] = { code: data.code, customer_link: data.customer_link, tech_link: data.tech_link }
+        context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
         return
       }).catch(err => console.log('\n> Its really broke.' + err))
   }

@@ -125,7 +125,7 @@ app.get('/tv/oauth', (req, res) => {
         if (!found) {
           teamviewer_db.insert({user: req.query.state, teamviewer})
         } else {
-          console.log('> user already exists')
+          console.log('> user already has teamviewer authentication')
         }
 
         res.redirect('/tv/authorized?' + query)
