@@ -320,21 +320,21 @@ app.get('/tv/:id/oauth/', (req, res) => {
 
 
 
-
 //                       //
 // -----> LogMeIn <----- //
 //                       //
 app.post('/logmein/:id/save', (req, res) => {
   const id = req.params.id
-  const logmein = req.body.logmein
+  const logmein = JSON.parse(req.body.logmein)
 
+  console.log(`\n[POST] /logmein/${id}/save\n--> logmein: ${util.inspect(logmein)}`)
   logmein_db.findOne({user: id}).then((found) => {
     if (!found) {
       logmein_db.insert({user: id, logmein})
     } else {
       console.log('> user already has logmein authentication')
     }
-    res.send(200)
+    res.sendStatus(200)
   })
 })
 
@@ -345,7 +345,7 @@ app.post('/logmein/data', (req, res) => {
   // parse data and post to samanage ticket
 
 
-  res.send(200)
+  res.sendStatus(200)
 })
 
 
