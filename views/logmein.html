@@ -13,7 +13,7 @@
             </form>
 
             <div style="height:65px;">
-                <button type="submit" class="btn" form="logmein_auth" onclick="logmein();">Create Session</button>
+                <button type="submit" class="btn" form="logmein_auth">Create Session</button>
                 <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
             </div>
         </div>    
@@ -50,9 +50,11 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  function logmein() {
+  document.getElementById("logmein_auth").addEventListener("submit", logmein)
+
+  function logmein(event) {
+    event.preventDefault()
     console.log('>>> logmein() called')
-    
     var email = document.getElementById("logmein_email").value
     var pw = document.getElementById("logmein_pw").value
     var url = `https://secure.logmeinrescue.com/api/requestAuthCode.aspx?email=${email}&pwd=${pw}`
