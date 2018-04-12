@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
 
 // incoming req.body => { request: { options, payload } }
 app.post('/callExternalApi', (req, res) => {
-  console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}`)
+  console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}\n`)
   let options = {
     host: req.body.request.host,
     path: req.body.request.path,
@@ -99,7 +99,7 @@ app.post('/callExternalApi', (req, res) => {
 // -----> TeamViewer <----- //
 //                          //
 app.get('/tv/data/:id', (req, res) => {
-  console.log('\n[GET] /tv/data --> user: ' + req.params.id)
+  console.log('\n[GET] /tv/data ---> user: ' + req.params.id)
 
   let id = req.params.id
   let response_json = {
@@ -108,7 +108,7 @@ app.get('/tv/data/:id', (req, res) => {
 
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
-      console.log('[GET] /tv/data --> tokens found\n' + util.inspect(found))
+      console.log('[GET] /tv/data ---> teamveiwer tokens found:\n' + util.inspect(found))
       response_json['tokens'] = found.teamviewer
     }
     res.send(response_json)
@@ -158,7 +158,7 @@ app.get('/tv/oauth', (req, res) => {
     })
 
     response.on('end', () => {
-      console.log(`>>> success!\n${util.inspect(result)}`)
+      console.log(`>>> teamviewer auth success!\n${util.inspect(result)}`)
       result = JSON.parse(result)
 
       let query = querystring.stringify({
@@ -206,7 +206,7 @@ app.post('/tv/sessions/new/:id', (req, res) => {
 
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
-      console.log('> user found in db')
+      console.log('> teamviewer user found in db')
       
       let options = {
         host: 'webapi.teamviewer.com',
