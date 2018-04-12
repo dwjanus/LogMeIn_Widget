@@ -35,6 +35,9 @@ app.use(cors())
 app.options('*', cors())
 
 
+//                     //
+// -----> INDEX <----- //
+//                     //
 app.get('/', (req, res) => {
   res.render('layout', {
     partials: {
@@ -46,11 +49,58 @@ app.get('/', (req, res) => {
   })
 })
 
+
+//                           //
+// -----> ExternalAPI <----- //
+//                           //
+
+// incoming req.body => { request: { options, payload } }
+app.post('/callExternalApi', (req, res) => {
+  console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}`)
+  let options = {
+    host: req.body.request.host,
+    path: req.body.request.path,
+    method: req.body.request.method,
+    headers: request.body.request.headers
+  }
+
+  const request = https.request(options, (response) => {
+    let result = ''
+  
+    response.on('data', (chunk) => {
+      result += chunk
+    })
+  
+    response.on('end', () => {
+      console.log(`>>> end\n${util.inspect(result)}`)
+      result = JSON.parse(result)
+      res.send(result)
+    })
+  
+    response.on('error', (e) => {
+      console.log('[error in post response]' + e)
+      res.send(e)
+    })
+  })
+  
+  if (req.body.request.payload) request.write(req.body.request.payload)
+
+  request.on('error', (e) => {
+    console.log('[Error in new session POST request]\n>> ' + e)
+    res.status(500)
+  })
+
+  request.end()
+})
+
+
+//                          //
+// -----> TeamViewer <----- //
+//                          //
 app.get('/tv/data/:id', (req, res) => {
-  console.log('[GET] /tv/data --> user: ' + req.params.id)
+  console.log('\n[GET] /tv/data --> user: ' + req.params.id)
 
   let id = req.params.id
-
   let response_json = {
     tv_id: process.env.TEAMVIEWER_ID
   }
@@ -81,7 +131,6 @@ app.get('/tv/oauth', (req, res) => {
   console.log(`>>> state: ${req.query.state}`)
 
   let code = req.query.code
-
   let postData = querystring.stringify({
     grant_type: 'authorization_code',
     code: code,
@@ -89,7 +138,7 @@ app.get('/tv/oauth', (req, res) => {
     client_id: process.env.TEAMVIEWER_ID,
     client_secret: process.env.TEAMVIEWER_SECRET
   })
-    
+
   let options = {
     host: 'webapi.teamviewer.com',
     path: '/api/v1/oauth2/token',
@@ -271,9 +320,15 @@ app.get('/tv/:id/oauth/', (req, res) => {
 
 
 
-// this is going to be the endpoint that needs a backend function to handle the data to comment
-app.post('/data', (req, res) => {
+//                       //
+// -----> LogMeIn <----- //
+//                       //
+app.post('/logmein/data', (req, res) => {
   console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
+
+  // parse data and post to samanage ticket
+
+
   res.send(200)
 })
 
