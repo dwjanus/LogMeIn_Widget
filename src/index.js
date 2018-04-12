@@ -35,7 +35,7 @@ app.use(bodyParser.xml({xmlParseOptions: {
 app.use(cors())
 app.options('*', cors())
 
-app.use('/', routes)
+app.use('/*', routes)
 
 app.use((req, res, next) => {
   res.status(404).send("Sorry cant find that!")

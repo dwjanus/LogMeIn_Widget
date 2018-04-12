@@ -53,7 +53,7 @@ router.get('/tv/oauth', (req, res) => {
   let postData = querystring.stringify({
     grant_type: 'authorization_code',
     code: code,
-    redirect_uri: 'https://samanage-widgets.herokurouter.com/tv/oauth',
+    redirect_uri: 'https://samanage-widgets.herokuapp.com/tv/oauth',
     client_id: process.env.TEAMVIEWER_ID,
     client_secret: process.env.TEAMVIEWER_SECRET
   })
@@ -63,7 +63,7 @@ router.get('/tv/oauth', (req, res) => {
     path: '/api/v1/oauth2/token',
     method: 'POST',
     headers: { 
-      'Content-Type': 'routerlication/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Length': postData.length
     }
   }
@@ -131,7 +131,7 @@ router.post('/tv/sessions/new/:id', (req, res) => {
         path: '/api/v1/sessions',
         method: 'POST',
         headers: { 
-          'Content-Type': 'routerlication/json',
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${found.teamviewer.access_token}`
         }
       }
@@ -189,7 +189,7 @@ router.get('/tv/:id/oauth/', (req, res) => {
         path: '/api/v1/oauth2/token',
         method: 'POST',
         headers: { 
-          'Content-Type': 'routerlication/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded',
           'Content-Length': postData.length
         }
       }
@@ -241,6 +241,6 @@ router.get('/tv/:id/oauth/', (req, res) => {
 
 // this is going to be the endpoint that needs a backend function to handle the data to comment
 router.post('/data', (req, res) => {
-  console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
+  console.log(`[POST] at /data\n==> request: ${util.inspect(req.body)}`)
   res.send(200)
 })
