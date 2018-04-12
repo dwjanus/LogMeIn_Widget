@@ -12,6 +12,7 @@ const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
 const db = monk(process.env.MONGODB_URI)
 const teamviewer_db = db.get('teamviewer') // used for storage of teamviewer oauth data
+const logmein_db = db.get('logmein')
 
 
 if (!port) {
