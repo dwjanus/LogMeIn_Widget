@@ -1,7 +1,13 @@
 import express from 'express'
 import util from 'util'
+import monk from 'monk'
+import path from 'path'
+import querystring from 'querystring'
+import https from 'https'
 
 const router = express.Router()
+const db = monk(process.env.MONGODB_URI)
+const teamviewer_db = db.get('teamviewer') // used for storage of teamviewer oauth data
 
 // ----- INDEX ----- //
 router.get('/', (req, res) => {
