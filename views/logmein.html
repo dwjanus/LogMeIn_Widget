@@ -70,6 +70,7 @@
     return fetch(url).then((res) => res.text()).then((data) => {
       if (data.indexOf('OK') == -1) throw new Error(data)
       var code = data.split('AUTHCODE:')[1]
+      saveAuth(code) 
       return code
     }).catch((err) => {
       handleError(err)
@@ -129,6 +130,27 @@
       </div>
     `
     form.parentNode.replaceChild(success, form)
+  }
+
+  function saveAuth(code) {
+    let body_json = { logmein: { token: code } }
+    fetch(`/logmein/${context.assignee.user_id}/save`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body_json)
+    }).then((res) => res.json())
+      .then((data) => {
+        console.log(`>>> successfully saved authcode: ${JSON.stringify(data)}`)
+        if (data.error) {
+          throw new Error(data.error)
+        } else {
+          context['logmein_data'] = { token: data.token }
+          return
+        }
+      })
+    .catch((e) => {
+      console.log('[Error caught at fetch().catch() in saveAuth()]\n>> ' + e)
+    })
   }
 
   const handleError = (e) => {

@@ -323,6 +323,21 @@ app.get('/tv/:id/oauth/', (req, res) => {
 //                       //
 // -----> LogMeIn <----- //
 //                       //
+app.post('/logmein/:id/save', (req, res) => {
+  const id = req.params.id
+  const logmein = req.body.logmein
+
+  logmein_db.findOne({user: id}).then((found) => {
+    if (!found) {
+      logmein_db.insert({user: id, logmein})
+    } else {
+      console.log('> user already has logmein authentication')
+    }
+    res.send(200)
+  })
+})
+
+
 app.post('/logmein/data', (req, res) => {
   console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
 
