@@ -39,9 +39,9 @@ app.get('/', (req, res) => {
   res.render('layout', {
     partials: {
       logmein: 'logmein.html',
-      bomgar: 'bomgar.html',
-      harvest: 'harvest.html',
-      teamviewer: 'teamviewer.html'
+      // bomgar: 'bomgar.html',
+      // harvest: 'harvest.html',
+      // teamviewer: 'teamviewer.html'
     }
   })
 })
