@@ -334,7 +334,7 @@ app.post('/logmein/:id/save', (req, res) => {
     } else {
       console.log('> user already has logmein authentication')
     }
-    res.sendStatus(200)
+    res.send(logmein)
   })
 })
 
