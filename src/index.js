@@ -239,13 +239,13 @@ app.post('/tv/sessions/new/:id', (req, res) => {
     
       request.on('error', (e) => {
         console.log('[Error in new session POST request]\n>> ' + e)
-        res.status(500)
+        res.endStatus(500)
       })
 
       request.write(postData)
       request.end()
     } else {
-      res.send(500)
+      res.sendStatus(500)
     }
   })
 })
@@ -298,7 +298,7 @@ app.get('/tv/:id/oauth/', (req, res) => {
           let teamviewer = result
     
           teamviewer_db.insert({user: req.query.state, teamviewer}) // this would be the Samanage account id
-          res.end()
+          res.send(teamviewer)
         })
     
         response.on('error', (e) => {
@@ -325,14 +325,15 @@ app.get('/tv/:id/oauth/', (req, res) => {
 //                       //
 app.post('/logmein/:id/save', (req, res) => {
   const id = req.params.id
-  const logmein = JSON.parse(req.body.logmein)
+  const logmein = req.body
 
   console.log(`\n[POST] /logmein/${id}/save\n--> logmein: ${util.inspect(logmein)}`)
   logmein_db.findOne({user: id}).then((found) => {
     if (!found) {
+      console.log(`   logmein_db >> user not found, inserting now...`)
       logmein_db.insert({user: id, logmein})
     } else {
-      console.log('> user already has logmein authentication')
+      console.log('   logmein_db >> user already has logmein authentication')
     }
     res.send(logmein)
   })

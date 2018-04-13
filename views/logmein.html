@@ -42,7 +42,6 @@
 
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
-      console.log('Context type is incident --> calling show()')
       context_id = response.context_id
       platformWidgetHelper.show()
     }
@@ -66,7 +65,7 @@
   }
 
   function getAuth(url) {
-    console.log('>>> retrieving logmein authcode')
+    console.log('logmein >>> retrieving authcode')
     return fetch(url).then((res) => res.text()).then((data) => {
       if (data.indexOf('OK') == -1) throw new Error(data)
       var code = data.split('AUTHCODE:')[1]
@@ -74,12 +73,12 @@
       return code
     }).catch((err) => {
       handleError(err)
-      return Promise.reject('>> Login ' + err)
+      return Promise.reject('logmein >>> Error at getAuth: ' + err)
     })
   }
 
   function getPin(code) {
-    console.log('>>> requesting pin')
+    console.log('logmein >>> requesting pin')
 
     var url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
 
@@ -89,7 +88,7 @@
       return pin
     }).catch((err) => {
       handleError(err)
-      return Promise.reject('>> Pin Request ' + err)
+      return Promise.reject('logmein >> Error at Pin Request: ' + err)
     })
   }
 
@@ -103,8 +102,8 @@
       }
     }
 
-    console.log(`>>> incident id: ${context_id} retrieved from context handler`)
-    console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
+    console.log(`logmein >>> incident id: ${context_id} retrieved from context handler`)
+    console.log(`logmein >>> about to post comment: ${JSON.stringify(comment_json)}`)
 
     platformWidgetHelper.callSamanageAPI((response) => {
       console.log('>>> Samanage API response:\n' + response)
@@ -134,13 +133,15 @@
 
   function saveAuth(code) {
     let body_json = { logmein: { token: code } }
+    console.log(`logmein >>> saving authcode... \nbody_json = ${JSON.stringify(body_json)}`)
+
     fetch(`/logmein/${context.assignee.user_id}/save`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body_json)
     }).then((res) => res.json())
       .then((data) => {
-        console.log(`>>> successfully saved authcode: ${JSON.stringify(data)}`)
+        console.log(`logmein >>> successfully saved authcode: ${JSON.stringify(data)}`)
         if (data.error) {
           throw new Error(data.error)
         } else {
@@ -149,21 +150,21 @@
         }
       })
     .catch((e) => {
-      console.log('[Error caught at fetch().catch() in saveAuth()]\n>> ' + e)
+      console.log('\nlogmein >>> Error caught at .catch() in saveAuth(): \n ' + e)
     })
   }
 
   const handleError = (e) => {
     var parsedError = e.toString().split('Error: ')[1].trim()
     var details
-    console.log(`> Error code to handle: ${parsedError}`)
+    console.log(`logmein >> Error code to handle: ${parsedError}`)
     if (parsedError in logmein_errors) {
       details = logmein_errors[parsedError]
     } else {
       details = 'An unknown error occured'
     }
     
-    console.log(`> Details: ${details}`)
+    console.log(`   >>>> Details: ${details}`)
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
     error.innerHTML =  `<div class="error" id="error"><p>${e}</p><p>${details}</p></div>`

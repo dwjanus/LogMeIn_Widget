@@ -19,12 +19,11 @@
   var context_id
 
   setlocal = (response) => {
-    console.log('> local storage set: \n> ' + JSON.stringify(response))
+    console.log('teamviewer >> local storage set: \n> ' + JSON.stringify(response))
   }
 
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
-      console.log('Context type is incident --> calling show()')
       context = response
       context_id = response.context_id
       platformWidgetHelper.show()
@@ -37,7 +36,7 @@
     .then((res) => res.json())
     .then((data) => {
       context['tv_data'] = data
-      console.log('>> context object:\n' + JSON.stringify(context))
+      console.log('teamviewer >> context object:\n' + JSON.stringify(context))
       if (context.tv_data.tokens) {
         toggleAuthorizedView()
       }
@@ -54,8 +53,8 @@
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
     var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}&state=${context.assignee.user_id}`
 
-    console.log(`>>> client_id: ${client_id}`)
-    console.log(`>>> url: ${url}`)
+    console.log(`teamviewer >>> client_id: ${client_id}`)
+    console.log(`teamviewer >>> url: ${url}`)
 
     window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
   }
@@ -97,7 +96,7 @@
       `
       login_view.parentNode.replaceChild(widget_view, login_view)
     }).catch((e) => {
-      console.log('[Error caught at createSession().catch() in toggleAuth]\n>> ' + e)
+      console.log('teamviewer >>> Error caught at createSession().catch() in toggleAuth\n>> ' + e)
       // refreshOauth()
     })
   }
@@ -127,7 +126,7 @@
         }
       })
     .catch((e) => {
-      console.log('[Error caught at fetch().catch() in createSession]\n>> ' + e + '\n>>> attempting to refresh token now...')
+      console.log('teamviewer >>> Error caught at .catch() in createSession\n>> ' + e + '\n     >>> attempting to refresh token now...')
       return refreshOauth()
     })
   }
@@ -142,8 +141,7 @@
       .then((data) => {
         console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
         context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
-        return
-      }).catch(err => console.log('\n> Its really broke.' + err))
+      }).catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
   }
 </script>
 
