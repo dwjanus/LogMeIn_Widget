@@ -252,13 +252,13 @@ app.post('/tv/sessions/new/:id', (req, res) => {
 
 
 app.get('/tv/:id/oauth/', (req, res) => {
-  console.log('[GET] /tv/oauth')
-  console.log(`>>> id: ${req.params.id}`)
+  console.log(`[GET] /tv/oauth >>> id: ${req.params.id}`)
 
   let id = req.params.id
 
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
+      console.log(`>> user found: \n${util.inspect(found)}`)
       let postData = querystring.stringify({
         grant_type: 'refresh_token',
         refresh_token: found.teamviewer.refresh_token,
@@ -271,8 +271,7 @@ app.get('/tv/:id/oauth/', (req, res) => {
         path: '/api/v1/oauth2/token',
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': postData.length
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }
 
@@ -284,21 +283,25 @@ app.get('/tv/:id/oauth/', (req, res) => {
         })
     
         response.on('end', () => {
-          console.log(`>>> success!\n${util.inspect(result)}`)
           result = JSON.parse(result)
-    
-          let query = querystring.stringify({
-            access_token: result.access_token,
-            token_type: result.token_type,
-            expires_in: result.expires_in,
-            refresh_token: result.refresh_token,
-            user_id: req.query.state
-          })
-    
-          let teamviewer = result
-    
-          teamviewer_db.insert({user: req.query.state, teamviewer}) // this would be the Samanage account id
-          res.send(teamviewer)
+          
+          if (result.error) {
+            console.log(`teamviewer >>> error: ${result.error_code}\n${result.error} -- ${result.error_description}`)
+            res.end()
+          } else {
+            let query = querystring.stringify({
+              access_token: result.access_token,
+              token_type: result.token_type,
+              expires_in: result.expires_in,
+              refresh_token: result.refresh_token,
+              user_id: req.query.state
+            })
+      
+            let teamviewer = result
+      
+            teamviewer_db.insert({user: req.query.state, teamviewer}) // this would be the Samanage account id
+            res.send(teamviewer)
+          }
         })
     
         response.on('error', (e) => {
