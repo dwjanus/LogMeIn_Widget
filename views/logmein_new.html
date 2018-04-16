@@ -43,7 +43,7 @@ setlocal = (response) => {
 
 getlocal = (response) => {
   console.log('logmein >>> getting local storage: ' + JSON.stringify(response))
-  if (response.logmein !== undefined) {
+  if (response && response.logmein !== undefined) {
     var code = response.logmein.token
     var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
     platformWidgetHelper.callSamanageAPI(getPin, 'GET', pin_url, null)
