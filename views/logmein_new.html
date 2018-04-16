@@ -81,7 +81,7 @@ function logmein(event) {
     var data = response.toString();
     var code = data.split('AUTHCODE:')[1]
     var user_id
-    platformWidgetHelper.getUserInfo((user) => user_id = user.id)
+    platformWidgetHelper.getUserInfo((user) => user_id = user.user_id)
     platformWidgetHelper.setStorage(setlocal, { user: user_id, logmein: { token: code } })
     saveAuth(code)
 
