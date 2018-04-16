@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
 app.post('/callExternalApi', (req, res) => {
   console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}\n`)
   let options = {
-    host: req.body.url,
+    hostname: req.body.url,
     method: req.body.method
   }
 
