@@ -74,8 +74,7 @@ app.post('/callExternalApi', (req, res) => {
     })
   
     response.on('end', () => {
-      console.log(`>>> end\n${util.inspect(result)}`)
-      result = JSON.parse(result)
+      console.log(`externalAPI >>> end\n${util.inspect(result)}`)
       res.send(result)
     })
   
