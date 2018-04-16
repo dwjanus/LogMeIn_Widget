@@ -59,10 +59,8 @@ app.get('/', (req, res) => {
 app.post('/callExternalApi', (req, res) => {
   console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}\n`)
   let options = {
-    host: req.body.request.host,
-    path: req.body.request.path,
-    method: req.body.request.method,
-    headers: request.body.request.headers
+    host: req.body.url,
+    method: req.body.method
   }
 
   const request = https.request(options, (response) => {
@@ -84,7 +82,7 @@ app.post('/callExternalApi', (req, res) => {
     })
   })
   
-  if (req.body.request.payload) request.write(req.body.request.payload)
+  if (req.body.payload) request.write(req.body.payload)
 
   request.on('error', (e) => {
     console.log('[Error in new session POST request]\n>> ' + e)

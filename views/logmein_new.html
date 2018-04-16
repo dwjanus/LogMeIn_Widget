@@ -1,0 +1,174 @@
+<div class="container" id="widget" style="visibility: visible;">
+  <div name="logmein" id="logmein">
+      <div class="form-header">
+          <h2>LogMeIn Remote Session</h2>
+      </div>
+      
+      <div id="logmein_form">
+          <form id="logmein_auth">
+              <div class="form-field">
+                  <input type="email" id="logmein_email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
+                  <input type="password" id="logmein_pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
+              </div>
+          </form>
+
+          <div style="height:65px;">
+              <button type="submit" class="btn" form="logmein_auth">Create Session</button>
+              <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+          </div>
+      </div>    
+  </div>
+</div>
+
+<script>
+var context_id
+var logmein_errors = {
+  'ERROR': 'An unspecified error occured',
+  'INVALID': 'The password or email were incorrect',
+  'INVALIDPARAM_NODE': 'The node (id) provided is not the id of the existing user',
+  'NOTLOGGEDIN': 'Current user is not logged in',
+  'NOTTECHNICIAN': 'PIN was not requested by a technician',
+  'OUTOFPINCODES': 'Out of PIN codes - contact your administrator',
+  'POLLRATEEXCEEDED': 'You have concurrently requested too many PINs',
+  'INVALID_SECRETAUTHCODE': 'Authcode was invalid',
+  'USER_IS_DELETED': 'The user whose authorization code was specified is deleted',
+  'USER_DELETED_OR_DISABLED': 'The user whose authorization code was specified is deleted or disabled',
+  'INVALIDPINFORMAT': 'The format of the PIN code is incorrect'
+}
+
+setlocal = (response) => {
+  console.log('local storage set: ' + JSON.stringify(response))
+}
+
+contextRecievedHandler = (response) => {
+  if (response.context_type == 'Incident') {
+    context_id = response.context_id
+    platformWidgetHelper.show()
+  }
+}
+
+platformWidgetHelper.getContextObject(contextRecievedHandler)
+
+document.getElementById("logmein_auth").addEventListener("submit", logmein)
+
+function logmein(event) {
+    event.preventDefault()
+    console.log('>>> logmein() called')
+    var email = document.getElementById("logmein_email").value
+    var pw = document.getElementById("logmein_pw").value
+    var url = `https://secure.logmeinrescue.com/api/requestAuthCode.aspx?email=${email}&pwd=${pw}`
+
+    console.log(`>>> url: ${url}`)
+
+    platformWidgetHelper.callSamanageAPI(saveAuth, 'GET', url, null)
+  }
+
+
+  saveAuth = (response) => {
+    console.log(`>>> saveAuth response: \n${response}`)
+    var data = response.toString();
+    var code = data.split('AUTHCODE:')[1]
+    var user_id
+    platformWidgetHelper.getUserInfo((user) => user_id = user.id)
+    platformWidgetHelper.setStorage(setlocal, { user: user_id, logmein: { token: code } })
+
+    var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
+    platformWidgetHelper.callSamanageAPI(getPin, 'GET', pin_url, null)
+  }
+
+
+
+  getPin = (response) => {
+    console.log(`>>> getPin response: \n${response}`)
+    var data = response.toString();
+    var pin = data.split('PINCODE:')[1]
+    var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
+    var click = "window.open('" + link + "', '_blank')"      
+    var comment_json = {
+      comment: {
+        body: `Go here to launch your Rescue session: ${link}`,
+        is_private: false
+      }
+    }
+
+    console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
+
+    platformWidgetHelper.callSamanageAPI(postComment, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
+  }
+    
+
+  postComment = (response) => {
+    console.log('>>> Samanage API response:\n' + JSON.stringify(response))
+    
+    var form = document.getElementById('logmein_form')
+    var success = document.createElement('div')
+    success.innerHTML = `
+      <div class="success">
+          <p id="success">Success!</p> 
+          <p style="font-size: 12px; margin-top: 5px;">Your session Pin is:</p>
+          <p id="pin">${pin}</p>
+      </div>
+      <div style="padding-top: 15px;">
+          <button type="button" class="btn" id="session" onclick="${click}">
+              Go to Session
+          </button>
+      </div>
+    `
+    form.parentNode.replaceChild(success, form)
+
+    var error_message = document.getElementById('error')
+    if (document.contains(error_message)) {
+      error_message.remove()
+    }
+  }
+
+
+
+function saveAuth(code) {
+  let body_json = { logmein: { token: code } }
+  console.log(`logmein >>> saving authcode... \nbody_json = ${JSON.stringify(body_json)}`)
+
+  fetch(`/logmein/${context.assignee.user_id}/save`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body_json)
+  }).then((res) => res.json())
+    .then((data) => {
+      console.log(`logmein >>> successfully saved authcode: ${JSON.stringify(data)}`)
+      if (data.error) {
+        throw new Error(data.error)
+      } else {
+        context['logmein_data'] = { token: data.token }
+        return
+      }
+    })
+  .catch((e) => {
+    console.log('\nlogmein >>> Error caught at .catch() in saveAuth(): \n ' + e)
+  })
+}
+
+const handleError = (e) => {
+  var parsedError = e.toString().split('Error: ')[1].trim()
+  var details
+  console.log(`logmein >> Error code to handle: ${parsedError}`)
+  if (parsedError in logmein_errors) {
+    details = logmein_errors[parsedError]
+  } else {
+    details = 'An unknown error occured'
+  }
+  
+  console.log(`   >>>> Details: ${details}`)
+  var logmein = document.getElementById('logmein')
+  var error = document.createElement('div')
+  error.innerHTML =  `<div class="error" id="error"><p>${e}</p><p>${details}</p></div>`
+  
+  var error_message = document.getElementById('error')
+  if (document.contains(error_message)) {
+    parent = error_message.parentNode
+    parent.replaceChild(error, error_message)
+  } else {
+    logmein.parentNode.appendChild(error)
+  }
+}
+</script>
+

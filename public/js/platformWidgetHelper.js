@@ -32,7 +32,21 @@ var platformWidgetHelper = (function() {
     },
 
     callSamanageAPI: function(callback, HTTPMethod, url, payload) {
-
+      fetch('/callExternalApi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ method: HTTPMethod, url: url, payload: payload })
+      }).then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            throw new Error(data.error)
+          } else {
+            callback(data)
+          }
+        })
+      .catch((e) => {
+        console.log('\n! >>> Error caught at .catch() in callSamanageAPI(): \n ' + e)
+      })
     },
 
     registerToEvents: (eventType, eventCallback) => {
