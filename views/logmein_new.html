@@ -22,6 +22,7 @@
 
 <script>
 var context_id
+var context
 var logmein_errors = {
   'ERROR': 'An unspecified error occured',
   'INVALID': 'The password or email were incorrect',
@@ -37,13 +38,24 @@ var logmein_errors = {
 }
 
 setlocal = (response) => {
-  console.log('local storage set: ' + JSON.stringify(response))
+  console.log('logmein >>> local storage set: ' + JSON.stringify(response))
+}
+
+getlocal = (response) => {
+  console.log('logmein >>> getting local storage: ' + JSON.stringify(response))
+  context = response
+  if (context.logmein) {
+    var code = context.logmein.token
+    var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
+    platformWidgetHelper.callSamanageAPI(getPin, 'GET', pin_url, null)
+  }
 }
 
 contextRecievedHandler = (response) => {
   if (response.context_type == 'Incident') {
     context_id = response.context_id
     platformWidgetHelper.show()
+    platformWidgetHelper.getStorage(getlocal)
   }
 }
 
@@ -60,17 +72,18 @@ function logmein(event) {
 
     console.log(`>>> url: ${url}`)
 
-    platformWidgetHelper.callSamanageAPI(saveAuth, 'GET', url, null)
+    platformWidgetHelper.callSamanageAPI(getAuth, 'GET', url, null)
   }
 
 
-  saveAuth = (response) => {
+  getAuth = (response) => {
     console.log(`>>> saveAuth response: \n${response}`)
     var data = response.toString();
     var code = data.split('AUTHCODE:')[1]
     var user_id
     platformWidgetHelper.getUserInfo((user) => user_id = user.id)
     platformWidgetHelper.setStorage(setlocal, { user: user_id, logmein: { token: code } })
+    saveAuth(code)
 
     var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
     platformWidgetHelper.callSamanageAPI(getPin, 'GET', pin_url, null)

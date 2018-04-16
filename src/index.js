@@ -42,7 +42,7 @@ app.options('*', cors())
 app.get('/', (req, res) => {
   res.render('layout', {
     partials: {
-      logmein: 'logmein.html',
+      logmein: 'logmein_new.html',
       bomgar: 'bomgar.html',
       harvest: 'harvest.html',
       teamviewer: 'teamviewer.html'
