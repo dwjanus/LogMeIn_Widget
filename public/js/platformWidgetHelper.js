@@ -36,15 +36,16 @@ var platformWidgetHelper = (function() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ method: HTTPMethod, url: url, payload: payload })
-      }).then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            throw new Error(data.error)
-          } else {
-            callback(data)
-          }
-        })
-      .catch((e) => {
+      }).then((res) => {
+        if (typeof(res) === 'string') return res.text()
+        else return res.json()
+      }).then((data) => {
+        if (data.error) {
+          throw new Error(data.error)
+        } else {
+          callback(data)
+        }
+      }).catch((e) => {
         console.log('\n! >>> Error caught at .catch() in callSamanageAPI(): \n ' + e)
       })
     },

@@ -61,7 +61,7 @@ app.post('/callExternalApi', (req, res) => {
   console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}\n`)
   let url_parsed = url.parse(req.body.url) 
   let options = {
-    hostname: url_parsed.host,
+    host: url_parsed.host,
     path: url_parsed.path,
     method: req.body.method
   }
@@ -74,7 +74,7 @@ app.post('/callExternalApi', (req, res) => {
     })
   
     response.on('end', () => {
-      console.log(`externalAPI >>> end\n${util.inspect(result)}`)
+      console.log(`externalAPI >>> end\n${util.inspect(result)}\n`)
       res.send(result)
     })
   
