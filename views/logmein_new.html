@@ -106,13 +106,6 @@ function logmein(event) {
 
     console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
 
-    platformWidgetHelper.callSamanageAPI(postComment, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
-  }
-    
-
-  postComment = (response) => {
-    console.log('>>> Samanage API response:\n' + JSON.stringify(response))
-    
     var form = document.getElementById('logmein_form')
     var success = document.createElement('div')
     success.innerHTML = `
@@ -129,6 +122,13 @@ function logmein(event) {
     `
     form.parentNode.replaceChild(success, form)
 
+    // platformWidgetHelper.callSamanageAPI(postComment, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
+  }
+    
+
+  postComment = (response) => {
+    console.log('>>> Samanage API response:\n' + JSON.stringify(response))
+    
     var error_message = document.getElementById('error')
     if (document.contains(error_message)) {
       error_message.remove()
