@@ -38,7 +38,7 @@ var platformWidgetHelper = (function() {
         body: JSON.stringify({ method: HTTPMethod, url: url, payload: payload })
       }).then((res) => {
         console.log(`callSamanageAPI >>> got --${typeof(res)}-- response from external request`)
-        callback(res)
+        return callback(Proimse.resolve(res))
       }).catch((e) => {
         console.log('\n! >>> Error caught at .catch() in callSamanageAPI(): \n ' + e)
       })
