@@ -37,10 +37,15 @@ var platformWidgetHelper = (function() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ method: HTTPMethod, url: url, payload: payload })
       }).then((res) => {
-        if (typeof(res) === 'object') return res.json()
-        else return res.text()
+        console.log('callSamanageAPI >>> got response from external request...')
+        if (typeof(res) === 'object') {
+          console.log(`callSamanageAPI >>> response object is: ${typeof(res)}`)
+          return res.json()
+        } else {
+          return res.text()
+        }
       }).then((data) => {
-        return callback(data)
+        callback(data)
       }).catch((e) => {
         console.log('\n! >>> Error caught at .catch() in callSamanageAPI(): \n ' + e)
       })
