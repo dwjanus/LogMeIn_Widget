@@ -7,6 +7,7 @@ import cors from 'cors'
 import monk from 'monk'
 import https from 'https'
 import querystring from 'querystring'
+import url from 'url'
 
 const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
@@ -58,8 +59,10 @@ app.get('/', (req, res) => {
 // incoming req.body => { request: { options, payload } }
 app.post('/callExternalApi', (req, res) => {
   console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}\n`)
+  let url_parsed = url.parse(req.body.url) 
   let options = {
-    hostname: req.body.url,
+    hostname: url_parsed.host,
+    path: url_parsed.path,
     method: req.body.method
   }
 
@@ -82,7 +85,7 @@ app.post('/callExternalApi', (req, res) => {
     })
   })
   
-  if (req.body.payload) request.write(req.body.payload)
+  if (req.body.payload !== null) request.write(req.body.payload)
 
   request.on('error', (e) => {
     console.log('[Error in new session POST request]\n>> ' + e)
