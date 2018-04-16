@@ -37,14 +37,10 @@ var platformWidgetHelper = (function() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ method: HTTPMethod, url: url, payload: payload })
       }).then((res) => {
-        if (typeof(res) === 'string') return res.text()
-        else return res.json()
+        if (typeof(res) === 'object') return res.json()
+        else return res.text()
       }).then((data) => {
-        if (data.error) {
-          throw new Error(data.error)
-        } else {
-          callback(data)
-        }
+        return callback(data)
       }).catch((e) => {
         console.log('\n! >>> Error caught at .catch() in callSamanageAPI(): \n ' + e)
       })
