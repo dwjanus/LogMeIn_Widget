@@ -44,6 +44,10 @@ var platformWidgetHelper = (function() {
       })
     },
 
+    getUserInfo: (callback) => {
+      callback({ name: 'Devin', user_id: 2821593 })
+    },
+
     registerToEvents: (eventType, eventCallback) => {
     
     },
