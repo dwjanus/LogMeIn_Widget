@@ -43,7 +43,7 @@ setlocal = (response) => {
 
 getlocal = (response) => {
   console.log('logmein >>> getting local storage: ' + JSON.stringify(response))
-  context = response
+  logmein_context = response
   if (logmein_context.logmein) {
     var code = logmein_context.logmein.token
     var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
