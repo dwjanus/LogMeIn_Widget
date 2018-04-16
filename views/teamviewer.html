@@ -15,7 +15,7 @@
 </div>
 
 <script>
-  var context
+  var teamviewer_context = {}
   var context_id
 
   setlocal = (response) => {
@@ -24,7 +24,7 @@
 
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
-      context = response
+      teamviewer_context = response
       context_id = response.context_id
       platformWidgetHelper.show()
     }
@@ -35,9 +35,9 @@
   fetch(`/tv/data/${context.assignee.user_id}`)
     .then((res) => res.json())
     .then((data) => {
-      context['tv_data'] = data
-      console.log('teamviewer >> context object:\n' + JSON.stringify(context))
-      if (context.tv_data.tokens) {
+      teamviewer_context['tv_data'] = data
+      console.log('teamviewer >> context object:\n' + JSON.stringify(teamviewer_context))
+      if (teamviewer_context.tv_data.tokens) {
         toggleAuthorizedView()
       }
     })
@@ -46,12 +46,12 @@
   function teamviewer() {
     console.log('>>> teamviewer() called')
 
-    launchAuth(context.tv_data.tv_id)
+    launchAuth(teamviewer_context.tv_data.tv_id)
   }
 
   function launchAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
-    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}&state=${context.assignee.user_id}`
+    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}&state=${teamviewer_context.assignee.user_id}`
 
     console.log(`teamviewer >>> client_id: ${client_id}`)
     console.log(`teamviewer >>> url: ${url}`)
@@ -68,7 +68,7 @@
       widget_view.id = 'widget_view'
       widget_view.innerHTML = `
         <div class="session_code"> 
-            <p id="code">Session Code: ${context.session_data.code}</p> 
+            <p id="code">Session Code: ${teamviewer_context.session_data.code}</p> 
             <div class="btn_item">
                 <button id="new_code_btn">
                     <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon.png" type="image/png" alt="New Code" width="14px;" height=14px;" onclick="createSession();" />
@@ -80,16 +80,16 @@
             <div class="tv_buttons"> 
                 <button type="button" id="customer_session" class="btn session" onclick="linkToTicket();">
                     Post Customer Link to ticket
-                    <span class="tooltip" id="customer_link_tt">${context.session_data.end_customer_link}</span>
+                    <span class="tooltip" id="customer_link_tt">${teamviewer_context.session_data.end_customer_link}</span>
                 </button>
             </div>
         </div>
 
         <div style="padding-top: 15px;">
             <div class="tv_buttons">
-                <button type="button" id="tech_session" class="btn session" onclick="window.open('${context.session_data.supporter_link}', '_blank');">
+                <button type="button" id="tech_session" class="btn session" onclick="window.open('${teamviewer_context.session_data.supporter_link}', '_blank');">
                     Go To Session
-                    <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${context.session_data.supporter_link}</span>
+                    <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${teamviewer_context.session_data.supporter_link}</span>
                 </button>
             </div>
         </div>
@@ -103,15 +103,15 @@
 
   function createSession() {
     let body_json = {
-      groupname: `Samanage ${context.number}`,
-      description: context.description,
+      groupname: `Samanage ${teamviewer_context.number}`,
+      description: teamviewer_context.description,
       end_customer: {
-        name: context.requester.name
+        name: teamviewer_context.requester.name
       },
-      custom_api: `{ "incident_id": ${context.context_id} }`
+      custom_api: `{ "incident_id": ${teamviewer_context.context_id} }`
     }
 
-    return fetch(`/tv/sessions/new/${context.assignee.user_id}`, {
+    return fetch(`/tv/sessions/new/${teamviewer_context.assignee.user_id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body_json)
@@ -121,7 +121,7 @@
         if (data.error) {
           throw new Error(data.error)
         } else {
-          context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
+          teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
           return
         }
       })
@@ -136,11 +136,11 @@
   }
 
   function refreshOauth() {
-    return fetch(`/tv/${context.assignee.user_id}/oauth`)
+    return fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`)
       .then((res) => res.json())
       .then((data) => {
         console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
-        context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
+        teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
       }).catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
   }
 </script>

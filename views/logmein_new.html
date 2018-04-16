@@ -22,7 +22,7 @@
 
 <script>
 var context_id
-var context
+var logmein_context = {}
 var logmein_errors = {
   'ERROR': 'An unspecified error occured',
   'INVALID': 'The password or email were incorrect',
@@ -44,8 +44,8 @@ setlocal = (response) => {
 getlocal = (response) => {
   console.log('logmein >>> getting local storage: ' + JSON.stringify(response))
   context = response
-  if (context.logmein) {
-    var code = context.logmein.token
+  if (logmein_context.logmein) {
+    var code = logmein_context.logmein.token
     var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
     platformWidgetHelper.callSamanageAPI(getPin, 'GET', pin_url, null)
   }
@@ -151,7 +151,7 @@ function saveAuth(code) {
       if (data.error) {
         throw new Error(data.error)
       } else {
-        context['logmein_data'] = { token: data.token }
+        logmein_context['logmein_data'] = { token: data.token }
         return
       }
     })
