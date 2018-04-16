@@ -141,7 +141,7 @@ function saveAuth(code) {
   let body_json = { logmein: { token: code } }
   console.log(`logmein >>> saving authcode... \nbody_json = ${JSON.stringify(body_json)}`)
 
-  fetch(`/logmein/${context.assignee.user_id}/save`, {
+  fetch(`/logmein/${logmein_context.assignee.user_id}/save`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body_json)
@@ -151,7 +151,7 @@ function saveAuth(code) {
       if (data.error) {
         throw new Error(data.error)
       } else {
-        logmein_context['logmein_data'] = { token: data.token }
+        logmein_context['logmein'] = { token: data.token }
         return
       }
     })
