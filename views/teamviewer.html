@@ -32,7 +32,7 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  fetch(`/tv/data/${context.assignee.user_id}`)
+  fetch(`/tv/data/${teamviewer_context.assignee.user_id}`)
     .then((res) => res.json())
     .then((data) => {
       teamviewer_context['tv_data'] = data
