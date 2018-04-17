@@ -103,8 +103,8 @@
 
   function createSession() {
     let body_json = {
-      groupname: `Samanage ${teamviewer_context.number}`,
-      description: teamviewer_context.description,
+      groupname: "Samanage",
+      description:  `Incident #${teamviewer_context.number} - ${teamviewer_context.description}`,
       end_customer: {
         name: teamviewer_context.requester.name
       },

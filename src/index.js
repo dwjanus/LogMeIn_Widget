@@ -116,18 +116,19 @@ app.get('/tv/data/:id', (req, res) => {
 })
 
 app.get('/tv/authorized', (req, res, next) => {
-  console.log('[GET] /tv/authorized\n' + util.inspect(req.query))
-  let postData = querystring.stringify({
-    name: "Samanage"
-  })
+  console.log('[GET] /tv/authorized -->\n' + util.inspect(req.query))
+  const postData = {
+    "name": "Samanage"
+  }
 
-  let tv_options = {
+  const tv_options = {
     host: 'webapi.teamviewer.com',
     path: '/api/v1/groups',
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${req.query.access_token}`
+      'Authorization': `Bearer ${req.query.access_token}`,
+      'Content-Length': postData.length
     }
   }
 
@@ -140,8 +141,7 @@ app.get('/tv/authorized', (req, res, next) => {
 
     response.on('end', () => {
       console.log(`>>> end\n${util.inspect(result)}`)
-      result = JSON.parse(result)
-      let teamviewer = result
+      
       const options = {
         root: path.join(__dirname, '../public/html/')
       }
