@@ -128,7 +128,7 @@ app.get('/tv/authorized', (req, res, next) => {
     }
   }
 
-  const request = https.request(options, (response) => {
+  const request = https.request(tv_options, (response) => {
     let result = ''
 
     response.on('data', (chunk) => {
