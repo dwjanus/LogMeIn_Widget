@@ -6,8 +6,8 @@
 
         <div id="auth_buttons">
             <div style="height:65px;">
-                <button type="button" class="btn" form="tv_auth" onclick="teamviewer()">Install</button>
-                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+                <button type="button" class="btn" form="tv_auth" onclick="teamviewer();">Install</button>
+                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide();">Hide Widget</button>
             </div>   
         </div>
         
@@ -67,7 +67,7 @@
       widget_view.className = 'widget_view'
       widget_view.id = 'widget_view'
       widget_view.innerHTML = `
-        <div class="session_code"> 
+        <div class="teamveiwer_session"> 
             <p id="teamviewer_code">Session Code: ${teamviewer_context.session_data.code}</p> 
             <div class="btn_item">
                 <button id="new_code_btn">

@@ -218,7 +218,7 @@ input:checked + .slider:before {
 
 .tv_buttons .tooltip {
   visibility: hidden;
-  width: 200px;
+  width: 230px;
   background-color: #555;
   color: #fff;
   text-align: center;
@@ -228,7 +228,7 @@ input:checked + .slider:before {
   position: absolute;
   z-index: 1;
   bottom: 125%;
-  left: 50%;
+  left: 45%;
   margin-left: -100px;
   opacity: 0;
   transition: opacity 0.3s;
@@ -250,7 +250,7 @@ input:checked + .slider:before {
   opacity: 1;
 }
 
-.session_code {
+.teamviewer_session {
   display: grid;
   grid-gap: 0px;
   grid-template-columns: 200px 30px;
@@ -260,7 +260,7 @@ input:checked + .slider:before {
   padding-left: 10px;
 }
 
-#code {
+#teamviewer_code {
   grid-column: 1;
   grid-row: 1;
   font-size: 13px;
