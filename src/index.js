@@ -117,9 +117,9 @@ app.get('/tv/data/:id', (req, res) => {
 
 app.get('/tv/authorized', (req, res, next) => {
   console.log('[GET] /tv/authorized -->\n' + util.inspect(req.query))
-  const postData = {
+  const postData = JSON.stringify({
     "name": "Samanage"
-  }
+  })
 
   const tv_options = {
     host: 'webapi.teamviewer.com',
