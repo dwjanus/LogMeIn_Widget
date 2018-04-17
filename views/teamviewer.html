@@ -68,7 +68,7 @@
       widget_view.id = 'widget_view'
       widget_view.innerHTML = `
         <div class="session_code"> 
-            <p id="code">Session Code: ${teamviewer_context.session_data.code}</p> 
+            <p id="teamviewer_code">Session Code: ${teamviewer_context.session_data.code}</p> 
             <div class="btn_item">
                 <button id="new_code_btn">
                     <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon.png" type="image/png" alt="New Code" width="14px;" height=14px;" onclick="createSession();" />
@@ -122,6 +122,7 @@
           throw new Error(data.error)
         } else {
           teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
+          document.getElementById("teamviewer_code").innerHTML = `Session Code: ${teamviewer_context.session_data.code}`
           return
         }
       })
