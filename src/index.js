@@ -43,9 +43,9 @@ app.options('*', cors())
 app.get('/', (req, res) => {
   res.render('layout', {
     partials: {
-      // logmein: 'logmein_new.html',
-      // bomgar: 'bomgar.html',
-      // harvest: 'harvest.html',
+      logmein: 'logmein_new.html',
+      bomgar: 'bomgar.html',
+      harvest: 'harvest.html',
       teamviewer: 'teamviewer.html'
     }
   })
@@ -116,14 +116,51 @@ app.get('/tv/data/:id', (req, res) => {
 })
 
 app.get('/tv/authorized', (req, res, next) => {
-  const options = {
-    root: path.join(__dirname, '../public/html/')
+  console.log('[GET] /tv/authorized\n' + util.inspect(req.query))
+
+  let tv_options = {
+    host: 'webapi.teamviewer.com',
+    path: '/api/v1/groups',
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${req.query.access_token}`
+    }
   }
 
-  res.sendFile('oauthcallback.html', options, (err) => {
-    if (err) next(err)
-    else (console.log('...sending oauthcallback page'))
+  const request = https.request(options, (response) => {
+    let result = ''
+
+    response.on('data', (chunk) => {
+      result += chunk
+    })
+
+    response.on('end', () => {
+      console.log(`>>> end\n${util.inspect(result)}`)
+      result = JSON.parse(result)
+      let teamviewer = result
+      const options = {
+        root: path.join(__dirname, '../public/html/')
+      }
+    
+      res.sendFile('oauthcallback.html', options, (err) => {
+        if (err) next(err)
+        else (console.log('...sending oauthcallback page'))
+      })
+    })
+
+    response.on('error', (e) => {
+      console.log('[error in post response]' + e)
+    })
   })
+
+  request.on('error', (e) => {
+    console.log('[Error in new session POST request]\n>> ' + e)
+    res.sendStatus(500)
+  })
+
+  request.write(postData)
+  request.end()
 })
 
 app.get('/tv/oauth', (req, res) => {
@@ -239,7 +276,7 @@ app.post('/tv/sessions/new/:id', (req, res) => {
     
       request.on('error', (e) => {
         console.log('[Error in new session POST request]\n>> ' + e)
-        res.endStatus(500)
+        res.sendStatus(500)
       })
 
       request.write(postData)
