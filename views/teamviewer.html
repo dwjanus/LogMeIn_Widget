@@ -122,13 +122,13 @@
           throw new Error(data.error)
         } else {
           teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
-          document.getElementById("teamviewer_code").innerHTML = `Session Code: ${teamviewer_context.session_data.code}`
-          return
+          var teamviewer_code = document.getElementById("teamviewer_code")
+          if (typeof(teamviewer_code) != 'undefined' && teamviewer_code != null) teamviewer_code.innerHTML = `Session Code: ${teamviewer_context.session_data.code}`
         }
       })
     .catch((e) => {
       console.log('teamviewer >>> Error caught at .catch() in createSession\n>> ' + e + '\n     >>> attempting to refresh token now...')
-      return refreshOauth()
+      refreshOauth()
     })
   }
 
@@ -137,7 +137,7 @@
   }
 
   function refreshOauth() {
-    return fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`)
+    fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`)
       .then((res) => res.json())
       .then((data) => {
         console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
