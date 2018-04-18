@@ -286,7 +286,8 @@ input:checked + .slider:before {
 #tech_session {
   background: #00a6e7 !important;
   text-shadow: none;
-  padding: 1px !important;
+  padding-top: 1px !important;
+  padding-bottom: 2px !important;
   height: 20px;
   width: 190px !important;
 }
