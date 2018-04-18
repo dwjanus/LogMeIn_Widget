@@ -279,7 +279,7 @@ app.post('/tv/sessions/new/:id', (req, res) => {
     
       request.on('error', (e) => {
         console.log('[Error in new session POST request]\n>> ' + e)
-        res.sendStatus(500)
+        res.send({error: e})
       })
 
       request.write(postData)
@@ -292,9 +292,9 @@ app.post('/tv/sessions/new/:id', (req, res) => {
 
 
 app.get('/tv/:id/oauth/', (req, res) => {
-  console.log(`[GET] /tv/oauth >>> id: ${req.params.id}`)
+  console.log(`[GET] /tv/:id/oauth >>> id: ${req.params.id}`)
 
-  let id = req.params.id
+  const id = req.params.id
 
   teamviewer_db.findOne({user: id}).then((found) => {
     if (found) {
@@ -327,19 +327,11 @@ app.get('/tv/:id/oauth/', (req, res) => {
           
           if (result.error) {
             console.log(`teamviewer >>> error: ${result.error_code}\n${result.error} -- ${result.error_description}`)
-            res.end()
+            res.send({error: result.error})
           } else {
-            let query = querystring.stringify({
-              access_token: result.access_token,
-              token_type: result.token_type,
-              expires_in: result.expires_in,
-              refresh_token: result.refresh_token,
-              user_id: req.query.state
-            })
-      
             let teamviewer = result
       
-            teamviewer_db.insert({user: req.query.state, teamviewer}) // this would be the Samanage account id
+            teamviewer_db.update({ user: id }, { teamviewer: teamviewer })
             res.send(teamviewer)
           }
         })

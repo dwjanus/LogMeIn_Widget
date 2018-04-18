@@ -136,16 +136,16 @@
         }
       })
     .catch((e) => {
-      console.log('teamviewer >>> Error caught at .catch() in createSession\n>> ' + e + '\n     >>> attempting to refresh token now...')
-      refreshOauth()
+      console.log('teamviewer >>> Error caught at .catch() in createSession\n>> ' + e + '\n>>>> attempting to refresh token now...')
+      return refreshOauth()
     })
   }
 
   function linkToTicket() {
     console.log('!! This is where we would call the SamanageApi !!')
     var message_area = document.getElementById("custom_message")
-    var comment_body = message_area.placeholder
-    if (message_area.innerHTML.length > 1) comment_body = message_area.innerHTML
+    var comment_body = message_area.innerHTML
+    if (message_area.innerHTML.length > 1) comment_body = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}`
 
     var comment_json = {
       comment: {
