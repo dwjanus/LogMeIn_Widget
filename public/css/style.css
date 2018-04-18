@@ -286,7 +286,7 @@ input:checked + .slider:before {
   background: #00bbff !important;
   text-shadow: none;
   padding: 1px !important;
-  height: 18px;
+  height: 19px;
 }
 
 #customer_session {
@@ -296,9 +296,8 @@ input:checked + .slider:before {
 }
 
 #custom_message {
-  display: inline-block;
   cursor: text;
   font-size: 11px;
-  text-align: start;
+  text-align: left;
   text-indent: 0%;
 }
