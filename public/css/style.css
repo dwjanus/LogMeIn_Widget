@@ -284,10 +284,11 @@ input:checked + .slider:before {
 }
 
 #tech_session {
-  background: #00bbff !important;
+  background: #00a6e7 !important;
   text-shadow: none;
   padding: 1px !important;
   height: 20px;
+  width: 190px !important;
 }
 
 #customer_session {
