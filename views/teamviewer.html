@@ -79,7 +79,7 @@
             </div>
         </div>
         
-        <div style="padding-top: 15px;">
+        <div style="padding-top: 5px; padding-bottom: 5px;">
             <div class="tv_buttons">
                 <button type="button" id="tech_session" class="btn session" onclick="window.open('${teamviewer_context.session_data.supporter_link}', '_blank');">
                     Go To Session
@@ -89,7 +89,7 @@
         </div>
 
         <div class="teamviewer_custom_msg_area">
-            <textarea name="Custom Message" id="custom_message" cols="50" rows="6"
+            <textarea name="Custom Message" id="custom_message" cols="30" rows="6" style="resize:none; height:100px; width:250px;"
               placeholder="Please use the link below to connect to your remote support session\n\n${teamviewer_context.session_data.end_customer_link}">
             </textarea>
         </div>

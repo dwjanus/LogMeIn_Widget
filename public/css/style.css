@@ -80,7 +80,7 @@ input:focus {
 .btn {
   float: left;
   width: 110px;
-  padding: 8px;
+  padding: 5px;
   background: #00aa56;
   border: 1px solid rgba(0,0,0,.1);
   border-width: 1px 1px 3px;
@@ -280,4 +280,9 @@ input:checked + .slider:before {
   width: 25px;
   padding: 0px !important;
   background-color: #eee;
+}
+
+#tech_session {
+  background: #00bbff !important;
+  height: 10px;
 }
