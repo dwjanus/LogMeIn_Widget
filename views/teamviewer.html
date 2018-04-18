@@ -74,32 +74,32 @@
             <p id="teamviewer_code">Session Code: ${teamviewer_context.session_data.code}</p> 
             <div class="btn_item">
                 <button id="new_code_btn">
-                    <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon2.png" type="image/png" alt="New Code" width="13px;" height=13px;" onclick="createSession();" />
+                    <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon2.png" type="image/png" alt="New Code" width="12px;" height=12px;" onclick="createSession();" />
                 </button>
             </div>
         </div>
         
-        <div style="padding-top: 5px; padding-bottom: 5px;">
+        <div style="margin-top: 5px; margin-bottom: 10px;">
             <div class="tv_buttons">
                 <button type="button" id="tech_session" class="btn session" onclick="window.open('${teamviewer_context.session_data.supporter_link}', '_blank');">
                     Go To Session 
-                    <img src="https://samanage-widgets.herokuapp.com/images/new_window-512.png" height="10px;" width="10px;" style="filter:invert(100%);"/>
+                    <img src="https://samanage-widgets.herokuapp.com/images/new_window.png" height="12px;" width="12px;" style="filter:invert(100%);"/>
                     <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${teamviewer_context.session_data.supporter_link}</span>
                 </button>
             </div>
         </div>
 
         <div class="teamviewer_custom_msg_area">
-            <textarea name="Custom Message" id="custom_message" cols="30" rows="6" style="resize:none; height:100px; width:250px;"
+            <textarea id="custom_message" cols="40" rows="6" style="resize:none; height:100px; width:250px;"
                 placeholder="Please use the link below to connect to your remote support session\n\n${teamviewer_context.session_data.end_customer_link}"
                 onfocus="this.placeholder=''" onblur="this.placeholder='Please use the link below to connect to your remote support session\n\n${teamviewer_context.session_data.end_customer_link}'">
             </textarea>
         </div>
 
-        <div style="padding-top: 15px;">
+        <div style="margin-top: 5px;">
             <div class="tv_buttons"> 
                 <button type="button" id="customer_session" class="btn session" onclick="linkToTicket();">
-                    <img src="https://samanage-widgets.herokuapp.com/images/chevron-left.png" height="10px;" width="10px;" style="float:left;"/>
+                    <img src="https://samanage-widgets.herokuapp.com/images/chevron-left.png" height="12px;" width="10px;" style="float:left;"/>
                     Post Customer Link to ticket
                     <span class="tooltip" id="customer_link_tt">${teamviewer_context.session_data.end_customer_link}</span>
                 </button>
