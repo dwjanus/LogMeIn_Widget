@@ -287,7 +287,7 @@ input:checked + .slider:before {
   background: #00a6e7 !important;
   text-shadow: none;
   padding-top: 1px !important;
-  padding-bottom: 2px !important;
+  padding-bottom: 3px !important;
   height: 20px;
   width: 190px !important;
 }
