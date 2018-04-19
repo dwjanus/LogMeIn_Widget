@@ -60,11 +60,25 @@
   }
 
   function toggleAuthorizedView() {
+    var login_view = document.getElementById('auth_buttons')
+    var authed_view = document.createElement('div')
 
+    authed_view.className = 'authed_view'
+    authed_view.id = 'authed_view'
+    authed_view.innerHTML = `
+      <div class="generate_session">
+          <button id="generate_button" class="btn session" onclick="sessionView();">
+              Generate Session Code
+          </button>
+      </div>
+    `
 
+    login_view.parentNode.replaceChild(authed_view, login_view)
+  }
 
+  function sessionView() {
     createSession().then(() => {
-      var login_view = document.getElementById('auth_buttons')
+      var authed_view = document.getElementById('authed_view')
       var widget_view = document.createElement('div')
 
       widget_view.className = 'widget_view'
@@ -103,7 +117,7 @@
             </div>
         </div>
       `
-      login_view.parentNode.replaceChild(widget_view, login_view)
+      authed_view.parentNode.replaceChild(widget_view, authed_view)
     }).catch((e) => {
       console.log('teamviewer >>> Error caught at createSession().catch() in toggleAuth\n>> ' + e)
     })
