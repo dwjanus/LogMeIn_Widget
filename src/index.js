@@ -379,8 +379,30 @@ app.post('/logmein/data', (req, res) => {
   console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
 
   // parse data and post to samanage ticket
+  const data = req.body
+  const comment_body = `
+    ~ LogMeIn Post-Session Data ~\n
+      Session: ${data.SessionID}\n
+      Technician: ${data.TechName} - ${data.TechId}\n
+      Platform: ${data.Platform}\n
+      WorkTime: ${data.WorkTime}\n
+      Notes: ${data.Notes}\n\n
+      ChatLog:\n${data.ChatLog}\n
+  `
 
+  const comment_json = {
+    comment: {
+      body: comment_body,
+      is_private: true
+    }
+  }
 
+  console.log(`logmein (end of session) >>> about to post comment:\n${comment_body}`)
+
+  // callSamanageApi((response) => {
+  //   console.log(util.inspect(response)) 
+  // }, 'POST', `https://api.samanage.com/incidents/${data.Tracking0}/comments.json`, comment_json)
+  
   res.sendStatus(200)
 })
 

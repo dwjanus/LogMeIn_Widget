@@ -116,7 +116,7 @@
       end_customer: {
         name: teamviewer_context.requester.name
       },
-      waiting_message: 'Please wait while your Service Agent connects to the session',
+      waiting_message: 'Please wait while your Service Agent connects to the session', // this should be configurable for the customer later
       custom_api: `{ "incident_id": ${teamviewer_context.context_id} }`
     }
 
@@ -133,6 +133,12 @@
           teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
           var teamviewer_code = document.getElementById("teamviewer_code")
           if (typeof(teamviewer_code) != 'undefined' && teamviewer_code != null) teamviewer_code.innerHTML = `Session Code: ${teamviewer_context.session_data.code}`
+          var tech_session = document.getElementById("tech_session")
+          if (typeof(tech_session) != 'undefined' && tech_session != null) tech_session.onclick = `"window.open('${teamviewer_context.session_data.supporter_link}', '_blank');"`
+          var tech_link_tt = document.getElementById("tech_link_tt")
+          if (typeof(tech_link_tt) != 'undefined' && tech_link_tt != null) tech_link_tt.innerHTML = `${teamviewer_context.session_data.supporter_link}`
+          var customer_link_tt = document.getElementById("customer_link_tt")
+          if (typeof(customer_link_tt) != 'undefined' && customer_link_tt != null) customer_link_tt.innerHTML = `${teamviewer_context.session_data.end_customer_link}`
         }
       })
     .catch((e) => {
@@ -164,4 +170,4 @@
       }).catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
   }
 </script>
-<script type="text/javascript" src="https://integratedchat.teamviewer.com/widget"></script>
+<!-- <script type="text/javascript" src="https://integratedchat.teamviewer.com/widget"></script> -->
