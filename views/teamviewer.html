@@ -4,7 +4,7 @@
             <h2>TeamViewer Remote Session</h2>
         </div>
 
-        <div id="auth_buttons">
+        <div id="tv_auth_buttons">
             <div style="height:65px;">
                 <button type="button" class="btn" form="tv_auth" onclick="teamviewer();">Install</button>
                 <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide();">Hide Widget</button>
@@ -26,7 +26,6 @@
     if (response.context_type == 'Incident') {
       teamviewer_context = response
       context_id = response.context_id
-      // platformWidgetHelper.show()
     }
   }
 
@@ -38,7 +37,7 @@
       teamviewer_context['tv_data'] = data
       console.log('teamviewer >> context object:\n' + JSON.stringify(teamviewer_context))
       if (teamviewer_context.tv_data.tokens) {
-        toggleAuthorizedView()
+        toggleTeamviewerAuthorizedView()
       }
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
@@ -46,10 +45,10 @@
   function teamviewer() {
     console.log('>>> teamviewer() called')
 
-    launchAuth(teamviewer_context.tv_data.tv_id)
+    launchTeamviewerAuth(teamviewer_context.tv_data.tv_id)
   }
 
-  function launchAuth(client_id) {
+  function launchTeamviewerAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
     var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}&state=${teamviewer_context.assignee.user_id}`
 
@@ -59,26 +58,26 @@
     window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
   }
 
-  function toggleAuthorizedView() {
-    var login_view = document.getElementById('auth_buttons')
-    var authed_view = document.createElement('div')
+  function toggleTeamviewerAuthorizedView() {
+    var teamviewer_login_view = document.getElementById('tv_auth_buttons')
+    var teamviewer_teamviewer_authed_view = document.createElement('div')
 
-    authed_view.className = 'authed_view'
-    authed_view.id = 'authed_view'
-    authed_view.innerHTML = `
-      <div class="generate_session">
-          <button id="generate_button" class="btn session" onclick="sessionView();">
+    teamviewer_authed_view.className = 'teamviewer_authed_view'
+    teamviewer_authed_view.id = 'teamviewer_authed_view'
+    teamviewer_authed_view.innerHTML = `
+      <div class="teamviewer_generate_session">
+          <button id="teamviewer_generate_button" class="btn session" onclick="sessionView();">
               Generate Session Code
           </button>
       </div>
     `
 
-    login_view.parentNode.replaceChild(authed_view, login_view)
+    teamviewer_login_view.parentNode.replaceChild(teamviewer_authed_view, teamviewer_login_view)
   }
 
   function sessionView() {
     createSession().then(() => {
-      var authed_view = document.getElementById('authed_view')
+      var teamviewer_authed_view = document.getElementById('teamviewer_authed_view')
       var widget_view = document.createElement('div')
 
       widget_view.className = 'widget_view'
@@ -117,7 +116,7 @@
             </div>
         </div>
       `
-      authed_view.parentNode.replaceChild(widget_view, authed_view)
+      teamviewer_authed_view.parentNode.replaceChild(widget_view, teamviewer_authed_view)
     }).catch((e) => {
       console.log('teamviewer >>> Error caught at createSession().catch() in toggleAuth\n>> ' + e)
     })
@@ -153,6 +152,8 @@
           if (typeof(tech_link_tt) != 'undefined' && tech_link_tt != null) tech_link_tt.innerHTML = `${teamviewer_context.session_data.supporter_link}`
           var customer_link_tt = document.getElementById("customer_link_tt")
           if (typeof(customer_link_tt) != 'undefined' && customer_link_tt != null) customer_link_tt.innerHTML = `${teamviewer_context.session_data.end_customer_link}`
+          var custom_message = document.getElementById("custom_message")
+          if (typeof(custom_message) != 'undefined' && custom_message != null) custom_message.innerHTML = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}`
         }
       })
     .catch((e) => {

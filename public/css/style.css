@@ -5,6 +5,8 @@ html {
 body {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
   align-items: flex-start;
   justify-content: center;
   min-height: 100%;
@@ -26,16 +28,17 @@ h2 {
   background: #fff;
   border-radius: 5px;
   border: #1980b9 2px solid;
-  padding: 1em;
-  width: 300px;
+  padding: 10px;
+  width: 400px !important;
   margin: 10px;
   text-align: center;
+  flex-shrink: 0;
   height: auto !important;
 }
 
 .form-header {
   width: 100%;
-  max-width: 300px;
+  max-width: 370px;
 }
 
 form {
@@ -57,7 +60,7 @@ label {
 }
 
 input {
-  width: 225px;
+  width: 300px;
   padding: 8px;
   margin: 3px;
   border: 1px solid rgba(0,0,0,.1);
@@ -79,7 +82,7 @@ input:focus {
 
 .btn {
   float: left;
-  width: 110px;
+  width: 145px;
   padding: 5px;
   background: #00aa56;
   border: 1px solid rgba(0,0,0,.1);
@@ -112,14 +115,14 @@ input:focus {
 
 #showbtn {
   float: center;
-  width: 200px;
+  width: 280px;
   background: #666;
   margin: 10px;
 }
 
 .session {
   float: none;
-  width: 210px !important;
+  width: 280px !important;
   margin-top: 3px;
 }
 
@@ -138,10 +141,10 @@ input:focus {
 }
 
 .success #pin {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 600;
-  margin-top: 16px;
-  margin-bottom: 18px;
+  margin-top: 15px;
+  margin-bottom: 17px;
   letter-spacing: 2px;
 }
 
@@ -218,7 +221,7 @@ input:checked + .slider:before {
 
 .tv_buttons .tooltip {
   visibility: hidden;
-  width: 230px;
+  width: 300px;
   background-color: #555;
   color: #fff;
   text-align: center;
@@ -229,7 +232,7 @@ input:checked + .slider:before {
   z-index: 1;
   bottom: 125%;
   left: 45%;
-  margin-left: -100px;
+  margin-left: -133px;
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -253,8 +256,8 @@ input:checked + .slider:before {
 .teamviewer_session {
   display: grid;
   grid-gap: 0px;
-  grid-template-columns: 200px 30px;
-  width: 265px;
+  grid-template-columns: 270px 40px;
+  width: 345px;
   text-align: center;
   padding-right: 10px;
   padding-left: 10px;
@@ -288,8 +291,8 @@ input:checked + .slider:before {
   text-shadow: none;
   padding-top: 1px !important;
   padding-bottom: 3px !important;
-  height: 20px;
-  width: 190px !important;
+  height: 24px;
+  width: 220px !important;
 }
 
 #customer_session {
@@ -300,10 +303,11 @@ input:checked + .slider:before {
 
 #custom_message {
   cursor: text;
-  font-size: 11px;
+  font-size: 12px;
+  font-family: -apple-system, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: start;
   text-indent: 0%;
   resize: none;
   height: 80px;
-  width: 250px;
+  width: 325px;
 }

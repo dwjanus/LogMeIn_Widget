@@ -1,0 +1,187 @@
+<div class="container" id="harvest_widget_auth" style="visibility: visible;">
+  <div name="harvest_auth" id="harvest_auth">
+      <div class="form-header">
+          <h2>Harvest Time Tracking</h2>
+      </div>
+
+      <div id="harvest_auth_buttons">
+          <div style="height:65px;">
+              <button type="button" class="btn session" form="harvest_auth" onclick="harvest();">Install</button>
+          </div>   
+      </div>
+  </div>
+</div>
+
+<script>
+  var harvest_context = {}
+  var context_id
+  var samanage_times = [ // https://devinstestaroo.samanage.com/incidents/24269255/time_tracks.json
+    {
+      "id": 1923810,
+      "name": "Did some of the first stuff",
+      "href": "https://devinstestaroo.samanage.com/incidents/24269255/time_tracks/1923810.json",
+      "created_at": "2018-04-19T19:25:46.000Z",
+      "updated_at": "2018-04-19T19:25:46.000Z",
+      "minutes": 120,
+      "parent": {
+        "id": 24269255,
+        "class": "incident",
+        "href": "https://devinstestaroo.samanage.com/incidents/24269255.json"
+      },
+      "creator": {
+        "id": 2821593,
+        "name": "Devin",
+        "disabled": false,
+        "title": "Overlord",
+        "email": "devin.janus+admin@samanage.com",
+        "created_at": "2017-12-20T21:48:45.000Z",
+        "last_login": "2018-04-06T19:10:51.000Z",
+        "phone": "919-586-0000",
+        "mobile_phone": ""
+      },
+    },
+    {
+      "id": 1923811,
+      "name": "did the middle stuff",
+      "href": "https://devinstestaroo.samanage.com/incidents/24269255/time_tracks/1923811.json",
+      "created_at": "2018-04-19T19:26:00.000Z",
+      "updated_at": "2018-04-19T19:26:00.000Z",
+      "minutes": 90,
+      "parent": {
+        "id": 24269255,
+        "class": "incident",
+        "href": "https://devinstestaroo.samanage.com/incidents/24269255.json"
+      },
+      "creator": {
+        "id": 2821593,
+        "name": "Devin",
+        "disabled": false,
+        "title": "Overlord",
+        "email": "devin.janus+admin@samanage.com",
+        "created_at": "2017-12-20T21:48:45.000Z",
+        "last_login": "2018-04-06T19:10:51.000Z",
+        "phone": "919-586-0000",
+        "mobile_phone": ""
+      }
+    },
+    {
+      "id": 1923815,
+      "name": "did the last stuff",
+      "href": "https://devinstestaroo.samanage.com/incidents/24269255/time_tracks/1923815.json",
+      "created_at": "2018-04-19T19:26:11.000Z",
+      "updated_at": "2018-04-19T19:26:11.000Z",
+      "minutes": 90,
+      "parent": {
+        "id": 24269255,
+        "class": "incident",
+        "href": "https://devinstestaroo.samanage.com/incidents/24269255.json"
+      },
+      "creator": {
+        "id": 2821593,
+        "name": "Devin",
+        "disabled": false,
+        "title": "Overlord",
+        "email": "devin.janus+admin@samanage.com",
+        "created_at": "2017-12-20T21:48:45.000Z",
+        "last_login": "2018-04-06T19:10:51.000Z",
+        "phone": "919-586-0000",
+        "mobile_phone": ""
+      }
+    }
+  ]
+
+  setlocal = (response) => {
+    console.log('harvest >> local storage set: \n> ' + JSON.stringify(response))
+  }
+
+  contextRecievedHandler = (response) => {
+    if (response.context_type == 'Incident') {
+      harvest_context = response
+      context_id = response.context_id
+    }
+  }
+
+  platformWidgetHelper.getContextObject(contextRecievedHandler)
+
+  fetch(`/harvest/data/${harvest_context.assignee.user_id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      harvest_context['harvest_data'] = data
+      console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
+      if (harvest_context.harvest_data.tokens) {
+        toggleAuthorizedView()
+      }
+    })
+  .catch(e => console.log(`>> ERROR >> ${e}`))
+
+  function harvest() {
+    console.log('>>> harvest() called')
+
+    launchHarvestAuth(harvest_context.harvest_data.harvest_id)
+  }
+
+  function launchHarvestAuth(client_id) {
+    var redirect = "https://samanage-widgets.herokuapp.com/harvest/oauth"
+    var url = `https://id.getharvest.com/oauth2/authorize?client_id=${client_id}&rresponse_type=code&state=${harvest_context.assignee.user_id}`
+
+    console.log(`harvest >>> client_id: ${client_id}`)
+    console.log(`harvest >>> url: ${url}`)
+
+    window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
+  }
+
+  function toggleHarvestAuthorizedView() {
+    var harvest_login_view = document.getElementById('harvest_auth_buttons')
+    var harvest_authed_view = document.createElement('div')
+    var samanage_times_table = document.createElement('table')
+
+    harvest_authed_view.className = 'harvest_authed_view'
+    harvest_authed_view.id = 'harvest_authed_view'
+    samanage_times_table.className = 'samanage_times_table'
+    samanage_times_table.id = 'samanage_times_table'
+
+    // https://devinstestaroo.samanage.com/incidents/24269255/time_tracks.json
+    samanage_times_table.innerHTML = `    
+      <tr>
+          <th>Created At</th>
+          <th>Time Spent</th>
+          <th>Notes</th>
+      </tr>
+    `
+    
+
+    for (var i = 0; i < samanage_times.length; i++) {
+      var tr = samanage_times_table.insertRow(i)
+      tr.innerHTML = `
+          <td>${samanage_times_table[i].created_at}</td>
+          <td>${samanage_times_table[i].minutes} minutes</td>
+          <td>${samanage_times_table[i].name}</td>
+      `
+      samanage_times_table.insertRow(tr)
+    }
+
+    harvest_authed_view.innerHTML = `
+      <div class="samanage_table">
+          ${samanage_times_table}
+      </div>
+      
+      <div class="harvest_send_time">
+          <button id="harvest_send_time_button" class="btn session" onclick="harvestSendTime();">
+              Send Time Tracking to Harvest
+          </button>
+      </div>
+    `
+
+    harvest_login_view.parentNode.replaceChild(authed_view, harvest_login_view)
+  }
+
+  
+  function getSamanageTimes() {
+
+  }
+
+
+  function refreshOauth() {
+
+  }
+</script>

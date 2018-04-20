@@ -12,8 +12,9 @@ import url from 'url'
 const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
 const db = monk(process.env.MONGODB_URI)
-const teamviewer_db = db.get('teamviewer') // used for storage of teamviewer oauth data
+const teamviewer_db = db.get('teamviewer')
 const logmein_db = db.get('logmein')
+const harvest_db = db.get('harvest')
 
 
 if (!port) {
@@ -45,7 +46,8 @@ app.get('/', (req, res) => {
     partials: {
       logmein: 'logmein_new.html',
       bomgar: 'bomgar.html',
-      harvest: 'harvest.html',
+      harvest_tasks: 'harvest_tasks.html',
+      harvest_time: 'harvest_time.html',
       teamviewer: 'teamviewer.html'
     }
   })
@@ -381,13 +383,13 @@ app.post('/logmein/data', (req, res) => {
   // parse data and post to samanage ticket
   const data = req.body
   const comment_body = `
-    ~ LogMeIn Post-Session Data ~\n
-      Session: ${data.SessionID}\n
-      Technician: ${data.TechName} - ${data.TechId}\n
-      Platform: ${data.Platform}\n
-      WorkTime: ${data.WorkTime}\n
-      Notes: ${data.Notes}\n\n
-      ChatLog:\n${data.ChatLog}\n
+    ~ LogMeIn Post-Session Data ~
+      Session: ${data.sessionid}
+      Technician: ${data.techname} - ${data.techid}
+      Platform: ${data.platform}
+      WorkTime: ${data.worktime}
+      Notes: ${data.notes}\n
+      ChatLog:\n${data.chatlog}
   `
 
   const comment_json = {
@@ -401,11 +403,115 @@ app.post('/logmein/data', (req, res) => {
 
   // callSamanageApi((response) => {
   //   console.log(util.inspect(response)) 
-  // }, 'POST', `https://api.samanage.com/incidents/${data.Tracking0}/comments.json`, comment_json)
+  // }, 'POST', `https://api.samanage.com/incidents/${data.tracking0}/comments.json`, comment_json)
   
   res.sendStatus(200)
 })
 
+
+//                       //
+// -----> Harvest <----- //
+//                       //
+app.get('/harvest/oauth', (req, res) => {
+  console.log('[GET] /harvest/oauth')
+  console.log(`>>> code: ${req.query.code}`)
+  console.log(`>>> state: ${req.query.state}`)
+
+  let code = req.query.code
+  let postData = {
+    grant_type: 'authorization_code',
+    code: code,
+    client_id: process.env.HARVEST_ID,
+    client_secret: process.env.HARVEST_SECRET
+  }
+
+  let options = {
+    host: 'id.getharvest.com',
+    path: '/api/v2/oauth2/token',
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Content-Length': postData.length,
+      'User-Agent': "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
+    }
+  }
+
+  const request = https.request(options, (response) => {
+    let result = ''
+
+    response.on('data', (chunk) => {
+      result += chunk
+    })
+
+    response.on('end', () => {
+      console.log(`>>> harvest auth success!\n${util.inspect(result)}`)
+      result = JSON.parse(result)
+
+      let query = querystring.stringify({
+        access_token: result.access_token,
+        token_type: result.token_type,
+        expires_in: result.expires_in,
+        refresh_token: result.refresh_token,
+        user_id: req.query.state
+      })
+
+      let harvest = result
+
+      harvest_db.findOne({user: req.query.state}).then((found) => {
+        if (!found) {
+          harvest_db.insert({user: req.query.state, harvest})
+        } else {
+          console.log('> user already has harvest authentication')
+        }
+
+        res.redirect('/harvest/authorized?' + query)
+      })
+    })
+
+    response.on('error', (e) => {
+      console.log('[error in post response]' + e)
+    })
+  })
+
+  request.on('error', (e) => {
+    console.log('[error in post request] >> ' + e)
+  })
+
+  request.write(postData)
+  request.end()
+})
+
+
+app.get('/harvest/authorized', (req, res, next) => {
+  console.log('[GET] /harvest/authorized -->\n' + util.inspect(req.query))
+      
+  const options = {
+    root: path.join(__dirname, '../public/html/')
+  }
+
+  res.sendFile('oauthcallback.html', options, (err) => {
+    if (err) next(err)
+    else (console.log('...sending oauthcallback page'))
+  })
+})
+
+
+app.get('/harvest/data/:id', (req, res) => {
+  console.log('\n[GET] /harvest/data ---> user: ' + req.params.id)
+
+  let id = req.params.id
+  let response_json = {
+    harvest_id: process.env.HARVEST_ID
+  }
+
+  harvest_db.findOne({user: id}).then((found) => {
+    if (found) {
+      console.log('[GET] /harvest/data ---> teamveiwer tokens found:\n' + util.inspect(found))
+      response_json['tokens'] = found.harvest
+    }
+    res.send(response_json)
+  })
+})
 
 
 
