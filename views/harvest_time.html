@@ -6,7 +6,7 @@
 
       <div id="harvest_auth_buttons">
           <div style="height:65px;">
-              <button type="button" class="btn session" form="harvest_auth" onclick="harvest();">Install</button>
+              <button type="button" class="btn session" form="harvest_auth" onclick="harvest_time();">Install</button>
           </div>   
       </div>
   </div>
@@ -114,8 +114,8 @@
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
 
-  function harvest() {
-    console.log('>>> harvest() called')
+  function harvest_time() {
+    console.log('>>> harvest_time() called')
 
     launchHarvestAuth(harvest_context.harvest_data.harvest_id)
   }

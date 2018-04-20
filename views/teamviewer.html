@@ -65,7 +65,7 @@
     teamviewer_authed_view.id = 'teamviewer_authed_view'
     teamviewer_authed_view.innerHTML = `
       <div class="teamviewer_generate_session">
-          <button id="teamviewer_generate_button" class="btn session" onclick="sessionView();">
+          <button id="teamviewer_generate_button" class="btn session" onclick="teamviewerSessionView();">
               Generate Session Code
           </button>
       </div>
@@ -74,8 +74,8 @@
     teamviewer_login_view.parentNode.replaceChild(teamviewer_authed_view, teamviewer_login_view)
   }
 
-  function sessionView() {
-    createSession().then(() => {
+  function teamviewerSessionView() {
+    createTeamveiwerSession().then(() => {
       var teamviewer_authed_view = document.getElementById('teamviewer_authed_view')
       var tv_widget_view = document.createElement('div')
 
@@ -121,7 +121,7 @@
     })
   }
 
-  function createSession() {
+  function createTeamViewerSession() {
     let body_json = {
       groupname: "Samanage",
       description:  `Incident #${teamviewer_context.number} - ${teamviewer_context.description}`,
@@ -181,7 +181,7 @@
       .then((res) => res.json())
       .then((data) => {
         console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
-        return createSession()
+        return createTeamviewerSession()
       })
       .catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
   }

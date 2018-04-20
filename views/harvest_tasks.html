@@ -29,7 +29,7 @@
             </div>
         </form>
           
-          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="harvest()" style="width: 220px; float: none;">Create Project in Harvest</button>
+          <button type="button" class="btn" id="create_project" form="harvest_form" onclick="harvest_tasks()" style="width: 220px; float: none;">Create Project in Harvest</button>
           <!-- <button type="button" class="btn" id="send_time" form="harvest_form" onclick="update_time()">Update Time Tracking in Harvest</button> -->
     </div>
 
@@ -89,9 +89,9 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  function harvest() {
+  function harvest_tasks() {
     var tasks = document.getElementById("send_tasks").value
-    var client // get from data fetch
+    var client = document.getElementById("harvest_client_id").value
 
     create_project(client).then((id) => { //.then(assign_project)
       if (tasks) {
