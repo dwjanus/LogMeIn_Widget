@@ -79,8 +79,8 @@
       var teamviewer_authed_view = document.getElementById('teamviewer_authed_view')
       var tv_widget_view = document.createElement('div')
 
-      tv_widget_view.className = 'widget_view'
-      tv_widget_view.id = 'widget_view'
+      tv_widget_view.className = 'tv_widget_view'
+      tv_widget_view.id = 'tv_widget_view'
       tv_widget_view.innerHTML = `
         <div class="teamviewer_session"> 
             <p id="teamviewer_code">Session Code: ${teamviewer_context.session_data.code}</p> 
@@ -140,7 +140,8 @@
       .then((data) => {
         console.log(`>>> response data: ${JSON.stringify(data)}`)
         if (data.error) {
-          throw new Error(data.error)
+          if (data.error == "token_expired") return refreshOauth()
+          else throw new Error(data.error)
         } else {
           teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
           var teamviewer_code = document.getElementById("teamviewer_code")
@@ -157,7 +158,6 @@
       })
     .catch((e) => {
       console.log('teamviewer >>> Error caught in createSession\n>> ' + e + '\n>>>> attempting to refresh token now...')
-      return refreshOauth()
     })
   }
 
@@ -177,13 +177,14 @@
 
   function refreshOauth() {
     console.log('teamviewer >>> refreshing oauth')
-    fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`).then(createSession()).catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
-      // .then((res) => res.json())
-      // .then((data) => {
-      //   console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
-      //   // teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
-      // })
-      // .catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
+    return fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
+        return createSession()
+        // teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
+      })
+      .catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
   }
 </script>
 <!-- <script type="text/javascript" src="https://integratedchat.teamviewer.com/widget"></script> -->
