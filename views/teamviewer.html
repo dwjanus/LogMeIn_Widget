@@ -140,7 +140,7 @@
       .then((data) => {
         console.log(`>>> response data: ${JSON.stringify(data)}`)
         if (data.error) {
-          if (data.error == "token_expired") return refreshOauth()
+          if (data.error == "token_expired") return refreshTeamviewerOauth()
           else throw new Error(data.error)
         } else {
           teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
@@ -175,7 +175,7 @@
     }
   }
 
-  function refreshOauth() {
+  function refreshTeamviewerOauth() {
     console.log('teamviewer >>> refreshing oauth')
     return fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`)
       .then((res) => res.json())
