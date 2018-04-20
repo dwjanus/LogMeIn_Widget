@@ -109,7 +109,7 @@
       harvest_context['harvest_data'] = data
       console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
       if (harvest_context.harvest_data.tokens) {
-        toggleAuthorizedView()
+        toggleHarvestAuthorizedView()
       }
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
