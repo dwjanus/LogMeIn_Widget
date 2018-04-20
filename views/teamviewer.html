@@ -6,8 +6,7 @@
 
         <div id="tv_auth_buttons">
             <div style="height:65px;">
-                <button type="button" class="btn" form="tv_auth" onclick="teamviewer();">Install</button>
-                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide();">Hide Widget</button>
+                <button type="button" class="btn session" form="tv_auth" onclick="teamviewer();">Install</button>
             </div>   
         </div>
         
@@ -118,7 +117,7 @@
       `
       teamviewer_authed_view.parentNode.replaceChild(widget_view, teamviewer_authed_view)
     }).catch((e) => {
-      console.log('teamviewer >>> Error caught at createSession().catch() in toggleAuth\n>> ' + e)
+      console.log('teamviewer >>> createSession() Error caught in toggleAuth\n>> ' + e)
     })
   }
 
@@ -157,8 +156,8 @@
         }
       })
     .catch((e) => {
-      console.log('teamviewer >>> Error caught at .catch() in createSession\n>> ' + e + '\n>>>> attempting to refresh token now...')
-      return refreshOauth()
+      console.log('teamviewer >>> Error caught in createSession\n>> ' + e + '\n>>>> attempting to refresh token now...')
+      refreshOauth()
     })
   }
 

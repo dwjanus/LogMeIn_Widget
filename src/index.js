@@ -313,7 +313,8 @@ app.get('/tv/:id/oauth/', (req, res) => {
         path: '/api/v1/oauth2/token',
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': postData.length
         }
       }
 
