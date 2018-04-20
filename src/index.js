@@ -330,7 +330,7 @@ app.get('/tv/:id/oauth/', (req, res) => {
           
           if (result.error) {
             console.log(`teamviewer >>> error: ${result.error_code}\n${result.error} -- ${result.error_description}`)
-            res.send({error: result.error})
+            res.send(result)
           } else {
             let teamviewer = result
       
