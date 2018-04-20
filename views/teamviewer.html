@@ -157,7 +157,7 @@
       })
     .catch((e) => {
       console.log('teamviewer >>> Error caught in createSession:\n>>' + e)
-      if (data.error == "token_expired") refreshTeamviewerOauth()
+      if (data.error == "token_expired") return refreshTeamviewerOauth()
     })
   }
 
@@ -177,12 +177,11 @@
 
   function refreshTeamviewerOauth() {
     console.log('teamviewer >>> refreshing oauth')
-    fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`)
+    return fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`)
       .then((res) => res.json())
       .then((data) => {
         console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
-        createSession()
-        // teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
+        return createSession()
       })
       .catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
   }

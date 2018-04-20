@@ -334,7 +334,7 @@ app.get('/tv/:id/oauth/', (req, res) => {
           } else {
             let teamviewer = result
       
-            teamviewer_db.update({ user: id }, { teamviewer: teamviewer })
+            teamviewer_db.update({ user: id }, { user: id, teamviewer: teamviewer })
             res.send(teamviewer)
           }
         })
