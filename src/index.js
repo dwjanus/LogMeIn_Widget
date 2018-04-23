@@ -67,7 +67,10 @@ app.post('/callExternalApi', (req, res) => {
     method: req.body.method
   }
 
-  if (url_parsed.headers) options['headers'] = url_parsed.headers
+  if (req.body.payload.headers) {
+    options['headers'] = req.body.payload.headers
+    delete req.body.payload.headers
+  }
 
   const request = https.request(options, (response) => {
     let result = ''
@@ -87,7 +90,7 @@ app.post('/callExternalApi', (req, res) => {
     })
   })
   
-  if (req.body.payload !== null) request.write(req.body.payload)
+  if ((req.body.payload !== null) && (options.method == 'POST' || 'PUT')) request.write(req.body.payload)
 
   request.on('error', (e) => {
     console.log('[Error in new session POST request]\n>> ' + e)
