@@ -199,7 +199,7 @@
       "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
     })
 
-    platformWidgetHelper.callSamanageAPI(getHarvestProjects, 'GET', projects_url, body)
+    platformWidgetHelper.callSamanageAPI(getHarvestProjects, 'GET', projects_url, auth)
   }
 
   getHarvestProjects = (response) => {
