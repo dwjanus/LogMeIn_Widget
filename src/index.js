@@ -477,7 +477,7 @@ app.get('/harvest/oauth', (req, res) => {
     console.log('[error in post request] >> ' + e)
   })
 
-  request.write(postData)
+  request.write(JSON.stringify(postData))
   request.end()
 })
 
