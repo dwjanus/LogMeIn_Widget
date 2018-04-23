@@ -24,6 +24,22 @@ h2 {
   font-size: 19px;
 }
 
+table {
+  width: 95%;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 1px;
+  font-size: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
 .container {
   background: #fff;
   border-radius: 5px;
@@ -311,3 +327,4 @@ input:checked + .slider:before {
   height: 80px;
   width: 325px;
 }
+

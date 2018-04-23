@@ -141,6 +141,11 @@
       </div>
       
       <div class="harvest_send_time">
+          <form id="harvest_time_form">
+
+
+          </form>
+
           <button id="harvest_send_time_button" class="btn session" onclick="harvestSendTime();">
               Send Time Tracking to Harvest
           </button>
@@ -173,12 +178,16 @@
     var harvest_login_view = document.getElementById('harvest_auth_buttons')
     harvest_login_view.parentNode.replaceChild(harvest_authed_view, harvest_login_view)
     document.getElementById('samanage_table').appendChild(samanage_times_table)
-
   }
 
   
   function getSamanageTimes() {
 
+  }
+
+  function harvestSendTime() {
+    // post request to harvest timesheets api --> create via Duration
+    // params to send: project_id, task_id, spent_date, hours, notes, external reference
   }
 
 </script>
