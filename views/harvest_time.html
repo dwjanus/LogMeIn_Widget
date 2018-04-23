@@ -153,9 +153,9 @@
     for (var i = 0; i < samanage_times.length; i++) {
       var tr = samanage_times_table.insertRow(i)
       tr.innerHTML = `
-          <td>${samanage_times_table[i].created_at}</td>
-          <td>${samanage_times_table[i].minutes} minutes</td>
-          <td>${samanage_times_table[i].name}</td>
+          <td>${samanage_times[i].created_at}</td>
+          <td>${samanage_times[i].minutes} minutes</td>
+          <td>${samanage_times[i].name}</td>
       `
       samanage_times_table.insertRow(tr)
     }
