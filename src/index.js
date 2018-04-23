@@ -65,9 +65,12 @@ app.post('/callExternalApi', (req, res) => {
     method: req.body.method
   }
 
-  if (req.body.payload.headers !== null) {
-    options['headers'] = req.body.payload.headers
-    delete req.body.payload.headers
+  let payload = (JSON.parse(req.body.payload))
+
+  if (payload.headers !== null) {
+    options['headers'] = payload.headers
+    delete payload.headers
+    payload = JSON.stringify(payload)
   }
 
   console.log(`callExternalApi options:\n${util.inspect(options)}`)
@@ -90,7 +93,7 @@ app.post('/callExternalApi', (req, res) => {
     })
   })
   
-  if ((req.body.payload !== null) && (options.method == 'POST' || 'PUT')) request.write(req.body.payload)
+  if ((payload !== null) && (options.method == 'POST' || 'PUT')) request.write(payload)
 
   request.on('error', (e) => {
     console.log('[Error in new session POST request]\n>> ' + e)
