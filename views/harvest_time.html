@@ -228,10 +228,7 @@
       if (account.product == "harvest") harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
     }
 
-    var accounts = harvest_context.harvest_data.user_data.accounts
-    for (var i = 0; i < accounts.length; i++) {
-      getHarvestTasksProjects(accounts[i].id)
-    }
+    console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
   }
 
   function getHarvestTasksProjects(account_id) {
