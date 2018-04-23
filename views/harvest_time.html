@@ -109,9 +109,8 @@
       harvest_context['harvest_data'] = data
       console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
       if (harvest_context.harvest_data.tokens) {
-        if (!harvest_context.harvest_data.user_data) getHarvestUserData()
-        
-        toggleHarvestAuthorizedView()
+        if (!harvest_context.harvest_data.user_data) getHarvestUserData().then(toggleHarvestAuthorizedView())
+        else toggleHarvestAuthorizedView()
       }
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
@@ -217,7 +216,7 @@
       }
     })
 
-    platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
+    return platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
   }
 
   harvestUserData = (response) => {

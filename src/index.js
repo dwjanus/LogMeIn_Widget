@@ -70,6 +70,8 @@ app.post('/callExternalApi', (req, res) => {
     delete req.body.payload.headers
   }
 
+  console.log(`callExternalApi options:\n${util.inspect(options)}`)
+
   const request = https.request(options, (response) => {
     let result = ''
   
