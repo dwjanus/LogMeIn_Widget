@@ -515,7 +515,21 @@ app.get('/harvest/data/:id', (req, res) => {
   })
 })
 
+// app.post('/harvest/:id/save', (req, res) => {
+//   const id = req.params.id
+//   const harvest = req.body
 
+//   console.log(`\n[POST] /harvest/${id}/save\n--> harvest: ${util.inspect(harvest)}`)
+//   harvest_db.findOne({user: id}).then((found) => {
+//     if (!found) {
+//       console.log(`   harvest_db >> user not found, inserting now...`)
+//       harvest_db.insert({user: id, harvest})
+//     } else {
+//       console.log('   harvest_db >> user already has harvest authentication')
+//     }
+//     res.send(harvest)
+//   })
+// })
 
 const server = app.listen(app.get('port'), () => {
   console.log(`> App listening on port: ${server.address().port}`)

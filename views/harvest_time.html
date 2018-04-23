@@ -109,7 +109,8 @@
       harvest_context['harvest_data'] = data
       console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
       if (harvest_context.harvest_data.tokens) {
-        getHarvestTasksProjects()
+        if (!harvest_context.harvest_data.user_data) getHarvestUserData()
+        
         toggleHarvestAuthorizedView()
       }
     })
@@ -142,6 +143,9 @@
       
       <div class="harvest_send_time">
           <form id="harvest_time_form">
+              <select name="harvest_account" id="harvest_account">
+              </select>
+
               <select name="harvest_projects">
               </select>
 
@@ -180,7 +184,18 @@
 
     var harvest_login_view = document.getElementById('harvest_auth_buttons')
     harvest_login_view.parentNode.replaceChild(harvest_authed_view, harvest_login_view)
+
     document.getElementById('samanage_table').appendChild(samanage_times_table)
+
+    // make dropdown select
+    var harvest_account_list = document.getElementById('harvest_account')
+
+    for (var i = 0; i < harvest_context.harvest_data.user_data.accounts.length; i++) {
+      var option = document.createElement('OPTION')
+      option.innerHTML = harvest_context.harvest_data.user_data.accounts[i].name
+      option.value = harvest_context.harvest_data.user_data.accounts[i].id
+      harvest_account_list.options.add(option)
+    }
   }
 
   
@@ -193,8 +208,8 @@
     // params to send: project_id, task_id, spent_date, hours, notes, external reference
   }
 
-  function getHarvestTasksProjects() {
-    var projects_url = `https://api.harvestapp.com/v2/users/me/project_assignments`
+  function getHarvestUserData() {
+    var accounts_url = "https://id.getharvest.com/api/v2/accounts"
     var auth = JSON.stringify({
       headers: {
         "Authorization": `Bearer ${harvest_context.harvest_data.tokens.access_token}`,
@@ -202,12 +217,39 @@
       }
     })
 
-    platformWidgetHelper.callSamanageAPI(getHarvestProjects, 'GET', projects_url, auth)
+    platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', projects_url, auth)
   }
 
-  getHarvestProjects = (response) => {
-    console.log(`harvest_time >>> got projects back:\n${JSON.stringify(response)}`)
+  harvestUserData = (response) => {
+    console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}`)
+    harvest_context.harvest_data.user_data = response.user
+    harvest_context.harvest_data.user_data['accounts']
+    for (var i = 0; i < response.accounts.length; i++) {
+      var account = response.accounts[i]
+      if (account.product == "harvest") harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
+      getHarvestTasksProjects(response.accounts[i].id)
+    }
+
 
   }
+
+  function getHarvestTasksProjects(account_id) {
+    var projects_url = `https://api.harvestapp.com/v2/users/me/project_assignments`
+    var auth = JSON.stringify({
+      headers: {
+        "Authorization": `Bearer ${harvest_context.harvest_data.tokens.access_token}`,
+        "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
+        "Harvest-Account-Id": account_id
+      }
+    })
+
+    platformWidgetHelper.callSamanageAPI((response) => { 
+      console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
+      harvest_context.harvest_data.user_data.accounts[account_id]['projects'] = respose.project_assignments
+    }, 'GET', projects_url, auth)
+  }
+
+
+
 
 </script>
