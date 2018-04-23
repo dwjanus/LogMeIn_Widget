@@ -432,7 +432,6 @@ app.get('/harvest/oauth', (req, res) => {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
-      'Content-Length': postData.length,
       'User-Agent': "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
     }
   }
