@@ -221,6 +221,7 @@
 
   harvestUserData = (response) => {
     console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}`)
+    response = JSON.parse(response)
     harvest_context.harvest_data.user_data = response.user
     harvest_context.harvest_data.user_data['accounts']
     for (var i = 0; i < response.accounts.length; i++) {
