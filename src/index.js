@@ -56,8 +56,6 @@ app.get('/', (req, res) => {
 //                           //
 // -----> ExternalAPI <----- //
 //                           //
-
-// incoming req.body => { request: { options, payload } }
 app.post('/callExternalApi', (req, res) => {
   console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}\n`)
   let url_parsed = url.parse(req.body.url) 
@@ -67,7 +65,7 @@ app.post('/callExternalApi', (req, res) => {
     method: req.body.method
   }
 
-  if (req.body.payload.headers) {
+  if (req.body.payload.headers !== null) {
     options['headers'] = req.body.payload.headers
     delete req.body.payload.headers
   }
@@ -510,7 +508,7 @@ app.get('/harvest/data/:id', (req, res) => {
 
   harvest_db.findOne({user: id}).then((found) => {
     if (found) {
-      console.log('[GET] /harvest/data ---> teamveiwer tokens found:\n' + util.inspect(found))
+      console.log('[GET] /harvest/data ---> harvest tokens found:\n' + util.inspect(found))
       response_json['tokens'] = found.harvest
     }
     res.send(response_json)
