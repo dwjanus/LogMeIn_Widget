@@ -109,14 +109,13 @@
       harvest_context['harvest_data'] = data
       console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
       if (harvest_context.harvest_data.tokens) {
-        toggleHarvestAuthorizedView()
+        getHarvestTasksProjects().then(toggleHarvestAuthorizedView())
       }
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
 
   function harvest_time() {
     console.log('>>> harvest_time() called')
-
     launchHarvestAuth(harvest_context.harvest_data.harvest_id)
   }
 
@@ -142,8 +141,11 @@
       
       <div class="harvest_send_time">
           <form id="harvest_time_form">
+              <select name="harvest_projects">
+              </select>
 
-
+              <select name="harvest_tasks">
+              </select>
           </form>
 
           <button id="harvest_send_time_button" class="btn session" onclick="harvestSendTime();">
@@ -188,6 +190,21 @@
   function harvestSendTime() {
     // post request to harvest timesheets api --> create via Duration
     // params to send: project_id, task_id, spent_date, hours, notes, external reference
+  }
+
+  function getHarvestTasksProjects() {
+    var projects_url = `https://api.harvestapp.com/v2/users/me/project_assignments`
+    var auth = JSON.stringify({
+      "Authorization": `Bearer ${harvest_context.harvest_data.tokens.access_token}`,
+      "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
+    })
+
+    platformWidgetHelper.callSamanageAPI(getHarvestProjects, 'GET', url, body)
+  }
+
+  getHarvestProjects = (response) => {
+    console.log(`harvest_time >>> got projects back:\n${JSON.stringify(response)}`)
+    
   }
 
 </script>

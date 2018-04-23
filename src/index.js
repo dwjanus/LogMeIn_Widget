@@ -46,7 +46,6 @@ app.get('/', (req, res) => {
     partials: {
       logmein: 'logmein_new.html',
       bomgar: 'bomgar.html',
-      harvest_tasks: 'harvest_tasks.html',
       harvest_time: 'harvest_time.html',
       teamviewer: 'teamviewer.html'
     }
@@ -67,6 +66,8 @@ app.post('/callExternalApi', (req, res) => {
     path: url_parsed.path,
     method: req.body.method
   }
+
+  if (url_parsed.headers) options['headers'] = url_parsed.headers
 
   const request = https.request(options, (response) => {
     let result = ''
