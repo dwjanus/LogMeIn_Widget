@@ -216,7 +216,7 @@
       }
     })
 
-    return platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
+    platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
   }
 
   harvestUserData = (response) => {
@@ -226,10 +226,12 @@
     for (var i = 0; i < response.accounts.length; i++) {
       var account = response.accounts[i]
       if (account.product == "harvest") harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
-      getHarvestTasksProjects(response.accounts[i].id)
     }
 
-
+    var accounts = harvest_context.harvest_data.user_data.accounts
+    for (var i = 0; i < accounts.length; i++) {
+      getHarvestTasksProjects(accounts[i].id)
+    }
   }
 
   function getHarvestTasksProjects(account_id) {
