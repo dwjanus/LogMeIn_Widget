@@ -86,7 +86,7 @@
             <p id="teamviewer_code">Session Code: ${teamviewer_context.session_data.code}</p> 
             <div class="btn_item">
                 <button id="new_code_btn">
-                    <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon2.png" type="image/png" alt="New Code" width="12px;" height=12px;" style="padding-top: 1px;" onclick="createSession();" />
+                    <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon2.png" type="image/png" alt="New Code" width="12px;" height=12px;" style="padding-top: 1px;" onclick="createTeamviewerSession();" />
                 </button>
             </div>
         </div>
@@ -117,7 +117,7 @@
       `
       teamviewer_authed_view.parentNode.replaceChild(tv_widget_view, teamviewer_authed_view)
     }).catch((e) => {
-      console.log('teamviewer >>> createSession() Error caught in sessionView()\n>> ' + e)
+      console.log('teamviewer >>> createTeamviewerSession() Error caught in teamviewerSessionView()\n>> ' + e)
     })
   }
 
@@ -156,7 +156,7 @@
         }
       })
     .catch((e) => {
-      console.log('teamviewer >>> Error caught in createSession:\n>>' + e)
+      console.log('teamviewer >>> Error caught in createTeamviewerSession:\n>>' + e)
       if (data.error == "token_expired") return refreshTeamviewerOauth()
     })
   }
