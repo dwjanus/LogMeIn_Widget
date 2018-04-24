@@ -246,8 +246,9 @@
         "Harvest-Account-Id": account_id
       }
     })
-
-    platformWidgetHelper.callSamanageAPI((response) => { 
+    
+   
+    platformWidgetHelper.callSamanageAPI((account_id, response) => { 
       console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
       harvest_context.harvest_data.user_data.accounts[account_id]['projects_assignments'] = response.project_assignments
     }, 'GET', projects_url, auth)
