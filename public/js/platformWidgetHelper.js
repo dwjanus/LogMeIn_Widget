@@ -41,6 +41,7 @@ var platformWidgetHelper = (function() {
           return callback(data)
       }).catch((e) => {
         console.log('\n! >>> Error caught at .catch() in callSamanageAPI(): \n ' + e)
+        return callback({error: e})
       })
     },
 

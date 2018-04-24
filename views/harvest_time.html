@@ -196,7 +196,7 @@
       harvest_account_list.options.add(option)
     }
 
-    populateHarvestDropdowns(harvest_account_list.options[harvest_account_list.selectedIndex].value)
+    // populateHarvestDropdowns(harvest_account_list.options[harvest_account_list.selectedIndex].value)
   }
 
   
@@ -208,6 +208,9 @@
     // post request to harvest timesheets api --> create via Duration
     // params to send: project_id, task_id, spent_date, hours, notes, external reference
   }
+
+  var harvestDataReady = false
+  if (harvestDataReady) toggleHarvestAuthorizedView()
 
   function getHarvestUserData() {
     var accounts_url = "https://id.getharvest.com/api/v2/accounts"
@@ -222,20 +225,21 @@
   }
 
   harvestUserData = (response) => {
-    console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}`)
-    response = JSON.parse(response)
-    harvest_context.harvest_data.user_data = response.user
-    harvest_context.harvest_data.user_data['accounts'] = []
-    for (var i = 0; i < response.accounts.length; i++) {
-      var account = response.accounts[i]
-      if (account.product == "harvest") {
-        harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
-        harvest_context.harvest_data.user_data.accounts[i]['project_assignments'] = []
-        getHarvestTasksProjects(response.accounts[i].id)
+    if (!response.error) {
+      console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}`)
+      response = JSON.parse(response)
+      harvest_context.harvest_data.user_data = response.user
+      harvest_context.harvest_data.user_data['accounts'] = []
+      for (var i = 0; i < response.accounts.length; i++) {
+        var account = response.accounts[i]
+        if (account.product == "harvest") {
+          harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
+          harvest_context.harvest_data.user_data.accounts[i]['project_assignments'] = []
+          getHarvestTasksProjects(response.accounts[i].id)
+        }
       }
+      harvestDataReady = true
     }
-
-    toggleHarvestAuthorizedView()
   }
 
   function getHarvestTasksProjects(account_id) {
