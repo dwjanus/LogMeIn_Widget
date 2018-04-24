@@ -111,8 +111,6 @@
       if (harvest_context.harvest_data.tokens) {
         if (!harvest_context.harvest_data.user_data) getHarvestUserData()
         toggleHarvestAuthorizedView()
-        populateAccountDD()
-        populateProjectTaskDD()
       }
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
@@ -167,6 +165,8 @@
           getHarvestTasksProjects(response.accounts[i].id)
         }
       }
+      populateAccountDD()
+      populateProjectTaskDD()
     }
   }
 
