@@ -110,7 +110,9 @@
       console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
       if (harvest_context.harvest_data.tokens) {
         if (!harvest_context.harvest_data.user_data) getHarvestUserData()
-        else toggleHarvestAuthorizedView()
+        toggleHarvestAuthorizedView()
+        populateAccountDD()
+        populateProjectTaskDD()
       }
     })
   .catch(e => console.log(`>> ERROR >> ${e}`))
@@ -165,7 +167,6 @@
           getHarvestTasksProjects(response.accounts[i].id)
         }
       }
-      toggleHarvestAuthorizedView()
     }
   }
 
@@ -183,38 +184,8 @@
     platformWidgetHelper.callSamanageAPI((response) => { 
       console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
       harvest_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments = response.project_assignments
+      console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
     }, 'GET', projects_url, auth)
-
-    console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
-    populateHarvestDropdowns()
-  }
-
-
-  function populateHarvestDropdowns() {
-    var account_id = document.getElementById('harvest_account').value
-
-    console.log(`havest_time >>> populating dropdowns for account: ${account_id} now...`)
-    var projects = document.getElementById('harvest_projects')
-    var tasks = document.getElementById('harvest_tasks')
-    
-    var all_projects = harvest_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments
-
-    for (var i = 0; i < all_projects.length; i++) {
-      var project_assignment = all_projects[i]
-      var proj_option = document.createElement('OPTION')
-      
-      proj_option.innerHTML = project_assignment.project.name
-      proj_option.value = project_assignment.project.id
-      projects.options.add(proj_option)
-
-      for (var j = 0; j < project_assignment.task_assignments.length; j++) {
-        var task_option = document.createElement('OPTION')
-        
-        task_option.innerHTML = project_assignment.task_assignments[j].task.name
-        task_option.value = project_assignment.task_assignments[j].task.id
-        tasks.options.add(task_option)
-      }
-    }
   }
 
 
@@ -273,8 +244,37 @@
     harvest_login_view.parentNode.replaceChild(harvest_authed_view, harvest_login_view)
 
     document.getElementById('samanage_table').appendChild(samanage_times_table)
+  }
 
-    // make dropdown select
+
+  function populateProjectTaskDD() {
+    var account_id = document.getElementById('harvest_account').value
+
+    console.log(`havest_time >>> populating dropdowns for account: ${account_id} now...`)
+    var projects = document.getElementById('harvest_projects')
+    var tasks = document.getElementById('harvest_tasks')
+    
+    var all_projects = harvest_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments
+
+    for (var i = 0; i < all_projects.length; i++) {
+      var project_assignment = all_projects[i]
+      var proj_option = document.createElement('OPTION')
+      
+      proj_option.innerHTML = project_assignment.project.name
+      proj_option.value = project_assignment.project.id
+      projects.options.add(proj_option)
+
+      for (var j = 0; j < project_assignment.task_assignments.length; j++) {
+        var task_option = document.createElement('OPTION')
+        
+        task_option.innerHTML = project_assignment.task_assignments[j].task.name
+        task_option.value = project_assignment.task_assignments[j].task.id
+        tasks.options.add(task_option)
+      }
+    }
+  }
+
+  function populateAccountDD() {
     var harvest_account_list = document.getElementById('harvest_account')
 
     for (var i = 0; i < harvest_context.harvest_data.user_data.accounts.length; i++) {
@@ -284,5 +284,6 @@
       harvest_account_list.options.add(option)
     }
   }
+  
   
 </script>
