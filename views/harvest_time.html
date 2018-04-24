@@ -165,7 +165,7 @@
           getHarvestTasksProjects(response.accounts[i].id)
         }
       }
-      
+      toggleHarvestAuthorizedView()
     }
   }
 
@@ -186,7 +186,7 @@
     }, 'GET', projects_url, auth)
 
     console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
-    toggleHarvestAuthorizedView()
+    populateHarvestDropdowns()
   }
 
 
@@ -283,8 +283,6 @@
       option.value = harvest_context.harvest_data.user_data.accounts[i].id
       harvest_account_list.options.add(option)
     }
-
-    populateHarvestDropdowns()
   }
   
 </script>
