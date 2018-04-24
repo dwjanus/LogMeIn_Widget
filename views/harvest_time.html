@@ -109,7 +109,7 @@
       harvest_context['harvest_data'] = data
       console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
       if (harvest_context.harvest_data.tokens) {
-        if (!harvest_context.harvest_data.user_data) getHarvestUserData().then(toggleHarvestAuthorizedView())
+        if (!harvest_context.harvest_data.user_data) getHarvestUserData()
         else toggleHarvestAuthorizedView()
       }
     })
@@ -129,7 +129,7 @@
 
     window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
   }
-
+  
   function toggleHarvestAuthorizedView() {
     var harvest_authed_view = document.createElement('div')
 
@@ -216,23 +216,28 @@
       }
     })
 
-    return platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
+    platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
   }
 
   harvestUserData = (response) => {
     console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}`)
     response = JSON.parse(response)
     harvest_context.harvest_data.user_data = response.user
-    harvest_context.harvest_data.user_data['accounts']
+    harvest_context.harvest_data.user_data['accounts'] = []
     for (var i = 0; i < response.accounts.length; i++) {
       var account = response.accounts[i]
-      if (account.product == "harvest") harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
+      if (account.product == "harvest") {
+        harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
+        getHarvestTasksProjects(response.accounts[i].id)
+      }
     }
 
     console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
+    toggleHarvestAuthorizedView()
   }
 
   function getHarvestTasksProjects(account_id) {
+    console.log(`harvest_time >>> getting projects/tasks for account: ${account_id}`)
     var projects_url = `https://api.harvestapp.com/v2/users/me/project_assignments`
     var auth = JSON.stringify({
       headers: {
@@ -244,11 +249,36 @@
 
     platformWidgetHelper.callSamanageAPI((response) => { 
       console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
-      harvest_context.harvest_data.user_data.accounts[account_id]['projects'] = respose.project_assignments
+      harvest_context.harvest_data.user_data.accounts[account_id]['projects_assignments'] = respose.project_assignments
     }, 'GET', projects_url, auth)
   }
 
+  var account = document.getElementById('harvest_account')
+  if (typeof(account) != undefined && account != null) {
+    populateProjectsTasksDD(account.options[account.selectedIndex].value)
+  }
 
+  function populateProjectsTasksDD(account_id) {
+    var projects = document.getElementById('harvest_projects')
+    var tasks = document.getElementById('harvest_tasks')
+    
+    for (var i = 0; i < harvest_context.harvest_data.user_data[account_id].project_assignments.length; i++) {
+      var project_assignment = harvest_context.harvest_data.user_data[account_id].project_assignments[i]
+      var proj_option = document.createElement('OPTION')
+      
+      proj_option.innerHTML = project_assignment.project.name
+      proj_option.value = project_assignment.project.id
+      projects.options.add(proj_option)
 
+      for (var i = 0; i < project_assignment.task_assignments.length; i++) {
+        var task_option = document.createElement('OPTION')
+        
+        task_option.innerHTML = project_assignment.task_assignments[i].task.name
+        task_option.value = project_assignment.task_assignments[i].task.id
+        tasks.options.add(task_option)
+      }
+    }
 
+  }
+  
 </script>
