@@ -209,8 +209,8 @@
     // params to send: project_id, task_id, spent_date, hours, notes, external reference
   }
 
-  var harvestDataReady = false
-  if (harvestDataReady) toggleHarvestAuthorizedView()
+  // var harvestDataReady = false
+  // if (harvestDataReady) toggleHarvestAuthorizedView()
 
   function getHarvestUserData() {
     var accounts_url = "https://id.getharvest.com/api/v2/accounts"
@@ -238,7 +238,7 @@
           getHarvestTasksProjects(response.accounts[i].id)
         }
       }
-      harvestDataReady = true
+      toggleHarvestAuthorizedView()
     }
   }
 
