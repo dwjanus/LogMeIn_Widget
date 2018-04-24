@@ -142,7 +142,7 @@
       
       <div class="harvest_send_time">
           <form id="harvest_time_form">
-              <select name="harvest_account" id="harvest_account">
+              <select name="harvest_account" id="harvest_account" onchange="populateHarvestDropdowns();">
               </select>
 
               <select name="harvest_projects">
@@ -195,6 +195,8 @@
       option.value = harvest_context.harvest_data.user_data.accounts[i].id
       harvest_account_list.options.add(option)
     }
+
+    populateHarvestDropdowns(harvest_account_list.options[harvest_account_list.selectedIndex].value)
   }
 
   
@@ -255,13 +257,10 @@
     console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
   }
 
-  var account = document.getElementById('harvest_account')
-  if (typeof(account) != undefined && account != null) {
-    console.log('harvest_time >>> account selected, calling populateProjectsTasksDD...')
-    populateProjectsTasksDD(account.options[account.selectedIndex].value)
-  }
 
-  function populateProjectsTasksDD(account_id) {
+  function populateHarvestDropdowns() {
+    var account_id = document.getElementById('harvest_account').value
+
     console.log(`havest_time >>> populating dropdowns for account: ${account_id} now...`)
     var projects = document.getElementById('harvest_projects')
     var tasks = document.getElementById('harvest_tasks')
@@ -284,7 +283,6 @@
         tasks.options.add(task_option)
       }
     }
-
   }
   
 </script>
