@@ -165,7 +165,6 @@
           getHarvestTasksProjects(response.accounts[i].id)
         }
       }
-      toggleHarvestAuthorizedView()
     }
   }
 
@@ -186,6 +185,7 @@
     }, 'GET', projects_url, auth)
 
     console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
+    toggleHarvestAuthorizedView()
   }
 
 
