@@ -265,19 +265,20 @@
     var projects = document.getElementById('harvest_projects')
     var tasks = document.getElementById('harvest_tasks')
     
-    for (var i = 0; i < harvest_context.harvest_data.user_data[account_id].project_assignments.length; i++) {
-      var project_assignment = harvest_context.harvest_data.user_data[account_id].project_assignments[i]
+    var all_projects = harvest_context.harvest_data.user_data.find(x => x.id === account_id).project_assignments
+    for (var i = 0; i < all_projects.length; i++) {
+      var project_assignment = all_projects[i]
       var proj_option = document.createElement('OPTION')
       
       proj_option.innerHTML = project_assignment.project.name
       proj_option.value = project_assignment.project.id
       projects.options.add(proj_option)
 
-      for (var i = 0; i < project_assignment.task_assignments.length; i++) {
+      for (var j = 0; j < project_assignment.task_assignments.length; j++) {
         var task_option = document.createElement('OPTION')
         
-        task_option.innerHTML = project_assignment.task_assignments[i].task.name
-        task_option.value = project_assignment.task_assignments[i].task.id
+        task_option.innerHTML = project_assignment.task_assignments[j].task.name
+        task_option.value = project_assignment.task_assignments[j].task.id
         tasks.options.add(task_option)
       }
     }
