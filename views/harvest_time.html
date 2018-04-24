@@ -247,11 +247,15 @@
       }
     })
     
-   
-    platformWidgetHelper.callSamanageAPI((response, account_id) => { 
+    harvest_context.harvest_data.user_data.accounts[account_id]['projects_assignments'] = []
+    var response_projects = harvest_context.harvest_data.user_data[account_id].project_assignments
+
+    platformWidgetHelper.callSamanageAPI((response) => { 
       console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
-      harvest_context.harvest_data.user_data.accounts[account_id]['projects_assignments'] = response.project_assignments
+      response_projects = response.project_assignments
     }, 'GET', projects_url, auth)
+
+    
   }
 
   var account = document.getElementById('harvest_account')
