@@ -257,16 +257,17 @@
 
   var account = document.getElementById('harvest_account')
   if (typeof(account) != undefined && account != null) {
+    console.log('harvest_time >>> account selected, calling populateProjectsTasksDD...')
     populateProjectsTasksDD(account.options[account.selectedIndex].value)
   }
 
   function populateProjectsTasksDD(account_id) {
-    console.log('havest_time >>> populating dropdowns now...')
+    console.log(`havest_time >>> populating dropdowns for account: ${account_id} now...`)
     var projects = document.getElementById('harvest_projects')
     var tasks = document.getElementById('harvest_tasks')
     
     var all_projects = harvest_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments
-    
+
     for (var i = 0; i < all_projects.length; i++) {
       var project_assignment = all_projects[i]
       var proj_option = document.createElement('OPTION')
