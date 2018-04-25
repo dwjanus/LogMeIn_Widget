@@ -164,7 +164,7 @@
         var harvest_account = {
           id: account.id,
           name: account.name,
-          project_assignments: []
+          project_assignments
         }
 
         harvest_context.harvest.user_data.accounts.push(harvest_account)
@@ -201,8 +201,10 @@
         if (response.error) return reject(response.error)
         
         var found_account = harvest_context.harvest.user_data.accounts.find(x => x.id  === account_id)
-        found_account.project_assignments = response.project_assignments
+        console.log(`harvest_time >>> found account object:\n${JSON.stringify(found_account)}`)
 
+        found_account.project_assignments = response.project_assignments
+        console.log(`harvest_time >>> new harvest before resolve:\n${JSON.stringify(harvest_context)}`)
         return resolve()
       }, 'GET', projects_url, auth)
     })
@@ -266,6 +268,16 @@
     document.getElementById('samanage_table').appendChild(samanage_times_table)
   }
 
+  function populateAccountDD() {
+    var harvest_account_list = document.getElementById('harvest_account')
+
+    for (var i = 0; i < harvest_context.harvest.user_data.accounts.length; i++) {
+      var option = document.createElement('OPTION')
+      option.innerHTML = harvest_context.harvest.user_data.accounts[i].name
+      option.value = harvest_context.harvest.user_data.accounts[i].id
+      harvest_account_list.options.add(option)
+    }
+  }
 
   function populateProjectTaskDD() {
     var account_id = document.getElementById('harvest_account').value
@@ -293,17 +305,5 @@
       }
     }
   }
-
-  function populateAccountDD() {
-    var harvest_account_list = document.getElementById('harvest_account')
-
-    for (var i = 0; i < harvest_context.harvest.user_data.accounts.length; i++) {
-      var option = document.createElement('OPTION')
-      option.innerHTML = harvest_context.harvest.user_data.accounts[i].name
-      option.value = harvest_context.harvest.user_data.accounts[i].id
-      harvest_account_list.options.add(option)
-    }
-  }
-  
   
 </script>
