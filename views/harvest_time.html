@@ -197,18 +197,17 @@
 
       platformWidgetHelper.callSamanageAPI((response) => {
         console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
-        
+        response = JSON.parse(response)
+
         if (response.error) return reject(response.error)
         
-        var found_account = harvest_context.harvest.user_data.accounts.find(x => x.id  === account_id)
-        
-        console.log(`harvest_time >>> found account object:\n${JSON.stringify(found_account)}`)
-
-        found_account.project_assignments = response.project_assignments
-        harvest_context.harvest.user_data.accounts.find(x => x.id  === account_id) = found_account
-
-        console.log(`harvest_time >>> new harvest before resolve:\n${JSON.stringify(harvest_context)}`)
-        return resolve()
+        harvest_context.harvest.user_data.accounts.forEach((account) => {
+          if (account.id === account_id) {
+            account.project_assignments = response.project_assignments
+            console.log(`harvest_time >>> new harvest before resolve:\n${JSON.stringify(harvest_context)}`)
+            return resolve()
+          }
+        })
       }, 'GET', projects_url, auth)
     })
   }
