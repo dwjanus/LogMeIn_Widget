@@ -288,26 +288,30 @@
     var projects = document.getElementById('harvest_projects')
     var tasks = document.getElementById('harvest_tasks')
     
-    var all_projects = harvest_context.harvest.user_data.accounts.forEach((account) => {
-      if (account.id === account_id) return account.project_assignments
-    })
-
-    for (var i = 0; i < all_projects.length; i++) {
-      var project_assignment = all_projects[i]
-      var proj_option = document.createElement('OPTION')
-      
-      proj_option.innerHTML = project_assignment.project.name
-      proj_option.value = project_assignment.project.id
-      projects.options.add(proj_option)
-
-      for (var j = 0; j < project_assignment.task_assignments.length; j++) {
-        var task_option = document.createElement('OPTION')
+    var all_projects = []
+    
+    harvest_context.harvest.user_data.accounts.forEach((account) => {
+      if (account.id === account_id) {
+        all_projects = account.project_assignments
         
-        task_option.innerHTML = project_assignment.task_assignments[j].task.name
-        task_option.value = project_assignment.task_assignments[j].task.id
-        tasks.options.add(task_option)
+        for (var i = 0; i < all_projects.length; i++) {
+          var project_assignment = all_projects[i]
+          var proj_option = document.createElement('OPTION')
+          
+          proj_option.innerHTML = project_assignment.project.name
+          proj_option.value = project_assignment.project.id
+          projects.options.add(proj_option)
+
+          for (var j = 0; j < project_assignment.task_assignments.length; j++) {
+            var task_option = document.createElement('OPTION')
+            
+            task_option.innerHTML = project_assignment.task_assignments[j].task.name
+            task_option.value = project_assignment.task_assignments[j].task.id
+            tasks.options.add(task_option)
+          }
+        }
       }
-    }
+    })
   }
   
 </script>
