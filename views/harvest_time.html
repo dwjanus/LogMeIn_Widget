@@ -225,13 +225,13 @@
       
       <div class="harvest_send_time">
           <form id="harvest_time_form">
-              <select name="harvest_account" id="harvest_account" onchange="populateProjectTaskDD();">
+              <select id="harvest_account" name="harvest_account" onchange="populateProjectTaskDD();">
               </select>
 
-              <select name="harvest_projects">
+              <select id="harvest_projects" name="havest_projects">
               </select>
 
-              <select name="harvest_tasks">
+              <select id="harvest_tasks" name="harvest_tasks">
               </select>
           </form>
 
@@ -292,6 +292,7 @@
     
     harvest_context.harvest.user_data.accounts.forEach((account) => {
       if (account.id === account_id) {
+        console.log(`harvest_time >>> found account in context`)
         all_projects = account.project_assignments
         
         for (var i = 0; i < all_projects.length; i++) {
