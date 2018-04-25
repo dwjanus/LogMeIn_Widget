@@ -1,10 +1,9 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.js"></script>
 
 <div class="console">
-    <div class="incident_search_area d-flex">
+    <div class="incident_search_area d-inline-flex">
         <form id="incident_search_form">
             <div class="form-group">
-              <label for="incident_number">Incident</label>
               <input type="text" class="form-control" id="incident_number" placeholder="Enter an Incident Number">
             </div>
             <button type="button" class="btn btn-sm btn-outline-dark" onclick="getSamanageIncident();">Search</button>        
@@ -13,17 +12,17 @@
     
     <div class="info_container_area">
         <ul class="nav nav-tabs" id="info_nav" style="font-size: 12px;">
-            <li class="nav-item"><a class="nav-link active" href="#incident_info">Incident</a></li>
+            <li class="nav-item  active"><a class="nav-link" href="#incident_info">Incident</a></li>
             <li class="nav-item"><a class="nav-link" href="#widget_info">Widget</a></li>
         </ul>
 
         <div class="tab-content" style="font-size: 11px;">
             <div id="incident_info" class="tab-pane fade active">
-                This is where we will render our Incident JSON
+                <p>This is where we will render our Incident JSON</p>
             </div>
             
             <div id="widget_info" class="tab-pane fade">
-                This is where we will inspect our widget output
+                <p>This is where we will inspect our widget output</p>
             </div>
         </div>
 
