@@ -5,15 +5,26 @@
     <title>Samanage LogMeIn Widget</title>
     <link rel="icon" href="images/samanage_icon.png" type="image/png"/>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <script type="text/javascript" src="js/platformWidgetHelper.js"></script>
 </head>
 
 <body>
 
-    {{> logmein }}
-    {{> teamviewer }}
-    {{> bomgar }}
-    {{> harvest_time }}
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                {{> ref_console }}
+            </div>
+    
+            <div class="col-10 widgets">
+                {{> logmein }}
+                {{> teamviewer }}
+                {{> bomgar }}
+                {{> harvest_time }}
+            </div>
+        </div>
+    </div>
     
 </body>
 </html>

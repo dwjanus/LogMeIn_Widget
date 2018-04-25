@@ -1,0 +1,33 @@
+<div class="console">
+    <div class="incident_search_area">
+        <form id="incident_search_form">
+            <div class="form-group">
+              <label for="incident_number">Incident #</label>
+              <input type="text" class="form-control" id="incident_number" placeholder="Enter an Incident Number">
+            </div>
+            <button type="button" class="btn btn-outline-dark" onclick="getSamanageIncident();">Search</button>        
+        </form>
+    </div>
+    
+    <div class="info_container_area">
+        <ul class="nav nav-tabs">
+            <li class="nav-item active">
+                <a data-toggle="tab" href="#incident_info">Incident</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#widget_info">Widget</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content">
+      <div id="incident_info">
+          This is where we will render our Incident JSON
+      </div>
+      
+      <div id="widget_info">
+          This is where we will inspect our widget output
+      </div>
+    </div>
+
+</div>
