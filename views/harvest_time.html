@@ -160,7 +160,7 @@
 
       var promise_accounts = []
       for (var i = 0; i < response.accounts.length; i++) {
-        if (account.product === "harvest") {
+        if (response.accounts[i].product === "harvest") {
           var account = {
             id: response.accounts[i].id,
             name: response.accounts[i].name,
