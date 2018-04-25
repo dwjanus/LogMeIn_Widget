@@ -1,20 +1,18 @@
 <div class="widget" id="logmein_widget" style="visibility: visible;">
   <div name="logmein" id="logmein">
-      <div class="form-header">
-          <h5>LogMeIn Remote Session</h5>
-      </div>
+      <h5>LogMeIn Remote Session</h5>
+      
       
       <div id="logmein_form">
           <form id="logmein_auth">
-              <div class="form-field">
-                  <input type="email" id="logmein_email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
-                  <input type="password" id="logmein_pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
+              <div class="form-group">
+                  <input type="email" class="form-control" id="logmein_email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
+                  <input type="password" class="form-control" id="logmein_pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
               </div>
           </form>
 
           <div style="height:65px;">
-              <button type="submit" class="btn" form="logmein_auth">Create Session</button>
-              <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
+              <button type="submit" class="btn btn-primary" form="logmein_auth">Create Session</button>
           </div>
       </div>    
   </div>
@@ -115,7 +113,7 @@ function logmein(event) {
           <p id="pin">${pin}</p>
       </div>
       <div style="padding-top: 15px;">
-          <button type="button" class="btn session" id="logmein_session" onclick="${click}">
+          <button type="button" class="btn btn-success" id="logmein_session" onclick="${click}">
               Go to Session
           </button>
       </div>

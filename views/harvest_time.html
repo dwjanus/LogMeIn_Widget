@@ -1,12 +1,11 @@
 <div class="widget" id="harvest_widget_auth" style="visibility: visible;">
   <div name="harvest_auth" id="harvest_auth">
-      <div class="form-header">
-          <h5>Harvest Time Tracking</h5>
-      </div>
+      <h5>Harvest Time Tracking</h5>
+      
 
       <div id="harvest_auth_buttons">
           <div style="height:65px;">
-              <button type="button" class="btn session" form="harvest_auth" onclick="harvest_time();">Install</button>
+              <button type="button" class="btn" form="harvest_auth" onclick="harvest_time();">Install</button>
           </div>   
       </div>
   </div>
@@ -225,38 +224,42 @@
       
       <div class="harvest_send_time">
           <form id="harvest_time_form">
-              <select class="dropdown-menu" id="harvest_account" onchange="populateProjectTaskDD();">
+              <select class="form-control" id="harvest_account" onchange="populateProjectTaskDD();">
               </select>
 
-              <select class="dropdown-menu" id="harvest_projects" name="havest_projects">
+              <select class="form-control" id="harvest_projects" name="havest_projects">
               </select>
 
-              <select class="dropdown-menu" id="harvest_tasks" name="harvest_tasks">
+              <select class="form-control" id="harvest_tasks" name="harvest_tasks">
               </select>
           </form>
 
-          <button id="harvest_send_time_button" class="btn session" onclick="harvestSendTime();">
+          <button id="harvest_send_time_button" class="btn btn-outline-primary session" onclick="harvestSendTime();">
               Send Time Tracking to Harvest
           </button>
       </div>
     `
 
     var samanage_times_table = document.createElement('table')
-    var samanage_times_table_header = document.createElement('tr')
-    
-    samanage_times_table.className = 'samanage_times_table'
     samanage_times_table.id = 'samanage_times_table'
+    samanage_times_table.className = 'table'
 
-    samanage_times_table_header.innerHTML = `    
-      <th>Created At</th>
-      <th>Time Spent</th>
-      <th>Notes</th>
+    var samanage_times_table_header = document.createElement('thead')
+    samanage_times_table_header.innerHTML = `
+      <tr>    
+          <th>Created At</th>
+          <th>Time Spent</th>
+          <th>Notes</th>
+      </tr>
     `
 
+    var samanage_times_table_body = document.createElement('tbody')
+
     samanage_times_table.appendChild(samanage_times_table_header)
+    samanage_times_table.appendChild(samanage_times_table_body)
     
     for (var i = 0; i < samanage_times.length; i++) {
-      var tr = samanage_times_table.insertRow(-1)
+      var tr = samanage_times_table_body.insertRow(-1)
       tr.innerHTML = `
           <td>${samanage_times[i].created_at}</td>
           <td>${samanage_times[i].minutes} minutes</td>

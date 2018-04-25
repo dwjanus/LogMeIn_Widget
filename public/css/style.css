@@ -26,8 +26,12 @@ html, body {
   background: #fff;
 }
 
-* {
-  box-sizing: border-box;
+.console {
+  margin-top: 15px;
+}
+
+.incident_search_area {
+  font-size: 13px;
 }
 
 table {
