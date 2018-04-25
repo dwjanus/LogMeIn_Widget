@@ -96,20 +96,20 @@
 
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
-      harvest_context = response
+      harvest_context['samanage'] = response
       context_id = response.context_id
     }
   }
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  fetch(`/harvest/data/${harvest_context.assignee.user_id}`)
+  fetch(`/harvest/data/${harvest_context.samanage.assignee.user_id}`)
     .then((res) => res.json())
     .then((data) => {
-      harvest_context['harvest_data'] = data
+      harvest_context['harvest'] = data
       console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
-      if (harvest_context.harvest_data.tokens) {
-        if (!harvest_context.harvest_data.user_data) getHarvestUserData()
+      if (harvest_context.harvest.tokens) {
+        if (!harvest_context.harvest.user_data) getHarvestUserData()
         toggleHarvestAuthorizedView()
       }
     })
@@ -117,12 +117,12 @@
 
   function harvest_time() {
     console.log('>>> harvest_time() called')
-    launchHarvestAuth(harvest_context.harvest_data.harvest_id)
+    launchHarvestAuth(harvest_context.harvest.harvest_id)
   }
 
   function launchHarvestAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/harvest/oauth"
-    var url = `https://id.getharvest.com/oauth2/authorize?client_id=${client_id}&response_type=code&state=${harvest_context.assignee.user_id}`
+    var url = `https://id.getharvest.com/oauth2/authorize?client_id=${client_id}&response_type=code&state=${harvest_context.samanage.assignee.user_id}`
 
     console.log(`harvest >>> client_id: ${client_id}`)
     console.log(`harvest >>> url: ${url}`)
@@ -143,7 +143,7 @@
     var accounts_url = "https://id.getharvest.com/api/v2/accounts"
     var auth = JSON.stringify({
       headers: {
-        "Authorization": `Bearer ${harvest_context.harvest_data.tokens.access_token}`,
+        "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
         "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
       }
     })
@@ -155,8 +155,8 @@
     if (!response.error) {
       console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}`)
       response = JSON.parse(response)
-      harvest_context.harvest_data.user_data = response.user
-      harvest_context.harvest_data.user_data['accounts'] = []
+      harvest_context.harvest.user_data = response.user
+      harvest_context.harvest.user_data['accounts'] = []
 
       var promise_accounts = []
       for (var i = 0; i < response.accounts.length; i++) {
@@ -167,7 +167,7 @@
             project_assignments: []
           }
 
-          harvest_context.harvest_data.user_data.accounts.push(account)
+          harvest_context.harvest.user_data.accounts.push(account)
           promise_accounts.push(getHarvestTasksProjects(response.accounts[i].id))
         }
       }
@@ -175,8 +175,11 @@
       Promise.all(promise_accounts).then((new_harvest_context) => {
         console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(new_harvest_context)}`)
         harvest_context = new_harvest_context
+      }).then(() => {
         populateAccountDD()
         populateProjectTaskDD()
+      }).catch((e) => {
+        console.log(e)
       })
     }
   }
@@ -187,7 +190,7 @@
     var projects_url = `https://api.harvestapp.com/v2/users/me/project_assignments`
     var auth = JSON.stringify({
       headers: {
-        "Authorization": `Bearer ${harvest_context.harvest_data.tokens.access_token}`,
+        "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
         "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
         "Harvest-Account-Id": account_id
       }
@@ -199,16 +202,11 @@
         
         if (response.error) return reject(response.error)
         
-        var new_context = harvest_context
-        new_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments = response.project_assignments
-        return resolve(new_context)
+        var found_account = harvest_context.harvest.user_data.accounts.find(x => x.id  === account_id)
+        found_account.project_assignments = response.project_assignments
+        return resolve(harvest_context)
       }, 'GET', projects_url, auth)
     })
-    
-
-    
-    
-    
   }
 
 
@@ -277,7 +275,7 @@
     var projects = document.getElementById('harvest_projects')
     var tasks = document.getElementById('harvest_tasks')
     
-    var all_projects = harvest_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments
+    var all_projects = harvest_context.harvest.user_data.accounts.find(x => x.id === account_id).project_assignments
 
     for (var i = 0; i < all_projects.length; i++) {
       var project_assignment = all_projects[i]
@@ -300,10 +298,10 @@
   function populateAccountDD() {
     var harvest_account_list = document.getElementById('harvest_account')
 
-    for (var i = 0; i < harvest_context.harvest_data.user_data.accounts.length; i++) {
+    for (var i = 0; i < harvest_context.harvest.user_data.accounts.length; i++) {
       var option = document.createElement('OPTION')
-      option.innerHTML = harvest_context.harvest_data.user_data.accounts[i].name
-      option.value = harvest_context.harvest_data.user_data.accounts[i].id
+      option.innerHTML = harvest_context.harvest.user_data.accounts[i].name
+      option.value = harvest_context.harvest.user_data.accounts[i].id
       harvest_account_list.options.add(option)
     }
   }
