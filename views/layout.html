@@ -12,16 +12,21 @@
 <body>
 
     <div class="container-fluid">
-        <div class="col-2">
-            {{> ref_console }}
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    {{> ref_console }}
+                </div>
+        
+                <div class="col-10 widgets">
+                    {{> logmein }}
+                    {{> teamviewer }}
+                    {{> bomgar }}
+                    {{> harvest_time }}
+                </div>
+            </div>
         </div>
-
-        <div class="col-10 widgets">
-            {{> logmein }}
-            {{> teamviewer }}
-            {{> bomgar }}
-            {{> harvest_time }}
-        </div>
+        
     </div>
     
 </body>

@@ -1,7 +1,11 @@
-html {
+html, body {
   height: 100%;
 }
 
+.container {
+  min-height: 100%;
+  overflow: hidden;
+}
 
 /* body {
   display: flex;
@@ -10,7 +14,6 @@ html {
   align-content: flex-start;
   align-items: flex-start;
   justify-content: center;
-  min-height: 100%;
   margin: 0 auto 0 auto;
   background: #002a55;
   font-family: -apple-system, 'Segoe UI', sans-serif;
