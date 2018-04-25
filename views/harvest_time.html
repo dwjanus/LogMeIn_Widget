@@ -168,7 +168,9 @@
         }
       }
 
-      Promise.all(promise_accounts).then(() => {
+      Promise.all(promise_accounts).then((new_harvest_context) => {
+        console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(new_harvest_context)}`)
+        harvest_context = new_harvest_context
         populateAccountDD()
         populateProjectTaskDD()
       })
@@ -187,13 +189,13 @@
       }
     })
 
+    var new_context = harvest_context
     return new Promise((resolve, reject) => {
       platformWidgetHelper.callSamanageAPI((response) => { 
         console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
         if (response.error) return reject(response.error)
-        harvest_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments = response.project_assignments
-        return resolve()
-        console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
+        new_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments = response.project_assignments
+        return resolve(new_context)
       }, 'GET', projects_url, auth)
     })
     
