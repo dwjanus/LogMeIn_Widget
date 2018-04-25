@@ -1,3 +1,5 @@
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.0.js"></script>
+
 <div class="console">
     <div class="incident_search_area">
         <form id="incident_search_form">
@@ -10,7 +12,7 @@
     </div>
     
     <div class="info_container_area">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" id="info_nav" style="font-size: 12px;">
             <li class="nav-item active">
                 <a data-toggle="tab" href="#incident_info">Incident</a>
             </li>
@@ -20,8 +22,8 @@
         </ul>
     </div>
 
-    <div class="tab-content">
-      <div id="incident_info">
+    <div class="tab-content" style="font-size: 11px;">
+      <div id="incident_info" class="tab-pane active">
           This is where we will render our Incident JSON
       </div>
       
@@ -31,3 +33,11 @@
     </div>
 
 </div>
+
+<script>
+  $(document).ready(() => {
+    $(".nav-tabs a").click(() => {
+      $(this).tab('show')
+    })
+  })
+</script>
