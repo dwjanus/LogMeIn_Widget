@@ -159,18 +159,17 @@
       harvest_context.harvest.user_data['accounts'] = []
 
       var promise_accounts = []
-      for (var i = 0; i < response.accounts.length; i++) {
-        if (response.accounts[i].product === "harvest") {
-          var account = {
-            id: response.accounts[i].id,
-            name: response.accounts[i].name,
-            project_assignments: []
-          }
 
-          harvest_context.harvest.user_data.accounts.push(account)
-          promise_accounts.push(getHarvestTasksProjects(response.accounts[i].id))
+      response.accounts.forEach((account) => {
+        var harvest_account = {
+          id: account.id,
+          name: account.name,
+          project_assignments: []
         }
-      }
+
+        harvest_context.harvest.user_data.accounts.push(harvest_account)
+        promise_accounts.push(getHarvestTasksProjects(account.id))
+      })
 
       Promise.all(promise_accounts).then(() => {
         console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
@@ -184,18 +183,18 @@
   }
 
   function getHarvestTasksProjects(account_id) {
-    console.log(`harvest_time >>> getting projects/tasks for account: ${account_id}`)
-
-    var projects_url = `https://api.harvestapp.com/v2/users/me/project_assignments`
-    var auth = JSON.stringify({
-      headers: {
-        "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
-        "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
-        "Harvest-Account-Id": account_id
-      }
-    })
-
     return new Promise((resolve, reject) => {
+      console.log(`harvest_time >>> getting projects/tasks for account: ${account_id}`)
+
+      var projects_url = `https://api.harvestapp.com/v2/users/me/project_assignments`
+      var auth = JSON.stringify({
+        headers: {
+          "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
+          "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
+          "Harvest-Account-Id": account_id
+        }
+      })
+
       platformWidgetHelper.callSamanageAPI((response) => {
         console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
         
