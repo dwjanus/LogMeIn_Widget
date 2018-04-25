@@ -2,22 +2,10 @@ html, body {
   height: 100%;
 }
 
-.container {
+.container, .container-fluid {
   min-height: 100%;
   overflow: hidden;
 }
-
-/* body {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  align-items: flex-start;
-  justify-content: center;
-  margin: 0 auto 0 auto;
-  background: #002a55;
-  font-family: -apple-system, 'Segoe UI', sans-serif;
-} */
 
 .widgets {
   display: flex;
@@ -34,11 +22,6 @@ html, body {
 
 * {
   box-sizing: border-box;
-}
-
-h2 {
-  margin: 0 0 1em;
-  font-size: 16px;
 }
 
 table {

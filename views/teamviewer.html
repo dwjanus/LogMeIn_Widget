@@ -1,7 +1,7 @@
 <div class="widget" id="tv_widget" style="visibility: visible;">
     <div name="teamviewer_auth" id="teamviewer_auth">
         <div class="form-header">
-            <h2>TeamViewer Remote Session</h2>
+            <h5>TeamViewer Remote Session</h5>
         </div>
 
         <div id="tv_auth_buttons">
@@ -48,7 +48,7 @@
 
   function launchTeamviewerAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
-    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}&state=${teamviewer_context.assignee.user_id}`
+    var url = `https://login.teamviewer.com/oauth5/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}&state=${teamviewer_context.assignee.user_id}`
 
     console.log(`teamviewer >>> client_id: ${client_id}`)
     console.log(`teamviewer >>> url: ${url}`)
