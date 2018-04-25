@@ -160,10 +160,14 @@
 
       var promise_accounts = []
       for (var i = 0; i < response.accounts.length; i++) {
-        var account = response.accounts[i]
-        if (account.product == "harvest") {
-          harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
-          harvest_context.harvest_data.user_data.accounts[i]['project_assignments'] = []
+        if (account.product === "harvest") {
+          var account = {
+            id: response.accounts[i].id,
+            name: response.accounts[i].name,
+            project_assignments: []
+          }
+
+          harvest_context.harvest_data.user_data.accounts.push(account)
           promise_accounts.push(getHarvestTasksProjects(response.accounts[i].id))
         }
       }
@@ -189,11 +193,13 @@
       }
     })
 
-    var new_context = harvest_context
     return new Promise((resolve, reject) => {
-      platformWidgetHelper.callSamanageAPI((response) => { 
+      platformWidgetHelper.callSamanageAPI((response) => {
         console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
+        
         if (response.error) return reject(response.error)
+        
+        var new_context = harvest_context
         new_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments = response.project_assignments
         return resolve(new_context)
       }, 'GET', projects_url, auth)
