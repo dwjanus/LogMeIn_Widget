@@ -157,21 +157,27 @@
       response = JSON.parse(response)
       harvest_context.harvest_data.user_data = response.user
       harvest_context.harvest_data.user_data['accounts'] = []
+
+      var promise_accounts = []
       for (var i = 0; i < response.accounts.length; i++) {
         var account = response.accounts[i]
         if (account.product == "harvest") {
           harvest_context.harvest_data.user_data.accounts.push(response.accounts[i])
           harvest_context.harvest_data.user_data.accounts[i]['project_assignments'] = []
-          getHarvestTasksProjects(response.accounts[i].id)
+          promise_accounts.push(getHarvestTasksProjects(response.accounts[i].id))
         }
       }
-      populateAccountDD()
-      populateProjectTaskDD()
+
+      Promise.all(promise_accounts).then(() => {
+        populateAccountDD()
+        populateProjectTaskDD()
+      })
     }
   }
 
   function getHarvestTasksProjects(account_id) {
     console.log(`harvest_time >>> getting projects/tasks for account: ${account_id}`)
+
     var projects_url = `https://api.harvestapp.com/v2/users/me/project_assignments`
     var auth = JSON.stringify({
       headers: {
@@ -180,12 +186,21 @@
         "Harvest-Account-Id": account_id
       }
     })
+
+    return new Promise((resolve, reject) => {
+      platformWidgetHelper.callSamanageAPI((response) => { 
+        console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
+        if (response.error) return reject(response.error)
+        harvest_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments = response.project_assignments
+        return resolve()
+        console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
+      }, 'GET', projects_url, auth)
+    })
     
-    platformWidgetHelper.callSamanageAPI((response) => { 
-      console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
-      harvest_context.harvest_data.user_data.accounts.find(x => x.id === account_id).project_assignments = response.project_assignments
-      console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
-    }, 'GET', projects_url, auth)
+
+    
+    
+    
   }
 
 
