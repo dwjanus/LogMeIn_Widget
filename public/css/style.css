@@ -23,7 +23,7 @@ html {
   align-content: flex-start;
   align-items: flex-start;
   justify-content: center;
-  min-height: 100%;
+  height: 100%;
   margin: 0 auto 0 auto;
   background: #002a55;
   font-family: -apple-system, 'Segoe UI', sans-serif;
@@ -33,10 +33,10 @@ html {
   box-sizing: border-box;
 }
 
-/* h2 {
+h2 {
   margin: 0 0 1em;
-  font-size: 19px;
-} */
+  font-size: 16px;
+}
 
 table {
   width: 100%;
