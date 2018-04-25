@@ -172,9 +172,8 @@
         }
       }
 
-      Promise.all(promise_accounts).then((new_harvest_context) => {
-        console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(new_harvest_context)}`)
-        harvest_context = new_harvest_context
+      Promise.all(promise_accounts).then(() => {
+        console.log(`\nharvest_time >>> new context object:\n${JSON.stringify(harvest_context)}`)
       }).then(() => {
         populateAccountDD()
         populateProjectTaskDD()
@@ -204,7 +203,8 @@
         
         var found_account = harvest_context.harvest.user_data.accounts.find(x => x.id  === account_id)
         found_account.project_assignments = response.project_assignments
-        return resolve(harvest_context)
+
+        return resolve()
       }, 'GET', projects_url, auth)
     })
   }
