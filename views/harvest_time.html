@@ -288,8 +288,9 @@
     var projects = document.getElementById('harvest_projects')
     var tasks = document.getElementById('harvest_tasks')
     
-    var current_account = harvest_context.harvest.user_data.accounts.find(x => x.id === account_id)
-    var all_projects = current_account.project_assignments
+    var all_projects = harvest_context.harvest.user_data.accounts.forEach((account) => {
+      if (account.id === account_id) return account.project_assignments
+    })
 
     for (var i = 0; i < all_projects.length; i++) {
       var project_assignment = all_projects[i]
