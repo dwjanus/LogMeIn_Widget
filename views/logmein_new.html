@@ -116,39 +116,45 @@
   getPin = (response) => {
     console.log(`>>> getPin response: \n${response}`)
     var data = response.toString();
-    var pin = data.split('PINCODE:')[1]
-    var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
-    var click = "window.open('" + link + "', '_blank')"      
-    var comment_json = {
-      comment: {
-        body: `Go here to launch your Rescue session: ${link}`,
-        is_private: false
+
+    if (data.indexOf('OK') == -1) {
+      var e = new Error(data)
+      handleError(e)
+    } else {
+      var pin = data.split('PINCODE:')[1]
+      var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
+      var click = "window.open('" + link + "', '_blank')"      
+      var comment_json = {
+        comment: {
+          body: `Go here to launch your Rescue session: ${link}`,
+          is_private: false
+        }
       }
+
+      console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
+
+      var current_view = document.getElementById('logmein_authed_view')
+      if (current_view == undefined || null) current_view = document.getElementById('logmein_form')
+
+      var logmein_widget_view = document.createElement('div')
+      
+      logmein_widget_view.className = 'logmein_widget_view'
+      logmein_widget_view.id = 'logmein_widget_view'
+      logmein_widget_view.innerHTML = `
+        <div class="success">
+            <h6>Your session Pin is:</h6> 
+            <p id="pin">${pin}</p>
+        </div>
+        <div style="padding-top: 15px;">
+            <button type="button" class="btn btn-success" id="logmein_session" onclick="${click}">
+                Go to Session
+            </button>
+        </div>
+      `
+      current_view.parentNode.replaceChild(logmein_widget_view , current_view)
+
+      // platformWidgetHelper.callSamanageAPI(postComment, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
     }
-
-    console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
-
-    var current_view = document.getElementById('logmein_authed_view')
-    if (current_view == undefined || null) current_view = document.getElementById('logmein_form')
-
-    var logmein_widget_view = document.createElement('div')
-    
-    logmein_widget_view.className = 'logmein_widget_view'
-    logmein_widget_view.id = 'logmein_widget_view'
-    logmein_widget_view.innerHTML = `
-      <div class="success">
-          <h6>Your session Pin is:</h6> 
-          <p id="pin">${pin}</p>
-      </div>
-      <div style="padding-top: 15px;">
-          <button type="button" class="btn btn-success" id="logmein_session" onclick="${click}">
-              Go to Session
-          </button>
-      </div>
-    `
-    current_view.parentNode.replaceChild(logmein_widget_view , current_view)
-
-    // platformWidgetHelper.callSamanageAPI(postComment, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
   }
     
 
