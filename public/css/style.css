@@ -40,7 +40,6 @@ html, body {
 
 table {
   width: 100%;
-  /* border-collapse: collapse; */
 }
 
 td, th {
@@ -101,55 +100,11 @@ input {
   font: inherit;
   font-size: 12px;
   display: block;
-}
+} */
 
 input:focus {
   outline: none;
   border-color: rgba(0,0,0,.3);
-}
-
-.form-field {
-  margin: 5px;
-} */
-
-/* .btn {
-  float: left;
-  width: 145px;
-  padding: 5px;
-  background: #00aa56;
-  border: 1px solid rgba(0,0,0,.1);
-  border-width: 1px 1px 3px;
-  border-radius: 3px;
-  font: inherit;
-  font-size: 0.7em;
-  font-weight: 500;
-  margin-top: 15px;
-  margin-left: 11px;
-  margin-right: 11px;
-  color: rgb(218, 218, 218);
-  cursor: pointer;
-  text-shadow: 0 1px 0 rgba(0,0,0,.3), 0 1px 1px rgba(0,0,0,.2);
-} */
-
-/* .btn:hover,
-.btn:focus {
-  outline: none;
-  background: #002a55;
-} */
-
-/* .btn:active {
-  transform: translateY(1px);
-} */
-
-#hidebtn {
-  background: #666;
-}
-
-#showbtn {
-  float: center;
-  width: 280px;
-  background: #666;
-  margin: 10px;
 }
 
 .session {
@@ -164,16 +119,8 @@ input:focus {
   border-radius: 20px;
 }
 
-.success #success {
-  font-size: 16px;
-  font-weight: 500;
-  color: #0e411a;
-  margin-top: 18px;
-  margin-bottom: 3px;
-}
-
 .success #pin {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
   margin-top: 15px;
   margin-bottom: 17px;
