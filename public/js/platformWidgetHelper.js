@@ -54,7 +54,8 @@ var platformWidgetHelper = (function() {
     },
 
     getStorage: (callback) => {
-      var id = this.getUserInfo(user => user.user_id)
+      // var id = this.getUserInfo(user => user.user_id) need to fix
+      var id = 2821593
 
       fetch(`/storage/${id}`).then((res) => res.json())
         .then((data) => {
