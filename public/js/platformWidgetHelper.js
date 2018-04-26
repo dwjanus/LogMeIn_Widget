@@ -60,8 +60,8 @@ var platformWidgetHelper = (function() {
 
       fetch(`/storage/${id}`).then(res => res.text())
         .then((data) => {
-          console.log(`platformWidgetHelper >>> getStorage >> returning data:\n${util.inspect(data)}`)
-          return callback(data);
+          console.log(`platformWidgetHelper >>> getStorage >> returning data:\n${data}`)
+          return callback(data)
         })
       .catch(e => console.log(`>> Error in getStorage: ${e}`))
       
