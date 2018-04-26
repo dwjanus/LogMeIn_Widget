@@ -139,11 +139,11 @@ app.get('/storage/:id', (req, res) => {
   Promise.map(dbs, (db) => {
     console.log('/storage/id >>> Promise.map >>> ' + db.name)
     let key = db.name
-    
+
     return db.collection.findOne({user: req.params.id}).then((found) => {
       if (found) {
         console.log('/storage/id >>> found')
-        storage[key] = found[key]
+        storage[key] = found
       }
     })
   }).then(() => {
