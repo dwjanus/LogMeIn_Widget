@@ -15,6 +15,20 @@ const db = monk(process.env.MONGODB_URI)
 const teamviewer_db = db.get('teamviewer')
 const logmein_db = db.get('logmein')
 const harvest_db = db.get('harvest')
+const dbs = [
+  {
+    name: teamviewer,
+    collection: teamviewer_db
+  },
+  {
+    name: logmein,
+    collection: logmein_db
+  },
+  { 
+    name: harvest,
+    collection: harvest_db
+  }
+]
 
 
 if (!port) {
@@ -102,6 +116,25 @@ app.post('/callExternalApi', (req, res) => {
   })
 
   request.end()
+})
+
+
+//                             //
+// -----> Get User data <----- //
+//                             //
+app.get('/storage/:id', (req, res) => {
+  let storage = {}
+  
+  dbs.forEach(db => {
+    let key = db.name
+    db.collection.findOne({user: req.query.state}).then((found) => {
+      if (found) {
+        storage[key] = found[key]
+      }
+    })
+  })
+
+  res.send(JSON.stringify(storage))
 })
 
 
@@ -521,6 +554,7 @@ app.get('/harvest/data/:id', (req, res) => {
   })
 })
 
+
 // app.post('/harvest/:id/save', (req, res) => {
 //   const id = req.params.id
 //   const harvest = req.body
@@ -536,6 +570,9 @@ app.get('/harvest/data/:id', (req, res) => {
 //     res.send(harvest)
 //   })
 // })
+
+
+
 
 const server = app.listen(app.get('port'), () => {
   console.log(`> App listening on port: ${server.address().port}`)

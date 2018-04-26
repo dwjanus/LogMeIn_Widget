@@ -280,7 +280,7 @@
       var option = document.createElement('OPTION')
       option.innerHTML = harvest_context.harvest.user_data.accounts[i].name
       option.value = harvest_context.harvest.user_data.accounts[i].id
-      option.setAttribute('class', 'dropdown-item')
+      option.setAttribute('class', 'form-control')
       harvest_account_list.options.add(option)
     }
   }
@@ -303,7 +303,7 @@
       
       proj_option.innerHTML = project_assignment.project.name
       proj_option.value = project_assignment.project.id
-      proj_option.setAttribute('class', 'dropdown-item')
+      proj_option.setAttribute('class', 'form-control')
       projects.options.add(proj_option)
 
       for (var j = 0; j < project_assignment.task_assignments.length; j++) {
@@ -311,7 +311,7 @@
         
         task_option.innerHTML = project_assignment.task_assignments[j].task.name
         task_option.value = project_assignment.task_assignments[j].task.id
-        task_option.setAttribute('class', 'dropdown-item')
+        task_option.setAttribute('class', 'form-control')
         tasks.options.add(task_option)
       }
     }

@@ -5,11 +5,11 @@ var platformWidgetHelper = (function() {
 
   return {
     show: function() {
-      document.getElementById("widget").style.visibility = "visible"
+      
     },
 
     hide: function() {
-      document.getElementById("widget").style.visibility = "hidden"
+      
     },
 
     getContextObject: function(callback) {
@@ -54,7 +54,14 @@ var platformWidgetHelper = (function() {
     },
 
     getStorage: (callback) => {
-      callback(localStorage);
+      var id = this.getUserInfo(user => user.user_id)
+
+      fetch(`/storage/${id}`).then((res) => res.json())
+        .then((data) => {
+          return callback(data);
+        })
+      .catch(e => console.log(`>> Error in getStorage: ${e}`))
+      
     },
 
     setStorage: (callback, storage) => {

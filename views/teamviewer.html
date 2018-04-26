@@ -1,12 +1,10 @@
 <div class="widget" id="tv_widget" style="visibility: visible;">
     <div name="teamviewer_auth" id="teamviewer_auth">
-        <div class="form-header">
-            <h5>TeamViewer Remote Session</h5>
-        </div>
+        <h5>TeamViewer Remote Session</h5>
 
         <div id="tv_auth_buttons">
             <div style="height:65px;">
-                <button type="button" class="btn session" form="tv_auth" onclick="teamviewer();">Install</button>
+                <button type="button" class="btn btn-primary session" form="tv_auth" onclick="teamviewer();">Install</button>
             </div>   
         </div>
         
@@ -64,7 +62,7 @@
     teamviewer_authed_view.id = 'teamviewer_authed_view'
     teamviewer_authed_view.innerHTML = `
       <div class="teamviewer_generate_session">
-          <button id="teamviewer_generate_button" class="btn session" onclick="teamviewerSessionView();">
+          <button id="teamviewer_generate_button" class="btn btn-success session" onclick="teamviewerSessionView();">
               Generate Session Code
           </button>
       </div>

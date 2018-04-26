@@ -31,7 +31,11 @@ html, body {
 }
 
 .incident_search_area {
-  font-size: 13px;
+  font-size: 13px !important;
+}
+
+.incident_search_area#incident_number_input {
+  font-size: 13px !important;
 }
 
 table {
