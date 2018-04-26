@@ -145,7 +145,12 @@
             <h6 style="margin-top: 15px;" class="h5">Your session Pin is:</h6>
             <p id="pin">${pin}</p>
         </div>
+
         <div style="padding-top: 15px;">
+            <button>
+              <i class="fas fa-sync"></i>
+            </button>
+
             <button type="button" class="btn btn-success" id="logmein_session" onclick="${click}">
                 Go to Session
             </button>
@@ -170,7 +175,7 @@
 
 
 function saveAuth(code) {
-  let body_json = { logmein: { token: code } }
+  let body_json = { token: code }
   console.log(`logmein >>> saving authcode... \nbody_json = ${JSON.stringify(body_json)}`)
 
   fetch(`/logmein/${logmein_context.assignee.user_id}/save`, {
@@ -183,7 +188,7 @@ function saveAuth(code) {
       if (data.error) {
         throw new Error(data.error)
       } else {
-        logmein_context['logmein'] = { token: data.token }
+        logmein_context['logmein'] = { token: code }
         return
       }
     })

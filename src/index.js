@@ -421,13 +421,13 @@ app.get('/tv/:id/oauth/', (req, res) => {
 //                       //
 app.post('/logmein/:id/save', (req, res) => {
   const id = req.params.id
-  const logmein_data = req.body
+  const logmein = req.body
 
-  console.log(`\n[POST] /logmein/${id}/save\n--> logmein: ${util.inspect(logmein_data)}`)
+  console.log(`\n[POST] /logmein/${id}/save\n--> logmein: ${util.inspect(logmein)}`)
   logmein_db.findOne({user: id}).then((found) => {
     if (!found) {
       console.log(`   logmein_db >> user not found, inserting now...`)
-      logmein_db.insert({ user: id, logmein: { token: logmein_data.token } })
+      logmein_db.insert({ user: id, logmein })
     } else {
       console.log('   logmein_db >> user already has logmein authentication')
     }
