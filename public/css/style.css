@@ -83,40 +83,6 @@ tr:nth-child(even) {
   }
 }
 
-/* .form-header {
-  width: 100%;
-  max-width: 370px;
-}
-
-form {
-  padding: 10px;
-  background: #f8f8f8;
-  border: 1px solid rgba(0,0,0,.1);
-  border-color: rgba(0,0,0,.05) rgba(0,0,0,.08) rgba(0,0,0,.1);
-  border-radius: 3px;
-  box-shadow: 0 3px 4px rgba(0,0,0,.05);
-}
-
-label {
-  display: inline-block;
-  padding-bottom: 3px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #ff0076;
-  text-transform: uppercase;
-}
-
-input {
-  width: 300px;
-  padding: 8px;
-  margin: 3px;
-  border: 1px solid rgba(0,0,0,.1);
-  border-radius: 3px;
-  background: #fff;
-  font: inherit;
-  font-size: 12px;
-  display: block;
-} */
 
 input:focus {
   outline: none;
@@ -248,7 +214,7 @@ input:checked + .slider:before {
   opacity: 1;
 }
 
-.teamviewer_session {
+/* .teamviewer_session {
   display: grid;
   grid-gap: 0px;
   grid-template-columns: 270px 40px;
@@ -262,7 +228,7 @@ input:checked + .slider:before {
   grid-column: 1;
   grid-row: 1;
   font-size: 13px;
-}
+} */
 
 .btn_item {
   grid-column: 2;

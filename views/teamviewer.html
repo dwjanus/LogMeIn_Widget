@@ -3,9 +3,7 @@
         <h5>TeamViewer Remote Session</h5>
 
         <div id="tv_auth_buttons">
-            <div style="height:65px;">
-                <button type="button" class="btn btn-primary session" form="tv_auth" onclick="teamviewer();">Install</button>
-            </div>   
+            <button type="button" class="btn btn-primary" form="tv_auth" onclick="teamviewer();">Install</button>
         </div>
         
     </div>
@@ -62,7 +60,7 @@
     teamviewer_authed_view.id = 'teamviewer_authed_view'
     teamviewer_authed_view.innerHTML = `
       <div class="teamviewer_generate_session">
-          <button id="teamviewer_generate_button" class="btn btn-success session" onclick="teamviewerSessionView();">
+          <button id="teamviewer_generate_button" class="btn btn-primary" onclick="teamviewerSessionView();">
               Generate Session Code
           </button>
       </div>
@@ -79,12 +77,17 @@
       tv_widget_view.className = 'tv_widget_view'
       tv_widget_view.id = 'tv_widget_view'
       tv_widget_view.innerHTML = `
-        <div class="teamviewer_session"> 
-            <p id="teamviewer_code">Session Code: ${teamviewer_context.session_data.code}</p> 
-            <div class="btn_item">
-                <button id="new_code_btn">
-                    <img src="https://samanage-widgets.herokuapp.com/images/refresh_icon2.png" type="image/png" alt="New Code" width="12px;" height=12px;" style="padding-top: 1px;" onclick="createTeamviewerSession();" />
-                </button>
+        <div class="teamviewer_session">
+            <div class="row">
+                <div class="col-sm-8">
+                    <p id="teamviewer_code">Session Code: ${teamviewer_context.session_data.code}</p> 
+                </div>
+
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent; onclick="createTeamviewerSession();">
+                        New Code  <i class="fas fa-sync"></i>
+                    </button>
+                </div>
             </div>
         </div>
         
