@@ -78,9 +78,9 @@
       tv_widget_view.id = 'tv_widget_view'
       tv_widget_view.innerHTML = `
         <div class="teamviewer_session">
-            <div class="row">
+            <div class="row" style="margin-top: 5px;">
                 <div class="col-sm-1"></div>
-                <div class="col-sm-8" id="teamviewer_code">Session Code:  ${teamviewer_context.session_data.code}</div>
+                <div class="col-sm-8" id="teamviewer_code" style="padding-top: 2px;">Session Code: ${teamviewer_context.session_data.code}</div>
                 <div class="col-sm-2">
                     <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent; onclick="createTeamviewerSession();">
                         <i class="fas fa-sync"></i>
