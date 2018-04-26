@@ -79,15 +79,14 @@
       tv_widget_view.innerHTML = `
         <div class="teamviewer_session">
             <div class="row">
-                <div class="col-sm-5">Session Code: </div>
-
-                <div class="col-sm-5" id="teamviewer_code">${teamviewer_context.session_data.code}</div>
-
-                <div class="col-sm-2">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-7" id="teamviewer_code">Session Code:  ${teamviewer_context.session_data.code}</div>
+                <div class="col-sm-3">
                     <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent; onclick="createTeamviewerSession();">
                         <i class="fas fa-sync"></i>
                     </button>
                 </div>
+                <div class="col-sm-1"></div>
             </div>
         </div>
         
@@ -108,7 +107,7 @@
         <div style="margin-top: 5px;">
             <div class="tv_buttons"> 
                 <button type="button" id="customer_session" class="btn btn-primary" onclick="linkToTicket();">
-                    <i class="fas fa-chevron-left fa-xs" style="color: white;"></i>\w\w\w\w\wPost Customer Link to ticket
+                    <i class="fas fa-chevron-left fa-sm" style="color: white;"></i>    Post Customer Link to ticket
                     <span class="tooltip" id="customer_link_tt">${teamviewer_context.session_data.end_customer_link}</span>
                 </button>
             </div>
