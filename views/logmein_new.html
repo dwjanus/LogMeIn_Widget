@@ -142,13 +142,13 @@
       logmein_widget_view.id = 'logmein_widget_view'
       logmein_widget_view.innerHTML = `
         <div class="success">
-            <h6 style="margin-top: 15px;" class="h5">Your session Pin is:</h6>
+            <h6 style="margin-top: 15px;">Your session Pin is:</h6>
             <p id="pin">${pin}</p>
         </div>
 
         <div style="padding-top: 15px;">
-            <button>
-              <i class="fas fa-sync"></i>
+            <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent;">
+                <i class="fas fa-sync"></i>
             </button>
 
             <button type="button" class="btn btn-success" id="logmein_session" onclick="${click}">
