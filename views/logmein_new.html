@@ -40,9 +40,11 @@
   }
 
   getlocal = (response) => {
+    response = JSON.parse(response)
     console.log('logmein >>> getting local storage: ' + JSON.stringify(response))
     if (response && response.logmein !== undefined) {
-      logmein_context.logmein = response.logmein
+      console.log('logmein >>> toggling authorized view...')
+      logmein_context['logmein'] = response.logmein
       toggleLogmeinAuthorizedView()
     }
   }

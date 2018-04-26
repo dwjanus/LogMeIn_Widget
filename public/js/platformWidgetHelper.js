@@ -57,7 +57,7 @@ var platformWidgetHelper = (function() {
       // var id = this.getUserInfo(user => user.user_id) need to fix
       var id = 2821593
 
-      fetch(`/storage/${id}`).then((res) => res.json())
+      fetch(`/storage/${id}`).then(res => res.text())
         .then((data) => {
           return callback(data);
         })
