@@ -71,6 +71,18 @@ tr:nth-child(even) {
   height: auto !important;
 }
 
+@media screen and (max-width: 1275px) {
+  .widget {
+    width: 296px;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .widget {
+    width: 376px;
+  }
+}
+
 /* .form-header {
   width: 100%;
   max-width: 370px;
@@ -296,8 +308,8 @@ input:checked + .slider:before {
 }
 
 .harvest_dropdown {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   max-width: 200px;
 }
 

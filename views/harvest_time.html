@@ -224,25 +224,29 @@
       
       <div class="harvest_send_time">
           <form id="harvest_time_form">
-              <div class="form-group>
-                  <label for="harvest_account">Account</label>
-                  <select class="form-control harvest_dropdown" id="harvest_account" onchange="populateProjectTaskDD();"></select>
+              <div class="form-group row">
+                  <label for="harvest_account" class="col-sm-2 col-form-label col-form-label-sm">Account</label>
+                  <div class="col-sm-10">
+                      <select class="form-control form-control-sm harvest_dropdown" id="harvest_account" onchange="populateProjectTaskDD();"></select>
+                  </div>            
               </div>
 
-              <div class="form-group>
-                  <label for="harvest_projects">Project</label>
-                  <select class="form-control harvest_dropdown" id="harvest_projects" name="havest_projects">
-                  </select>
+              <div class="form-group row">
+                  <label for="harvest_projects" class="col-sm-2 col-form-label col-form-label-sm">Project</label>
+                  <div class="col-sm-10">
+                      <select class="form-control form-control-sm harvest_dropdown" id="harvest_projects" name="havest_projects"></select>
+                  </div>                  
               </div>
 
-              <div class="form-group>
-                  <label for="harvest_tasks">Task</label>
-                  <select class="form-control harvest_dropdown" id="harvest_tasks" name="harvest_tasks">
-                  </select>
+              <div class="form-group row">
+                  <label for="harvest_tasks" class="col-sm-2 col-form-label col-form-label-sm">Task</label>
+                  <div class="col-sm-10">
+                      <select class="form-control form-control-sm harvest_dropdown" id="harvest_tasks" name="harvest_tasks"></select>
+                  </div>
               </div>
 
-              <button id="harvest_send_time_button" class="btn btn-outline-primary session" onclick="harvestSendTime();">
-                  Send Time Tracking to Harvest <i class="fas fa-angle-right fa-xs" style="color: white;"></i>
+              <button id="harvest_send_time_button" class="btn btn-primary session" onclick="harvestSendTime();">
+                  Send Time Tracking to Harvest  <i class="fas fa-chevron-right fa-xs" style="color: white;"></i>
               </button>
           </form>
       </div>

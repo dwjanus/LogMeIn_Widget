@@ -5,15 +5,22 @@
       
         <div id="logmein_form">
             <form id="logmein_auth">
-                <div class="form-group">
-                    <input type="email" class="form-control" id="logmein_email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
-                    <input type="password" class="form-control" id="logmein_pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
+                <div class="form-group row">
+                    <label for="logmein_email" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control form-control-sm" id="logmein_email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
+                    </div>
                 </div>
-            </form>
 
-            <div style="height:65px;">
-                <button type="submit" class="btn btn-primary" form="logmein_auth">Create Session</button>
-            </div>
+                <div class="form-group row">
+                    <label for="logmein_pw" class="col-sm-2 col-form-label col-form-label-sm">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control form-control-sm" id="logmein_pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
+                    </div>            
+                </div>
+
+                <button type="submit" class="btn btn-primary" form="logmein_auth">Sign In</button>
+            </form>
         </div>
     </div>
 </div>
@@ -148,12 +155,12 @@
 
         <div style="margin-top: 15px; margin-bottom: 10px;">
             <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent;">
-                New Code<i class="fas fa-sync"></i>
+                New Code  <i class="fas fa-sync"></i>
             </button>
         </div>
 
         <div>
-          <small class="text-muted"><a href="${link}">customer session</a></small>
+          <button type="button" class="btn btn-link btn-xs" onclick=${click}><small class="text-muted">view customer session</small></button>
         </div>
       `
       current_view.parentNode.replaceChild(logmein_widget_view , current_view)
