@@ -40,11 +40,12 @@ html, body {
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
 }
 
-/* td, th {
-  border: 1px solid #dddddd;
+td, th {
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
   text-align: left;
   padding: 1px;
   font-size: 10px;
@@ -52,7 +53,7 @@ table {
 
 tr:nth-child(even) {
   background-color: #dddddd;
-} */
+}
 
 .widget {
   background: #fff;
