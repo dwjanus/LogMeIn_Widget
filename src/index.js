@@ -8,6 +8,7 @@ import monk from 'monk'
 import https from 'https'
 import querystring from 'querystring'
 import url from 'url'
+import Promise from 'bluebird'
 
 const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
@@ -125,27 +126,30 @@ app.post('/callExternalApi', (req, res) => {
 app.get('/storage/:id', (req, res) => {
   let storage = {}
   
-  dbs.forEach(db => {
-    let key = db.name
-    db.collection.findOne({user: req.params.id}).then((found) => {
-      if (found) {
-        storage[key] = found[key]
-      }
-    })
-  })
-
-
-  // Promise.map(dbs, (db) => {
-  //   return db.collection.findOne({user: req.params.id}).then((found) => {
+  // dbs.forEach(db => {
+  //   let key = db.name
+  //   db.collection.findOne({user: req.params.id}).then((found) => {
   //     if (found) {
   //       storage[key] = found[key]
   //     }
   //   })
-  // }).then(() => {
-  //   return res.send(JSON.stringify(storage))
   // })
 
-  res.send(JSON.stringify(storage))
+
+  Promise.map(dbs, (db) => {
+    console.log('/storage/id >>> Promise.map...')
+    return db.collection.findOne({user: req.params.id}).then((found) => {
+      if (found) {
+        console.log('/storage/id >>> found')
+        storage[key] = found[key]
+      }
+    })
+  }).then(() => {
+    console.log(`/storage/id >>> returning storage:\n${util.inspect(storage)}`)
+    return res.send(JSON.stringify(storage))
+  })
+
+  // res.send(JSON.stringify(storage))
 })
 
 

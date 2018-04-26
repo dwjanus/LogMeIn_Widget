@@ -54,7 +54,6 @@ var platformWidgetHelper = (function() {
     },
 
     getStorage: (callback) => {
-      console.log('platformWidgetHelper >>> getStorage called')
       // var id = this.getUserInfo(user => user.user_id) need to fix
       var id = 2821593
 
