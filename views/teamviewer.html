@@ -79,13 +79,13 @@
       tv_widget_view.innerHTML = `
         <div class="teamviewer_session">
             <div class="row">
-                <div class="col-sm-8">
-                    <p id="teamviewer_code">Session Code: ${teamviewer_context.session_data.code}</p> 
+                <div class="col-sm-7">
+                    <p id="teamviewer_code" class="small">Session Code: ${teamviewer_context.session_data.code}</p> 
                 </div>
 
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent; onclick="createTeamviewerSession();">
-                        New Code  <i class="fas fa-sync"></i>
+                        <i class="fas fa-sync"></i>
                     </button>
                 </div>
             </div>

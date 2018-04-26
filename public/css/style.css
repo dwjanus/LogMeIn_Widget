@@ -214,17 +214,14 @@ input:checked + .slider:before {
   opacity: 1;
 }
 
-/* .teamviewer_session {
-  display: grid;
-  grid-gap: 0px;
-  grid-template-columns: 270px 40px;
+.teamviewer_session {
   width: 345px;
   text-align: center;
   padding-right: 10px;
   padding-left: 10px;
 }
 
-#teamviewer_code {
+/* #teamviewer_code {
   grid-column: 1;
   grid-row: 1;
   font-size: 13px;
@@ -276,6 +273,5 @@ input:checked + .slider:before {
 .harvest_dropdown {
   margin-top: 5px;
   margin-bottom: 5px;
-  max-width: 200px;
 }
 
