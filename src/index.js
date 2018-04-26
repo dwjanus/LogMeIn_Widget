@@ -127,12 +127,23 @@ app.get('/storage/:id', (req, res) => {
   
   dbs.forEach(db => {
     let key = db.name
-    db.collection.findOne({user: req.query.state}).then((found) => {
+    db.collection.findOne({user: req.params.id}).then((found) => {
       if (found) {
         storage[key] = found[key]
       }
     })
   })
+
+
+  // Promise.map(dbs, (db) => {
+  //   return db.collection.findOne({user: req.params.id}).then((found) => {
+  //     if (found) {
+  //       storage[key] = found[key]
+  //     }
+  //   })
+  // }).then(() => {
+  //   return res.send(JSON.stringify(storage))
+  // })
 
   res.send(JSON.stringify(storage))
 })

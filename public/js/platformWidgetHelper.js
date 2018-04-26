@@ -54,11 +54,13 @@ var platformWidgetHelper = (function() {
     },
 
     getStorage: (callback) => {
+      console.log('platformWidgetHelper >>> getStorage called')
       // var id = this.getUserInfo(user => user.user_id) need to fix
       var id = 2821593
 
       fetch(`/storage/${id}`).then(res => res.text())
         .then((data) => {
+          console.log(`platformWidgetHelper >>> getStorage >> returning data:\n${util.inspect(data)}`)
           return callback(data);
         })
       .catch(e => console.log(`>> Error in getStorage: ${e}`))
