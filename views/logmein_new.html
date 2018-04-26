@@ -19,49 +19,48 @@
 </div>
 
 <script>
-var context_id
-var logmein_context = {}
-var logmein_errors = {
-  'ERROR': 'An unspecified error occured',
-  'INVALID': 'The password or email were incorrect',
-  'INVALIDPARAM_NODE': 'The node (id) provided is not the id of the existing user',
-  'NOTLOGGEDIN': 'Current user is not logged in',
-  'NOTTECHNICIAN': 'PIN was not requested by a technician',
-  'OUTOFPINCODES': 'Out of PIN codes - contact your administrator',
-  'POLLRATEEXCEEDED': 'You have concurrently requested too many PINs',
-  'INVALID_SECRETAUTHCODE': 'Authcode was invalid',
-  'USER_IS_DELETED': 'The user whose authorization code was specified is deleted',
-  'USER_DELETED_OR_DISABLED': 'The user whose authorization code was specified is deleted or disabled',
-  'INVALIDPINFORMAT': 'The format of the PIN code is incorrect'
-}
-
-setlocal = (response) => {
-  console.log('logmein >>> local storage set: ' + JSON.stringify(response))
-}
-
-getlocal = (response) => {
-  console.log('logmein >>> getting local storage: ' + JSON.stringify(response))
-  if (response && response.logmein !== undefined) {
-    var code = response.logmein.token
-    var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
-    platformWidgetHelper.callSamanageAPI(getPin, 'GET', pin_url, null)
+  var context_id
+  var logmein_context = {}
+  var logmein_errors = {
+    'ERROR': 'An unspecified error occured',
+    'INVALID': 'The password or email were incorrect',
+    'INVALIDPARAM_NODE': 'The node (id) provided is not the id of the existing user',
+    'NOTLOGGEDIN': 'Current user is not logged in',
+    'NOTTECHNICIAN': 'PIN was not requested by a technician',
+    'OUTOFPINCODES': 'Out of PIN codes - contact your administrator',
+    'POLLRATEEXCEEDED': 'You have concurrently requested too many PINs',
+    'INVALID_SECRETAUTHCODE': 'Authcode was invalid',
+    'USER_IS_DELETED': 'The user whose authorization code was specified is deleted',
+    'USER_DELETED_OR_DISABLED': 'The user whose authorization code was specified is deleted or disabled',
+    'INVALIDPINFORMAT': 'The format of the PIN code is incorrect'
   }
-}
 
-contextRecievedHandler = (response) => {
-  if (response.context_type == 'Incident') {
-    context_id = response.context_id
-    logmein_context = response
-    platformWidgetHelper.show()
-    platformWidgetHelper.getStorage(getlocal)
+  setlocal = (response) => {
+    console.log('logmein >>> local storage set: ' + JSON.stringify(response))
   }
-}
 
-platformWidgetHelper.getContextObject(contextRecievedHandler)
+  getlocal = (response) => {
+    console.log('logmein >>> getting local storage: ' + JSON.stringify(response))
+    if (response && response.logmein !== undefined) {
+      logmein_context.logmein = response.logmein
+      toggleLogmeinAuthorizedView()
+    }
+  }
 
-document.getElementById("logmein_auth").addEventListener("submit", logmein)
+  contextRecievedHandler = (response) => {
+    if (response.context_type == 'Incident') {
+      context_id = response.context_id
+      logmein_context = response
+      platformWidgetHelper.show()
+      platformWidgetHelper.getStorage(getlocal)
+    }
+  }
 
-function logmein(event) {
+  platformWidgetHelper.getContextObject(contextRecievedHandler)
+
+  document.getElementById("logmein_auth").addEventListener("submit", logmein)
+
+  function logmein(event) {
     event.preventDefault()
     console.log('>>> logmein() called')
     var email = document.getElementById("logmein_email").value
@@ -71,6 +70,28 @@ function logmein(event) {
     console.log(`>>> url: ${url}`)
 
     platformWidgetHelper.callSamanageAPI(getAuth, 'GET', url, null)
+  }
+
+  function toggleLogmeinAuthorizedView() {
+    var logmein_authed_view = document.createElement('div')
+
+    logmein_authed_view.className = 'logmein_authed_view'
+    logmein_authed_view.id = 'logmein_authed_view'
+
+    logmein_authed_view.innerHTML = `
+      <div class="logmein_generate_session">
+          <button id="logmein_generate_button" class="btn btn-success session" onclick="logmeinSessionView();">
+              Generate Session Code
+          </button>
+      </div>
+    `
+  }
+
+  function logmeinSessionView() {
+    var code = logmein_context.logmein.token
+    var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
+      
+    platformWidgetHelper.callSamanageAPI(getPin, 'GET', pin_url, null)
   }
 
 
@@ -88,7 +109,6 @@ function logmein(event) {
   }
 
 
-
   getPin = (response) => {
     console.log(`>>> getPin response: \n${response}`)
     var data = response.toString();
@@ -104,12 +124,14 @@ function logmein(event) {
 
     console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
 
-    var form = document.getElementById('logmein_form')
-    var success = document.createElement('div')
-    success.innerHTML = `
+    var logmein_authed_view = document.getElementById('logmein_authed_view')
+    var logmein_widget_view = document.createElement('div')
+    
+    logmein_widget_view.className = 'logmein_widget_view'
+    logmein_widget_view.id = 'logmein_widget_view'
+    logmein_widget_view.innerHTML = `
       <div class="success">
-          <p id="success">Success!</p> 
-          <p style="font-size: 12px; margin-top: 5px;">Your session Pin is:</p>
+          <h6>Your session Pin is:</h6> 
           <p id="pin">${pin}</p>
       </div>
       <div style="padding-top: 15px;">
@@ -118,7 +140,7 @@ function logmein(event) {
           </button>
       </div>
     `
-    form.parentNode.replaceChild(success, form)
+    logmein_authed_view.parentNode.replaceChild(logmein_widget_view , logmein_authed_view)
 
     // platformWidgetHelper.callSamanageAPI(postComment, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
   }
