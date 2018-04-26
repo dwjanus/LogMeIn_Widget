@@ -128,7 +128,9 @@
 
     console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
 
-    var logmein_authed_view = document.getElementById('logmein_authed_view')
+    var current_view = document.getElementById('logmein_authed_view')
+    if (current_view == undefined || null) current_view = document.getElementById('logmein_form')
+
     var logmein_widget_view = document.createElement('div')
     
     logmein_widget_view.className = 'logmein_widget_view'
@@ -144,7 +146,7 @@
           </button>
       </div>
     `
-    logmein_authed_view.parentNode.replaceChild(logmein_widget_view , logmein_authed_view)
+    current_view.parentNode.replaceChild(logmein_widget_view , current_view)
 
     // platformWidgetHelper.callSamanageAPI(postComment, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
   }
