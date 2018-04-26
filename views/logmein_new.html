@@ -146,14 +146,14 @@
             <p id="pin">${pin}</p>
         </div>
 
-        <div style="padding-top: 15px;">
+        <div style="margin-top: 15px; margin-bottom: 10px;">
             <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent;">
-                <i class="fas fa-sync"></i>
+                New Code<i class="fas fa-sync"></i>
             </button>
+        </div>
 
-            <button type="button" class="btn btn-success" id="logmein_session" onclick="${click}">
-                Go to Session
-            </button>
+        <div>
+          <small class="text-muted"><a href="${link}">customer session</a></small>
         </div>
       `
       current_view.parentNode.replaceChild(logmein_widget_view , current_view)
