@@ -17,15 +17,15 @@ const logmein_db = db.get('logmein')
 const harvest_db = db.get('harvest')
 const dbs = [
   {
-    name: teamviewer,
+    name: 'teamviewer',
     collection: teamviewer_db
   },
   {
-    name: logmein,
+    name: 'logmein',
     collection: logmein_db
   },
   { 
-    name: harvest,
+    name: 'harvest',
     collection: harvest_db
   }
 ]
