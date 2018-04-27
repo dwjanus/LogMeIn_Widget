@@ -345,8 +345,8 @@
 
     samanage_times.forEach((time) => {
       var time_entry = {
-        project_id,
-        task_id,
+        project_id: project_id,
+        task_id: task_id,
         spent_date: time.created_at,
         hours: (time.minutes/60).toPrecision(1),
         notes: `${time.name}\n${time.parent.href}`
@@ -365,15 +365,14 @@
     return new Promise((resolve, reject) => {
       var account_id = document.getElementById('harvest_account').value
       var time_url = 'https://api.harvestapp.com/v2/time_entries'
-      var headers = {
+      var payload = {
         headers: {
           "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
           "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
           "Harvest-Account-Id": account_id
-        }
+        },
+        data: time_entry
       }
-
-      var payload = Object.assign(time_entry, headers)
 
       platformWidgetHelper.callSamanageAPI((response) => {
         console.log(`harvest_time >>> send time entry response:\n${JSON.stringify(response)}`)
