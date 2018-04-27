@@ -263,9 +263,3 @@ input:checked + .slider:before {
   height: 80px;
   width: 325px;
 }
-
-/* .harvest_dropdown {
-  margin-top: 2px;
-  margin-bottom: 2px;
-} */
-

@@ -80,7 +80,8 @@
         <div class="teamviewer_session">
             <div class="row" style="margin-top: 5px;">
                 <div class="col-sm-1"></div>
-                <div class="col-sm-8" id="teamviewer_code" style="padding-top: 2px;">Session Code: ${teamviewer_context.session_data.code}</div>
+                <div class="col-sm-4"><lead>Session Code: </lead></div>
+                <div class="col-sm-4" id="teamviewer_code>${teamviewer_context.session_data.code}</div>
                 <div class="col-sm-2">
                     <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent; onclick="createTeamviewerSession();">
                         <i class="fas fa-sync"></i>
@@ -107,7 +108,7 @@
         <div style="margin-top: 5px;">
             <div class="tv_buttons"> 
                 <button type="button" id="customer_session" class="btn btn-primary" onclick="linkToTicket();">
-                    <i class="fas fa-chevron-left fa-sm" style="color: white;"></i>    Post Customer Link to ticket
+                    <span><i class="fas fa-chevron-left fa-sm" style="color: white;"></i></span> &nbsp; Post Customer Link to ticket
                     <span class="tooltip" id="customer_link_tt">${teamviewer_context.session_data.end_customer_link}</span>
                 </button>
             </div>
@@ -142,7 +143,7 @@
         } else {
           teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
           var teamviewer_code = document.getElementById("teamviewer_code")
-          if (typeof(teamviewer_code) != 'undefined' && teamviewer_code != null) teamviewer_code.innerHTML = `Session Code: ${teamviewer_context.session_data.code}`
+          if (typeof(teamviewer_code) != 'undefined' && teamviewer_code != null) teamviewer_code.innerHTML = `${teamviewer_context.session_data.code}`
           var tech_session = document.getElementById("tech_session")
           if (typeof(tech_session) != 'undefined' && tech_session != null) tech_session.onclick = `"window.open('${teamviewer_context.session_data.supporter_link}', '_blank');"`
           var tech_link_tt = document.getElementById("tech_link_tt")
