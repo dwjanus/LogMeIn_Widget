@@ -128,15 +128,6 @@
 
     window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
   }
-  
-  function getSamanageTimes() {
-
-  }
-
-  function harvestSendTime() {
-    // post request to harvest timesheets api --> create via Duration
-    // params to send: project_id, task_id, spent_date, hours, notes, external reference
-  }
 
   function getHarvestUserData() {
     var accounts_url = "https://id.getharvest.com/api/v2/accounts"
@@ -271,9 +262,10 @@
     samanage_times_table.appendChild(samanage_times_table_body)
     
     for (var i = 0; i < samanage_times.length; i++) {
+      var timestamp = new Date(samanage_times[i].created_at)
       var tr = samanage_times_table_body.insertRow(-1)
       tr.innerHTML = `
-          <td>${samanage_times[i].created_at}</td>
+          <td>${timestamp.toDateString()}</td>
           <td>${samanage_times[i].minutes} minutes</td>
           <td>${samanage_times[i].name}</td>
       `
@@ -327,6 +319,69 @@
         tasks.options.add(task_option)
       }
     }
+  }
+
+  function getSamanageTimes() {
+
+  }
+
+  
+  // post request to harvest timesheets api --> create via Duration
+  // params to send: project_id, task_id, spent_date, hours, notes, external reference
+  // contingent on if end-user has "track time via duration" in settings
+  // will want to eventually explore options for handling if they dont have that setting 
+  // --> i.e. starting harvest timer from ticket? 
+  // maybe this is how we determine whether or not there is ability to directly enter time into harvest w/o adding to
+  // Samanage ticket? 
+  // ** if hours field is not provided then is_running is set to true 
+  // (could use for live tracking that maybe sends times back to samanage after timer stops?)
+  function harvestSendTime() { 
+    var project_id = document.getElementById('harvest_projects').value
+    var task_id = document.getElementById('harvest_tasks').value
+
+    console.log(`harvest_time >>> sending time tracks to harvest for\nproject: ${project_id}  task: ${task_id}`)
+
+    var promise_times = []
+
+    samanage_times.forEach((time) => {
+      var time_entry = {
+        project_id,
+        task_id,
+        spent_date: time.created_at,
+        hours: (time.minutes/60).toPrecision(1),
+        notes: `${time.name}\n${time.parent.href}`
+      }
+
+      promise_times.push(sendHarvestTimeEntry(time_entry))
+    })
+
+    Promise.all(promise_times).then(() => {
+      console.log('harvest_time >>> success!')
+    }).catch(e => console.log(e))
+  }
+
+
+  function sendHarvestTimeEntry(time_entry) {
+    return new Promise((resolve, reject) => {
+      var account_id = document.getElementById('harvest_account').value
+      var time_url = 'https://api.harvestapp.com/v2/time_entries'
+      var headers = {
+        headers: {
+          "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
+          "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
+          "Harvest-Account-Id": account_id
+        }
+      }
+
+      var payload = Object.assign(time_entry, headers)
+
+      platformWidgetHelper.callSamanageAPI((response) => {
+        console.log(`harvest_time >>> send time entry response:\n${JSON.stringify(response)}`)
+        response = JSON.parse(response)
+        if (response.error) return reject(response.error)
+        return resolve()
+      }, 'POST', time_url, JSON.stringify(payload))
+    })
   }
   
 </script>

@@ -98,7 +98,7 @@ input:focus {
 .success {
   background-color: #d4edda;
   border: 2px solid #9fe2ae;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 .success #pin {
