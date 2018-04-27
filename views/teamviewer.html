@@ -77,16 +77,14 @@
       tv_widget_view.className = 'tv_widget_view'
       tv_widget_view.id = 'tv_widget_view'
       tv_widget_view.innerHTML = `
-        <div class="teamviewer_session">
-            <div class="row" style="margin-top: 5px;">
-                <div class="lead">Session Code: </div>
-                <div id="teamviewer_code">${teamviewer_context.session_data.code}</div>
-            </div>
+        <div class="teamviewer_session success">
+            <small class="text-muted">Session Code: </small>
+            <div id="teamviewer_code">${teamviewer_context.session_data.code}</div>
         </div>
         
         <div style="margin-top: 5px; margin-bottom: 10px;">
             <div class="tv_buttons">
-                <button type="button" id="tech_session" class="btn btn-link btn-xs" onclick="window.open('${teamviewer_context.session_data.supporter_link}', '_blank');">
+                <button type="button" id="tech_session" class="btn btn-link btn-sm" onclick="window.open('${teamviewer_context.session_data.supporter_link}', '_blank');">
                     <small class="text-muted">go to session</small>
                     <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${teamviewer_context.session_data.supporter_link}</span>
                 </button>
@@ -97,19 +95,15 @@
             <textarea id="custom_message" cols="40" rows="6">Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}</textarea>
         </div>
 
-        <div style="margin-top: 5px;">
-            <div class="tv_buttons"> 
-                <button type="button" id="customer_session" class="btn btn-primary" onclick="linkToTicket();">
-                    <span><i class="fas fa-chevron-left fa-sm" style="color: white;"></i></span> &nbsp; Post Customer Link to ticket
-                    <span class="tooltip" id="customer_link_tt">${teamviewer_context.session_data.end_customer_link}</span>
-                </button>
-            </div>
+        <div class="d-flex justify-content-center" style="margin-top: 5px;">
+            <button type="button" id="customer_session" class="btn btn-primary tv_buttons" style="margin-left: 5px; margin-right: 5px;" onclick="linkToTicket();">
+                <span><i class="fas fa-chevron-left fa-sm" style="color: white;"></i></span> &nbsp; Post Customer Link to ticket
+                <span class="tooltip" id="customer_link_tt">${teamviewer_context.session_data.end_customer_link}</span>
+            </button>
 
-            <div>
-                <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent; onclick="createTeamviewerSession();">
-                    <i class="fas fa-sync"></i>
-                </button>
-            </div>
+            <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent; margin-left: 5px; margin-right: 5px;" onclick="createteamviewersession();">
+                <i class="fas fa-sync"></i>
+            </button>
         </div>
       `
       teamviewer_authed_view.parentNode.replaceChild(tv_widget_view, teamviewer_authed_view)
