@@ -156,7 +156,7 @@
       })
     .catch((e) => {
       console.log('teamviewer >>> Error caught in createTeamviewerSession:\n>>' + e)
-      if (data.error == "token_expired") return refreshTeamviewerOauth()
+      if (e == "token_expired") return refreshTeamviewerOauth()
     })
   }
 
