@@ -1,7 +1,7 @@
 {
-  "name": "logmein",
-  "version": "0.0.1",
-  "description": "poc for logmein rescue integration widget",
+  "name": "samanage-widgets",
+  "version": "0.1.0",
+  "description": "poc for samanage platform integrations",
   "main": "src/index.js",
   "scripts": {
     "clean": "rm -rf build",
