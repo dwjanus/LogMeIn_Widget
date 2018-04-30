@@ -36,7 +36,7 @@
   function getSamanageIncident() {
     var incident_pane = document.getElementById('incident_info')
     var incident_number = document.getElementById('incident_number_input').value
-    if (incident_number == undefined || null) incident_pane.innerHTML = `<p></p>`
+    if (incident_number == undefined || null) incident_pane.innerHTML = `<pre></pre>`
     else {
       $("#loading-icon").show()
       var url = `https://api.samanage.com/incidents.json?number=${incident_number}`
@@ -48,7 +48,7 @@
         var output = data
         delete output.description
         $("#loading-icon").hide()
-        return incident_pane.innerHTML = `<p>${JSON.stringify(output, null, 2)}</p>`
+        return incident_pane.innerHTML = `<pre>${JSON.stringify(output, undefined, 2)}</pre>`
       })
     }
   }
