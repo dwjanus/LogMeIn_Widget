@@ -10,6 +10,8 @@ h5 {
   min-height: 100%;
   overflow: hidden;
   background: #002a55;
+  height: 100vh;
+  will-change: overflow;
 }
 
 .widgets {
@@ -22,7 +24,6 @@ h5 {
   height: 100vh !important;
   margin: 0 auto 0 auto;
   background: #002a55;
-  overflow: hidden;
   font-family: -apple-system, 'Segoe UI', sans-serif;
 }
 
@@ -265,10 +266,16 @@ input:checked + .slider:before {
   width: 325px;
 }
 
-.info_container_area {
+.incident_info {
   margin-top: 15px;
   overflow: auto;
   height: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+}
+
+.incident_info::-webkit-scrollbar {
+  display: none;
 }
 
 #loading-icon {
