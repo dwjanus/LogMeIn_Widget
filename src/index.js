@@ -609,9 +609,9 @@ app.post('/samanage/incident', (req, res) => {
     })
   
     response.on('end', () => {
-      console.log(`/samanage/incident >>> end\n${util.inspect(result)}\n`)
+      console.log(`/samanage/incident >>> end\n`)
       var incident = JSON.parse(result)[0]
-      res.send(JSON.stringify(result))
+      res.send(JSON.stringify(incident))
     })
   
     response.on('error', (e) => {
