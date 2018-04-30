@@ -268,3 +268,10 @@ input:checked + .slider:before {
 .info_container_area {
   margin-top: 15px;
 }
+
+#loading-icon {
+  display: none;
+  margin-left: 10px;
+  justify-content: center;
+  padding: 2px;
+}

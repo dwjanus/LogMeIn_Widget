@@ -4,7 +4,7 @@
     <div class="incident_search_area d-inline-flex">
         <input type="text" class="form-control" id="incident_number_input" placeholder="Incident Number" onFocus="this.placeholder=''" onblur="this.placeholder='Incident Number'" style="margin-right: 10px;" />
         <button type="button" class="btn btn-sm btn-outline-dark" id="incident_search_btn" onclick="getSamanageIncident();" style="margin-left: 10px;">Search</button>
-        <div id="loading-icon" style="display: none;">
+        <div id="loading-icon" class="fa-lg" style="display: none;">
             <i class="fas fa-spinner fa-pulse"></i>
         </div>    
     </div>
@@ -47,9 +47,8 @@
       }).then(res => res.json()).then((data) => {
         let output = JSON.parse(data)
         delete output.description
-
-        incident_pane.innerHTML = `<p><small>${JSON.stringify(output, null, '\t')}</small></p>`
         $("#loading-icon").hide()
+        return incident_pane.innerHTML = `<p><small>${JSON.stringify(output, null, '\t')}</small></p>`
       })
     }
   }
