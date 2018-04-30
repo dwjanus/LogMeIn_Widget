@@ -15,7 +15,6 @@ h5 {
   overflow: hidden;
   background: #002a55;
   height: 100vh;
-  /* will-change: overflow; */
 }
 
 .widgets {
@@ -38,6 +37,7 @@ h5 {
 
 .console {
   margin-top: 15px;
+  will-change: overflow;
 }
 
 .incident_search_area {
@@ -274,8 +274,8 @@ input:checked + .slider:before {
   margin-top: 10px;
   overflow: auto;
   height: auto;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch !important;
+  -ms-overflow-style: none !important;
 }
 
 #incident_info::-webkit-scrollbar {
