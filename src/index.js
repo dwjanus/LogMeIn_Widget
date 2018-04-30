@@ -83,14 +83,14 @@ app.post('/callExternalApi', (req, res) => {
   let payload = JSON.parse(req.body.payload)
 
   if (payload && payload.headers) {
-    options['headers'] = payload.headers
+    options['headers'] = JSON.parse(payload.headers)
     delete payload.headers
     payload = JSON.stringify(payload.data)
   }
 
   console.log(`callExternalApi options:\n${util.inspect(options)}`)
 
-  const request = https.request(JSON.parse(options), (response) => {
+  const request = https.request(options, (response) => {
     let result = ''
   
     response.on('data', (chunk) => {

@@ -131,7 +131,7 @@
 
   function getHarvestUserData() {
     var accounts_url = "https://id.getharvest.com/api/v2/accounts"
-    var payload = { headers: { Authorization: `Bearer ${harvest_context.harvest.tokens.access_token}` } }
+    var payload = { headers: { "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}` } }
     payload.headers["User-Agent"] = "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
     var auth = JSON.stringify(payload)
 
