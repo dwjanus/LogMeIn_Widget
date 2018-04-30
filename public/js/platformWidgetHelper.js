@@ -35,7 +35,7 @@ var platformWidgetHelper = (function() {
       fetch('/callExternalApi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ method: HTTPMethod, url: url, payload: payload })
+        body: { method: HTTPMethod, url: url, payload: payload }
       }).then((res) => res.text())
         .then((data) => {
           return callback(data)
