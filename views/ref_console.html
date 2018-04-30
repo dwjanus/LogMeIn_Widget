@@ -43,7 +43,7 @@
         body: JSON.stringify({ url: url })
       }).then(res => res.json()).then((data) => {
         console.log(`got response from getSamanageIncident() >>> ${JSON.stringify(data)}`)
-        return incident_pane.innerHTML = `<p><small>${JSON.stringify(data, undefined, 2)}</small></p>`
+        return incident_pane.innerHTML = `<p style="overflow: scroll;"><small>${JSON.stringify(data, undefined, 2)}</small></p>`
       })
     }
   }

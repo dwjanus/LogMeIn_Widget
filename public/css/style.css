@@ -8,7 +8,7 @@ h5 {
 
 .container, .container-fluid {
   min-height: 100%;
-  /* overflow: hidden; */
+  overflow: hidden;
   background: #002a55;
 }
 
@@ -33,8 +33,6 @@ h5 {
 
 .console {
   margin-top: 15px;
-  overflow-x: scroll;
-  overflow-y: scroll;
 }
 
 .incident_search_area {
@@ -265,4 +263,8 @@ input:checked + .slider:before {
   resize: none;
   height: 80px;
   width: 325px;
+}
+
+.info_container_area {
+  margin-top: 15px;
 }
