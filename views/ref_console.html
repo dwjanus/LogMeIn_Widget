@@ -8,28 +8,26 @@
     
     <div class="info_container_area">
         <ul class="nav nav-tabs" id="info_nav" role="tablist" style="font-size: 12px;">
-            <li class="nav-item  active"><a class="nav-link" data-toggle="tab" href="#incident_info" role="tab">Incident</a></li>
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#incident_info" role="tab">Incident</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#widget_info" role="tab">Widget</a></li>
         </ul>
 
         <div class="tab-content" style="font-size: 11px;">
-            <div id="incident_info" class="tab-pane fade active" role="tabpanel">
-                <p>This is where we will render our Incident JSON</p>
+            <div id="incident_info" class="tab-pane fade show active" role="tabpanel">
+                <p>Search for an incident by number to view its json here</p>
             </div>
             
             <div id="widget_info" class="tab-pane fade" role="tabpanel">
                 <p>This is where we will inspect our widget output</p>
             </div>
         </div>
-
     </div>
-
-    
-
 </div>
 
 <script>
-  $("#info_nav a").click(function() {
+  
+  $("#info_nav a").on('click', function (e) {
+    e.preventDefault()
     $(this).tab('show')
   })
 
@@ -45,7 +43,7 @@
         body: JSON.stringify({ url: url })
       }).then(res => res.json()).then((data) => {
         console.log(`got response from getSamanageIncident() >>> ${JSON.stringify(data)}`)
-        incident_pane.innerHTML = `<p><small>${JSON.stringify(data, undefined, 2)}</small></p>`
+        return incident_pane.innerHTML = `<p><small>${JSON.stringify(data, undefined, 2)}</small></p>`
       })
     }
   }
