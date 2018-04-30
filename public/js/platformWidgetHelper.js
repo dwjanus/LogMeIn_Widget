@@ -32,7 +32,7 @@ var platformWidgetHelper = (function() {
     },
 
     callSamanageAPI: function(callback, HTTPMethod, url, payload) {
-      if (payload) payload = JSON.parse(payload)
+      
       fetch('/callExternalApi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

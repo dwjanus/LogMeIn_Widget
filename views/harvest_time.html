@@ -135,7 +135,7 @@
     payload.headers["User-Agent"] = "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
     var auth = JSON.stringify(payload)
 
-    platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
+    platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, payload)
   }
 
   harvestUserData = (response) => {
