@@ -30,7 +30,7 @@
 
 <script>
   $(document).ready(() => {
-    $(".nav-tabs a").click(() => {
+    $("#info_nav a").click(() => {
       $(this).tab('show')
     })
   })
@@ -41,7 +41,7 @@
     if (incident_number == undefined || null) incident_pane.innerHTML = `<p></p>`
     else {
       var url = `https://api.samanage.com/incidents.json?number=${incident_number}`
-      fetch('/samanage/incidents').then(res => res.json()).then((data) => {
+      fetch('/samanage/incident').then(res => res.json()).then((data) => {
         console.log(`got response from getSamanageIncident() >>> ${JSON.stringify(data)}`)
         incident_pane.innerHTML = `<p>${data}</p>`
       })
