@@ -40,7 +40,7 @@
     var incident_number = document.getElementById('incident_number_input').value
     if (incident_number == undefined || null) incident_pane.innerHTML = `<p></p>`
     else {
-      var url = `https://api.samanage.com/incidents.json?number=${number}`
+      var url = `https://api.samanage.com/incidents.json?number=${incident_number}`
       fetch('/samanage/incidents').then(res => res.json()).then((data) => {
         console.log(`got response from getSamanageIncident() >>> ${JSON.stringify(data)}`)
         incident_pane.innerHTML = `<p>${data}</p>`
