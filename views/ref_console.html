@@ -45,8 +45,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: url })
       }).then(res => res.json()).then((data) => {
-        let output = data
-        output.description.remove()
+        var output = data
+        delete output.description
         $("#loading-icon").hide()
         return incident_pane.innerHTML = `<p><small>${JSON.stringify(output, null, '\t')}</small></p>`
       })
