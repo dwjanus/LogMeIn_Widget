@@ -73,19 +73,19 @@ app.get('/', (req, res) => {
 //                           //
 app.post('/callExternalApi', (req, res) => {
   console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}\n`)
-  let url_parsed = url.parse(req.body.url) 
+  let body = JSON.parse(req.body)
+  let url_parsed = url.parse(body.url) 
   let options = {
     host: url_parsed.host,
     path: url_parsed.path,
     method: req.body.method
   }
 
-  let payload = JSON.parse(req.body.payload)
+  let payload = body.payload
 
   if (payload && payload.headers) {
     options['headers'] = payload.headers
     delete payload.headers
-    payload = JSON.stringify(payload.data)
   }
 
   console.log(`callExternalApi options:\n${util.inspect(options)}`)
@@ -108,7 +108,7 @@ app.post('/callExternalApi', (req, res) => {
     })
   })
   
-  if ((options.method == 'POST' || options.method == 'PUT') && payload.data) request.write(payload)
+  if ((options.method == 'POST' || options.method == 'PUT') && payload.data) request.write(JSON.stringify(payload.data))
   else console.log('>> no payload to post')
 
   request.on('error', (e) => {
