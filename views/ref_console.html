@@ -46,7 +46,7 @@
         body: JSON.stringify({ url: url })
       }).then(res => res.json()).then((data) => {
         let output = JSON.parse(data)
-        delete output.description
+        output.description.remove()
         $("#loading-icon").hide()
         return incident_pane.innerHTML = `<p><small>${JSON.stringify(output, null, '\t')}</small></p>`
       })

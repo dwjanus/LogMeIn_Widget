@@ -273,5 +273,5 @@ input:checked + .slider:before {
   display: none;
   margin-left: 10px;
   justify-content: center;
-  padding: 2px;
+  padding: 10px;
 }
