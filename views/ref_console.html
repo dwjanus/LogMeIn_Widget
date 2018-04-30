@@ -3,7 +3,10 @@
 <div class="console">
     <div class="incident_search_area d-inline-flex">
         <input type="text" class="form-control" id="incident_number_input" placeholder="Incident Number" onFocus="this.placeholder=''" onblur="this.placeholder='Incident Number'" style="margin-right: 10px;" />
-        <button type="button" class="btn btn-sm btn-outline-dark" id="incident_search_btn" onclick="getSamanageIncident();" style="margin-left: 10px;">Search</button>        
+        <button type="button" class="btn btn-sm btn-outline-dark" id="incident_search_btn" onclick="getSamanageIncident();" style="margin-left: 10px;">Search</button>
+        <div class="loading-icon" style="visibility: hidden;">
+          <i class="fas fa-circle-notch fa-spin"></i>
+        </div>    
     </div>
     
     <div class="info_container_area">
@@ -32,6 +35,7 @@
   })
 
   function getSamanageIncident() {
+    $(".loading-icon").show()
     var incident_pane = document.getElementById('incident_info')
     var incident_number = document.getElementById('incident_number_input').value
     if (incident_number == undefined || null) incident_pane.innerHTML = `<p></p>`
@@ -43,6 +47,7 @@
         body: JSON.stringify({ url: url })
       }).then(res => res.json()).then((data) => {
         console.log(`got response from getSamanageIncident() >>> ${JSON.stringify(data)}`)
+        $(".loading-icon").hide()
         return incident_pane.innerHTML = `<p style="overflow: scroll;"><small>${JSON.stringify(data, undefined, 2)}</small></p>`
       })
     }
