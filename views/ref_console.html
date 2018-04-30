@@ -29,11 +29,9 @@
 </div>
 
 <script>
-  $(document).ready(() => {
     $("#info_nav a").click(() => {
-      $(this).tab('show')
+      $('this').tab('show')
     })
-  })
 
   function getSamanageIncident() {
     var incident_pane = document.getElementById('incident_info')
@@ -47,7 +45,7 @@
         body: JSON.stringify({ url: url })
       }).then(res => res.json()).then((data) => {
         console.log(`got response from getSamanageIncident() >>> ${JSON.stringify(data)}`)
-        incident_pane.innerHTML = `<p>${JSON.stringify(data, undefined, 2)}</p>`
+        incident_pane.innerHTML = `<p><small>${JSON.stringify(data, undefined, 2)}</small></p>`
       })
     }
   }
