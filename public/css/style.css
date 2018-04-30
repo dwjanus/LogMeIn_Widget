@@ -266,7 +266,7 @@ input:checked + .slider:before {
   width: 325px;
 }
 
-.incident_info {
+#incident_info {
   margin-top: 15px;
   overflow: auto;
   height: auto;
@@ -274,7 +274,7 @@ input:checked + .slider:before {
   -ms-overflow-style: none;
 }
 
-.incident_info::-webkit-scrollbar {
+#incident_info::-webkit-scrollbar {
   display: none;
 }
 
