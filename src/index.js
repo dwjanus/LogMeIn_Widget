@@ -73,15 +73,14 @@ app.get('/', (req, res) => {
 //                           //
 app.post('/callExternalApi', (req, res) => {
   console.log(`\n[POST] /callExternalApi ---> request:\n${util.inspect(req.body)}\n`)
-  let body = JSON.parse(req.body)
-  let url_parsed = url.parse(body.url) 
+  let url_parsed = url.parse(req.body.url) 
   let options = {
     host: url_parsed.host,
     path: url_parsed.path,
-    method: body.method
+    method: req.body.method
   }
 
-  let payload = body.payload
+  let payload = JSON.parse(req.body.payload)
 
   if (payload && payload.headers) {
     options['headers'] = payload.headers
