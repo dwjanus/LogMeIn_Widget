@@ -48,7 +48,7 @@
         var output = data
         delete output.description
         $("#loading-icon").hide()
-        return incident_pane.innerHTML = `<p><small>${JSON.stringify(output, null, '\t')}</small></p>`
+        return incident_pane.innerHTML = `<p>${JSON.stringify(output, null, 2)}</p>`
       })
     }
   }
