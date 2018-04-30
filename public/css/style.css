@@ -267,6 +267,8 @@ input:checked + .slider:before {
 
 .info_container_area {
   margin-top: 15px;
+  overflow: auto;
+  height: auto;
 }
 
 #loading-icon {
