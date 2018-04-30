@@ -131,12 +131,12 @@
 
   function getHarvestUserData() {
     var accounts_url = "https://id.getharvest.com/api/v2/accounts"
-    var auth = {
-      headers: {
+    var auth = JSON.stringify({
+      'headers': {
         'Authorization' : `Bearer ${harvest_context.harvest.tokens.access_token}`,
         'User-Agent' : 'Samanage + Harvest Time Tracking (devin.janus@samanage.com)'
       }
-    }
+    })
 
     platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
   }
