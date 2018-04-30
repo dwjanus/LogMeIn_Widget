@@ -90,7 +90,7 @@ app.post('/callExternalApi', (req, res) => {
 
   console.log(`callExternalApi options:\n${util.inspect(options)}`)
 
-  const request = https.request(options, (response) => {
+  const request = https.request(JSON.parse(options), (response) => {
     let result = ''
   
     response.on('data', (chunk) => {
