@@ -40,8 +40,11 @@
     var incident_number = document.getElementById('incident_number_input').value
     if (incident_number == undefined || null) incident_pane.innerHTML = `<p></p>`
     else {
-      var url = `https://api.samanage.com/incidents.json?number=${incident_number}`
-      fetch('/samanage/incident').then(res => res.json()).then((data) => {
+      var body = { url: `https://api.samanage.com/incidents.json?number=${incident_number}` }
+      fetch('/samanage/incident', {
+        method: 'POST',
+        body: JSON.stringify(body)
+      }).then(res => res.json()).then((data) => {
         console.log(`got response from getSamanageIncident() >>> ${JSON.stringify(data)}`)
         incident_pane.innerHTML = `<p>${data}</p>`
       })
