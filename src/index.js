@@ -108,7 +108,8 @@ app.post('/callExternalApi', (req, res) => {
     })
   })
   
-  if ((payload !== null) && (options.method == 'POST' || 'PUT')) request.write(payload)
+  if ((options.method == 'POST' || options.method == 'PUT') && payload.data) request.write(payload)
+  else console.log('>> no payload to post')
 
   request.on('error', (e) => {
     console.log('[Error in new session POST request]\n>> ' + e)
