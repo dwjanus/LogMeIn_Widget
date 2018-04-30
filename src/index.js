@@ -83,8 +83,7 @@ app.post('/callExternalApi', (req, res) => {
   let payload = (JSON.parse(req.body.payload))
 
   if (payload && payload.headers) {
-    options['headers'] = JSON.stringify(payload.headers)
-    options.headers = JSON.parse(options.headers)
+    options['headers'] = payload.headers
     delete payload.headers
     payload = JSON.stringify(payload.data)
   }

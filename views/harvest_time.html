@@ -121,7 +121,7 @@
 
   function launchHarvestAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/harvest/oauth"
-    var url = `https://id.getharvest.com/oauth5/authorize?client_id=${client_id}&response_type=code&state=${harvest_context.samanage.assignee.user_id}`
+    var url = `https://id.getharvest.com/oauth2/authorize?client_id=${client_id}&response_type=code&state=${harvest_context.samanage.assignee.user_id}`
 
     console.log(`harvest >>> client_id: ${client_id}`)
     console.log(`harvest >>> url: ${url}`)
