@@ -612,7 +612,7 @@ app.post('/samanage/incident', (req, res) => {
   
     response.on('end', () => {
       console.log(`/samanage/incident >>> end\n`)
-      var incidents = JSON.parse(result)
+      var incidents = result
       var incident = _.find(incidents, (i) => { return i.number == number })
       res.send(JSON.stringify(incident))
     })
