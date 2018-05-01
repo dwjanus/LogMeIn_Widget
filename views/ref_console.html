@@ -39,7 +39,7 @@
     if (incident_number == undefined || null) incident_pane.innerHTML = `<pre></pre>`
     else {
       $("#loading-icon").show()
-      var url = `https://api.samanage.com/incidents.json&per_page=100`
+      var url = `https://api.samanage.com/incidents.json&page=1&per_page=100`
       fetch('/samanage/incident', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
