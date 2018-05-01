@@ -28,6 +28,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "hogan-express": "^0.5.2",
+    "lodash": "^4.17.10",
     "monk": "^6.0.5",
     "querystring": "^0.2.0",
     "request": "^2.85.0"

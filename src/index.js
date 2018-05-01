@@ -9,6 +9,7 @@ import https from 'https'
 import querystring from 'querystring'
 import url from 'url'
 import Promise from 'bluebird'
+import _ from 'lodash'
 
 const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
@@ -589,6 +590,7 @@ app.get('/harvest/data/:id', (req, res) => {
 
 app.post('/samanage/incident', (req, res) => {
   console.log(`\n[POST] /samanage/incident ---> request:\n${util.inspect(req.body)}\n`)
+  let number = JSON.parse(req.body).payload
   let url_parsed = url.parse(req.body.url) 
   let options = {
     host: url_parsed.host,
@@ -610,7 +612,8 @@ app.post('/samanage/incident', (req, res) => {
   
     response.on('end', () => {
       console.log(`/samanage/incident >>> end\n`)
-      var incident = JSON.parse(result)[0]
+      var incidents = JSON.parse(result)
+      var incident = _.find(incidents, (i) => { return i.number == number })
       res.send(JSON.stringify(incident))
     })
   
