@@ -603,6 +603,8 @@ app.post('/samanage/incident', (req, res) => {
     method: 'GET'
   }
 
+  console.log(`options:\n${util.inspect(options)}\n> number: ${number}`)
+
   const request = https.request(options, (response) => {
     let result = ''
   
@@ -612,8 +614,7 @@ app.post('/samanage/incident', (req, res) => {
   
     response.on('end', () => {
       console.log(`/samanage/incident >>> end\n`)
-      var incidents = JSON.parse(result)
-      _.find(incidents, (i) => {
+      _.find(result, (i) => {
         console.log(`searching..... incident ${i.number}`) 
         if (i.number == number) res.send(JSON.stringify(i))
       })
