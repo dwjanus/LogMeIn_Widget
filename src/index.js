@@ -603,8 +603,6 @@ app.post('/samanage/incident', (req, res) => {
     method: 'GET'
   }
 
-  console.log(`> options:\n${util.inspect(options)}\n> number: ${number}`)
-
   const request = https.request(options, (response) => {
     let result = ''
   
@@ -615,8 +613,8 @@ app.post('/samanage/incident', (req, res) => {
     response.on('end', () => {
       const incidents = JSON.parse(result)
       console.log(`/samanage/incident >>> end\n${incidents.length} results returned`)
-      const index = _.findIndex(incident, (i) => { return i.number == number })
-      res.send(JSON.stringify(incident[index]))
+      const index = _.findIndex(incidents, (i) => { return i.number == number })
+      res.send(JSON.stringify(incidents[index]))
     })
   
     response.on('error', (e) => {
