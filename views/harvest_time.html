@@ -200,7 +200,7 @@
   }
 
 
-  function toggleHarvestAuthorizedView() {
+  function toggleHarvestAuthorizedView() {    
     var harvest_authed_view = document.createElement('div')
 
     harvest_authed_view.className = 'harvest_authed_view'
@@ -212,29 +212,48 @@
       
       <div class="harvest_send_time">
           <form id="harvest_time_form">
-              <div class="form-group row">
-                  <label for="harvest_account" class="col-sm-2 col-form-label col-form-label-sm">Account</label>
-                  <div class="col-sm-10">
+              <div class="form-group row" style="margin-bottom: 5px;">
+                  <label for="harvest_account" class="col-2 col-form-label col-form-label-sm">Account</label>
+                  <div class="col-10">
                       <select class="form-control form-control-sm harvest_dropdown" id="harvest_account" onchange="populateProjectTaskDD();"></select>
                   </div>            
               </div>
 
-              <div class="form-group row">
-                  <label for="harvest_projects" class="col-sm-2 col-form-label col-form-label-sm">Project</label>
-                  <div class="col-sm-10">
+              <div class="form-group row" style="margin-bottom: 5px;">
+                  <label for="harvest_projects" class="col-2 col-form-label col-form-label-sm">Project</label>
+                  <div class="col-10">
                       <select class="form-control form-control-sm harvest_dropdown" id="harvest_projects" name="havest_projects"></select>
                   </div>                  
               </div>
 
-              <div class="form-group row">
-                  <label for="harvest_tasks" class="col-sm-2 col-form-label col-form-label-sm">Task</label>
-                  <div class="col-sm-10">
+              <div class="form-group row" style="margin-bottom: 5px;">
+                  <label for="harvest_tasks" class="col-2 col-form-label col-form-label-sm">Task</label>
+                  <div class="col-10">
                       <select class="form-control form-control-sm harvest_dropdown" id="harvest_tasks" name="harvest_tasks"></select>
                   </div>
               </div>
 
+              <div class="form-group row">
+                  <div class="col-4">
+                      <input type="time" class="form-control form-control-sm" id="harvest_start_input" placeholder="Start">
+                  </div>
+                  
+                  <div class="col-1">to</div>
+
+                  <div class="col-4">
+                      <input type="time" class="form-control form-control-sm" id="harvest_end_input" placeholder="End">
+                  </div>
+                  
+                  <div class="col-3">
+                      <button id="harvest_timer_button" class="btn btn-success" onclick="harvestStartTimer();">
+                          <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
+                      </button>
+                  </div>
+                  <small class="form-text text-muted">Leave \"Start\" blank for current time and \"End\" blank to start the timer in Harvest</small>
+              </div>
+
               <button id="harvest_send_time_button" class="btn btn-to-external session" onclick="harvestSendTime();">
-                  Send Time Tracking to Harvest &nbsp; <span><i class="fas fa-chevron-right fa-sm"></i></span>
+                  Send Time Tracks From Samanage &nbsp; <span><i class="fas fa-chevron-right fa-sm"></i></span>
               </button>
           </form>
       </div>
@@ -332,6 +351,7 @@
   // Samanage ticket? 
   // ** if hours field is not provided then is_running is set to true 
   // (could use for live tracking that maybe sends times back to samanage after timer stops?)
+  // should users be allowed to select times they want to send from Samanage --> Harvest or should it just send all?
   function harvestSendTime() { 
     var project_id = document.getElementById('harvest_projects').value
     var task_id = document.getElementById('harvest_tasks').value
@@ -345,7 +365,7 @@
         project_id: project_id,
         task_id: task_id,
         spent_date: time.created_at,
-        hours: (time.minutes/60).toPrecision(1),
+        hours: (Number(time.minutes)/60).toPrecision(2),
         notes: `${time.name}\n${time.parent.href}`
       }
 
@@ -354,6 +374,13 @@
 
     Promise.all(promise_times).then(() => {
       console.log('harvest_time >>> success!')
+      var harvest_button = document.getElementById('harvest_send_time_button')
+      var harvest_time_sent = `
+        <div class=success">
+            Samanage Times are Synced with Harvest
+        </div>
+      `
+      harvest_button.parentNode.replaceChild(harvest_time_sent, harvest_button)
     }).catch(e => console.log(e))
   }
 
