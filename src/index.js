@@ -590,8 +590,9 @@ app.get('/harvest/data/:id', (req, res) => {
 
 app.post('/samanage/incident', (req, res) => {
   console.log(`\n[POST] /samanage/incident ---> request:\n${util.inspect(req.body)}\n`)
-  let number = JSON.parse(req.body).payload
-  let url_parsed = url.parse(req.body.url) 
+  let body = JSON.parse(req.body)
+  const number = Number(body.payload)
+  let url_parsed = url.parse(body.url) 
   let options = {
     host: url_parsed.host,
     path: url_parsed.path,
