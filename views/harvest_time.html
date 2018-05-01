@@ -377,7 +377,7 @@
         response = JSON.parse(response)
         if (response.error) return reject(response.error)
         return resolve()
-      }, 'POST', time_url, JSON.stringify(payload))
+      }, 'POST', time_url, payload)
     })
   }
   
