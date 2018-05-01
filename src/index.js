@@ -613,9 +613,10 @@ app.post('/samanage/incident', (req, res) => {
     })
   
     response.on('end', () => {
-      console.log(`/samanage/incident >>> end\n${result.length} results returned`)
-      const index = _.findIndex(result, (i) => { return JSON.parse(i).number == number })
-      res.send(JSON.stringify(result[index]))
+      const incidents = JSON.parse(result)
+      console.log(`/samanage/incident >>> end\n${incidents.length} results returned`)
+      const index = _.findIndex(incident, (i) => { return i.number == number })
+      res.send(JSON.stringify(incident[index]))
     })
   
     response.on('error', (e) => {
