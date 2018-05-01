@@ -103,7 +103,7 @@ app.post('/callExternalApi', (req, res) => {
   
     response.on('error', (e) => {
       console.log('[error in post response]' + e)
-      res.send(e)
+      res.error(e)
     })
   })
   
@@ -112,7 +112,7 @@ app.post('/callExternalApi', (req, res) => {
 
   request.on('error', (e) => {
     console.log('[Error in new session POST request]\n>> ' + e)
-    res.status(500)
+    res.error(e)
   })
 
   request.end()
@@ -125,16 +125,6 @@ app.post('/callExternalApi', (req, res) => {
 app.get('/storage/:id', (req, res) => {
   let storage = {}
   
-  // dbs.forEach(db => {
-  //   let key = db.name
-  //   db.collection.findOne({user: req.params.id}).then((found) => {
-  //     if (found) {
-  //       storage[key] = found[key]
-  //     }
-  //   })
-  // })
-
-
   Promise.map(dbs, (db) => {
     console.log('/storage/id >>> Promise.map >>> ' + db.name)
     let key = db.name
@@ -149,8 +139,6 @@ app.get('/storage/:id', (req, res) => {
     console.log(`/storage/id >>> returning storage:\n${util.inspect(storage)}`)
     return res.send(JSON.stringify(storage))
   })
-
-  // res.send(JSON.stringify(storage))
 })
 
 
@@ -571,23 +559,7 @@ app.get('/harvest/data/:id', (req, res) => {
 })
 
 
-// app.post('/harvest/:id/save', (req, res) => {
-//   const id = req.params.id
-//   const harvest = req.body
-
-//   console.log(`\n[POST] /harvest/${id}/save\n--> harvest: ${util.inspect(harvest)}`)
-//   harvest_db.findOne({user: id}).then((found) => {
-//     if (!found) {
-//       console.log(`   harvest_db >> user not found, inserting now...`)
-//       harvest_db.insert({user: id, harvest})
-//     } else {
-//       console.log('   harvest_db >> user already has harvest authentication')
-//     }
-//     res.send(harvest)
-//   })
-// })
-
-
+// Search bar feature
 app.post('/samanage/incident', (req, res) => {
   console.log(`\n[POST] /samanage/incident ---> request body:\n${util.inspect(req.body)}\n`)
   const number = parseInt(req.body.payload)

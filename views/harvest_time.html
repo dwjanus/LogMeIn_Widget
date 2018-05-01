@@ -366,7 +366,8 @@
         headers: {
           "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
           "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
-          "Harvest-Account-Id": account_id
+          "Harvest-Account-Id": account_id,
+          "Content-Type": "application/json"
         },
         data: time_entry
       }
