@@ -236,20 +236,21 @@
               <div class="form-row align-items-center">
                   <div class="col-2"></div>
                   <div class="col-3 form-group">
-                      <input type="time" pattern="[0-9]{2}:[0-9]{2}" class="form-control form-control-sm" id="harvest_start_input">
+                      <input class="form-control form-control-sm" type="time" pattern="[0-9]{2}:[0-9]{2}" id="harvest_start_input">
                   </div>
                   to
                   <div class="col-3 form-group">
-                      <input type="time" pattern="[0-9]{2}:[0-9]{2}" class="form-control form-control-sm" id="harvest_end_input">
+                      <input class="form-control form-control-sm" type="time" pattern="[0-9]{2}:[0-9]{2}" id="harvest_end_input">
                   </div>
 
                   <div class="col-2 form-group">
-                      <button id="harvest_timer_button" class="btn btn-success" onclick="harvestStartTimer();">
+                      <button id="harvest_timer_button" class="btn btn-success" data-toggle="tooltip" data-placement="top" 
+                      title="\"Start\" defaults to the current time. Leave \"End\" blank to leave Harvest timer running"
+                      onclick="harvestStartTimer();">
                           <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
                       </button>
                   </div>
                   <div class="col-2"></div>
-                  <small class="form-text text-muted">\"Start\" default is current time. Leave \"End\" blank to start Harvest timer</small>
               </div>
 
               <button id="harvest_send_time_button" class="btn btn-to-external" onclick="harvestSendTime();">
