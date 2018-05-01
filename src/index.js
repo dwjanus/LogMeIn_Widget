@@ -612,8 +612,9 @@ app.post('/samanage/incident', (req, res) => {
   
     response.on('end', () => {
       console.log(`/samanage/incident >>> end\n`)
-      var incidents = result
-      _.find(incidents, (i) => { 
+      var incidents = JSON.parse(result)
+      _.find(incidents, (i) => {
+        console.log(`searching..... incident ${i.number}`) 
         if (i.number == number) res.send(JSON.stringify(i))
       })
     })
