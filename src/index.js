@@ -589,8 +589,8 @@ app.get('/harvest/data/:id', (req, res) => {
 
 
 app.post('/samanage/incident', (req, res) => {
-  console.log(`\n[POST] /samanage/incident ---> request:\n${util.inspect(req.body)}\n`)
-  const number = Number(req.body.payload)
+  console.log(`\n[POST] /samanage/incident ---> request body:\n${util.inspect(req.body)}\n`)
+  const number = parseInt(req.body.payload)
   let url_parsed = url.parse(req.body.url) 
   let options = {
     host: url_parsed.host,
@@ -619,13 +619,13 @@ app.post('/samanage/incident', (req, res) => {
   
     response.on('error', (e) => {
       console.log('[error in post response]' + e)
-      res.send(e)
+      res.error(e)
     })
   })
 
   request.on('error', (e) => {
     console.log('[Error in new session POST request]\n>> ' + e)
-    res.status(500)
+    res.error(e)
   })
 
   request.end()

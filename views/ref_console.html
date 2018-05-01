@@ -49,6 +49,9 @@
         delete output.description
         $("#loading-icon").hide()
         return incident_pane.innerHTML = `<pre>${JSON.stringify(output, undefined, 2)}</pre>`
+      }).catch((e) => {
+        $("#loading-icon").hide()
+        return incident_pane.innerHTML = `<p class="warning">${e}</p>`
       })
     }
   }
