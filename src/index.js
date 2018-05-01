@@ -613,8 +613,8 @@ app.post('/samanage/incident', (req, res) => {
     })
   
     response.on('end', () => {
-      console.log(`/samanage/incident >>> end\n`)
-      _.find(result, (i) => {
+      console.log(`/samanage/incident >>> end\n${result.length} results returned`)
+      _.findIndex(result, (i) => {
         console.log(`searching..... incident ${i.number}`) 
         if (i.number == number) res.send(JSON.stringify(i))
       })
