@@ -76,7 +76,7 @@ tr:nth-child(even) {
   border-radius: 5px;
   border: #1980b9 2px solid;
   padding: 10px;
-  max-width: 450px !important;
+  max-width: 425px !important;
   min-width: 300px !important;
   margin: 10px;
   text-align: center;
