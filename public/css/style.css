@@ -283,6 +283,7 @@ input:checked + .slider:before {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: start;
   text-indent: 0%;
+  resize: none;
 }
 
 #info_tab_content {

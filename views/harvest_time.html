@@ -239,9 +239,7 @@
               <div class="form-group row" style="margin-bottom: 5px;">
                   <label for="harvest_notes" class="col-2 col-form-label col-form-label-sm">Notes</label>
                   <div class="col-10">
-                      <textarea class="form-control form-control-sm" rows="3" id="harvest_notes" name="harvest_notes" style="resize: none;">
-                          Incident #${harvest_context.samanage.number}: ${harvest_context.samanage.name}
-                      </textarea>
+                      <textarea class="form-control form-control-sm" rows="3" id="harvest_notes" name="harvest_notes">Incident #${harvest_context.samanage.number}: ${harvest_context.samanage.name}\n${harvest_context.samanage.href}</textarea>
                   </div>
               </div>
 
@@ -347,7 +345,7 @@
       }
     }
 
-    if (harvest_context.harvest.user_data.accounts.length == 1) document.getElementById('harvest_account_row').classList.add('invisible')
+    if (harvest_context.harvest.user_data.accounts.length == 1) document.getElementById('harvest_account_row').addAttribute('display', 'none')
   }
 
   function populateTimeEntryForm() {
