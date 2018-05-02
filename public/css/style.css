@@ -278,6 +278,13 @@ input:checked + .slider:before {
   min-width: 295px;
 }
 
+#harvest_notes {
+  font-size: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: start;
+  text-indent: 0%;
+}
+
 #info_tab_content {
   margin-top: 10px;
   overflow: auto;

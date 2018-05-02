@@ -215,7 +215,7 @@
       
       <div class="harvest_send_time">
           <form id="harvest_time_form">
-              <div class="form-group row" style="margin-bottom: 5px;">
+              <div class="form-group row" id="harvest_account_row" style="margin-bottom: 5px;">
                   <label for="harvest_account" class="col-2 col-form-label col-form-label-sm">Account</label>
                   <div class="col-10">
                       <select class="form-control form-control-sm harvest_dropdown" id="harvest_account" onchange="populateProjectTaskDD();"></select>
@@ -237,17 +237,10 @@
               </div>
 
               <div class="form-group row" style="margin-bottom: 5px;">
-                  <label for="harvest_tasks" class="col-2 col-form-label col-form-label-sm">Task</label>
-                  <div class="col-10">
-                      <select class="form-control form-control-sm harvest_dropdown" id="harvest_tasks" name="harvest_tasks"></select>
-                  </div>
-              </div>
-
-              <div class="form-group row" style="margin-bottom: 5px;">
                   <label for="harvest_notes" class="col-2 col-form-label col-form-label-sm">Notes</label>
                   <div class="col-10">
                       <textarea class="form-control form-control-sm" rows="3" id="harvest_notes" name="harvest_notes" style="resize: none;">
-                          <a href="${harvest_context.samanage.href}">Incident #${harvest_context.samanage.number}: ${harvest_context.samanage.name}</a>
+                          Incident #${harvest_context.samanage.number}: ${harvest_context.samanage.name}
                       </textarea>
                   </div>
               </div>
@@ -273,7 +266,6 @@
           </form>
       </div>
     `
-
     
     // <button id="harvest_send_time_button" class="btn btn-to-external" onclick="harvestSendTime();">
     //     Send Time Tracks From Samanage &nbsp; <span><i class="fas fa-chevron-right fa-sm"></i></span>
@@ -355,7 +347,7 @@
       }
     }
 
-    if (harvest_context.harvest.user_data.accounts.length == 1) document.getElementById('harvest_account').classList.add('invisible')
+    if (harvest_context.harvest.user_data.accounts.length == 1) document.getElementById('harvest_account_row').classList.add('invisible')
   }
 
   function populateTimeEntryForm() {
