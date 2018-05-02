@@ -251,14 +251,14 @@
                       </div>
 
 
-                      <div class="col-3 form-group">
+                      <div class="col-2 form-group">
                           <button id="harvest_timer_button" class="btn btn-success" data-toggle="tooltip" data-placement="right" 
                           title="leave blank to start Harvest timer at current time"
                           onclick="harvestSendTime('duration');">
                               <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
                           </button>
                       </div>
-                      <div class="col-4"></div>
+                      <div class="col-5"></div>
                   </div>
               </div>
           </form>
@@ -345,7 +345,7 @@
       }
     }
 
-    if (harvest_context.harvest.user_data.accounts.length == 1) document.getElementById('harvest_account_row').addAttribute('display', 'none')
+    if (harvest_context.harvest.user_data.accounts.length == 1) document.getElementById('harvest_account_row').style.display = 'none'
   }
 
   function populateTimeEntryForm() {
