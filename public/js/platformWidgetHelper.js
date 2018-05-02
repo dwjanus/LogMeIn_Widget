@@ -28,7 +28,7 @@ var platformWidgetHelper = (function() {
           user_id: 2821593,
           name: 'Devin'
         },
-        href: "https://devinstestaroo.samanage.com/incidents/24269255.json"
+        href: "https://devinstestaroo.samanage.com/incidents/23529800"
       })
     },
 
