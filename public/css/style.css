@@ -266,7 +266,7 @@ input:checked + .slider:before {
   text-shadow: none;
 }
 
-#custom_message {
+.custom_message {
   cursor: text;
   font-size: 12px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -275,6 +275,7 @@ input:checked + .slider:before {
   resize: none;
   height: 80px;
   width: 325px;
+  min-width: 295px;
 }
 
 #info_tab_content {
@@ -295,4 +296,14 @@ input:checked + .slider:before {
   margin-left: 10px;
   justify-content: center;
   padding: 10px;
+}
+
+.no-spinners {
+  -moz-appearance:textfield;
+}
+
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

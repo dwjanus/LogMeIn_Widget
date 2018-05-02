@@ -98,7 +98,7 @@
         </div>
 
         <div class="teamviewer_custom_msg_area">
-            <textarea id="custom_message" cols="40" rows="6">Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}</textarea>
+            <textarea class="form-control custom_message" id="teamviewer_custom_message" rows="4">Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}</textarea>
         </div>
 
         <div class="d-flex justify-content-center" style="margin-top: 5px;">
@@ -148,8 +148,8 @@
           if (typeof(tech_link_tt) != 'undefined' && tech_link_tt != null) tech_link_tt.innerHTML = `${teamviewer_context.session_data.supporter_link}`
           var customer_link_tt = document.getElementById("customer_link_tt")
           if (typeof(customer_link_tt) != 'undefined' && customer_link_tt != null) customer_link_tt.innerHTML = `${teamviewer_context.session_data.end_customer_link}`
-          var custom_message = document.getElementById("custom_message")
-          if (typeof(custom_message) != 'undefined' && custom_message != null) custom_message.innerHTML = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}`
+          var teamviewer_custom_message = document.getElementById("teamviewer_custom_message")
+          if (typeof(teamviewer_custom_message) != 'undefined' && teamviewer_custom_message != null) teamviewer_custom_message.innerHTML = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}`
         }
       })
     .catch((e) => {
@@ -160,9 +160,9 @@
 
   function linkToTicket() {
     console.log('!! This is where we would call the SamanageApi !!')
-    var message_area = document.getElementById("custom_message")
+    var message_area = document.getElementById("teamviewer_custom_message")
     var comment_body = message_area.innerHTML
-    if (message_area.innerHTML.length > 1) comment_body = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}`
+    if (message_area.innerHTML.length < 1) comment_body = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}`
 
     var comment_json = {
       comment: {
