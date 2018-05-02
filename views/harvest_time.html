@@ -225,7 +225,7 @@
 
     var harvest_login_view = document.getElementById('harvest_auth_buttons')
     harvest_login_view.parentNode.replaceChild(harvest_authed_view, harvest_login_view)
-    document.getElementById('samanage_table').appendChild(samanage_times_table)
+    // document.getElementById('samanage_table').appendChild(samanage_times_table)
   }
 
   function populateAccountDD() {
@@ -334,7 +334,7 @@
       notes: harvest_notes
     }
 
-    if (option == 'start_end') {
+    if (option == 'duration') {
       var duration = document.getElementById('harvest_duration_input').value
       if (duration > 0) time_entry['hours'] =  duration
       console.log(`harvest_time >>> sending duration time entry to harvest\n> project: ${project_id}  task: ${task_id}\n> hours: ${duration}`)
