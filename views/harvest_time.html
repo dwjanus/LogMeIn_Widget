@@ -342,11 +342,11 @@
       if (duration > 0) time_entry['hours'] = duration
       else harvestStopButton(option)
     } else {
-      var start = document.getElementById('harvest_start_input').value
-      var end = document.getElementById('harvest_end_input').value
-      console.log(`harvest_time >>> sending start/end time entry to harvest\n> project: ${project_id}  task: ${task_id}\n> start: ${start}  end: ${end}`)
-      if (start != null || undefined) time_entry['started_time'] = start
-      if (end != null || undefined) time_entry['ended_time'] = end
+      var start = document.getElementById('harvest_start_input')
+      var end = document.getElementById('harvest_end_input')
+      console.log(`harvest_time >>> sending start/end time entry to harvest\n> project: ${project_id}  task: ${task_id}\n> start: ${start.value}  end: ${end.value}`)
+      if (start.value != null || undefined) time_entry['started_time'] = start.value
+      if (end.value != null || undefined) time_entry['ended_time'] = end.value
       else harvestStopButton(option)
     }
 
@@ -383,8 +383,7 @@
           var type = document.getElementById('harvest_stop_timer_button').value
           console.log(`>>> starting ~${type}~ timer now`)
           harvest_context.harvest.user_data.active_timers[response.id] = { account: account_id, type: type }
-          document.getElementById('harvest_stop_timer_button').value = response.id
-          // document.getElementById('harvest_stop_timer_button').onclick = harvestStopTimer(type)
+          document.getElementById('harvest_stop_timer_button').setAttribute('data-timeid', response.id)
         }
 
         var duration = document.getElementById('harvest_duration_input')
@@ -436,7 +435,7 @@
   function harvestStopTimer(option) {
     console.log(`harvest_time >>> harvestStopTimer: ${option}`)
     var account_id = document.getElementById('harvest_account')
-    var time_id = document.getElementById('harvest_stop_timer_button').value
+    var time_id = document.getElementById('harvest_stop_timer_button').getAttribute('data-timeid')
     var stop_url = `https://api.harvestapp.com/v2/time_entries/${time_id}/stop`
     console.log(` > stop_url: ${stop_url}\n`)
     var payload = JSON.stringify({
