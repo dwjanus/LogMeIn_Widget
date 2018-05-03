@@ -288,12 +288,11 @@
     })
 
     platformWidgetHelper.callSamanageAPI((response) => {
-      console.log(`harvest_time >>> got response:\n${JSON.stringify(response)}`)
+      console.log(`harvest_time company time config >>> got response:\n${JSON.stringify(response)}`)
       response = JSON.parse(response)
       
       if (!response.error) {
         if (response.wants_timestamp_timers) {
-          harvest_context
           var harvest_time_form = document.getElementById('harvest_time_inputs')
           harvest_time_form.innerHTML = `
             <div class="form-row align-items-center">
