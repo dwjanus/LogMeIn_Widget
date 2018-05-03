@@ -184,7 +184,7 @@
                               <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
                           </button>
                       </div>
-                      <div class="col-5"></div>
+                      <div class="col-5" id="harvest_time_response_msg"></div>
                   </div>
               </div>
           </form>
@@ -293,6 +293,7 @@
       
       if (!response.error) {
         if (response.wants_timestamp_timers) {
+          harvest_context
           var harvest_time_form = document.getElementById('harvest_time_inputs')
           harvest_time_form.innerHTML = `
             <div class="form-row align-items-center">
@@ -312,7 +313,7 @@
                         <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
                     </button>
                 </div>
-                <div class="col-2"></div>
+                <div class="col-2" id="harvest_time_response_msg"></div>
             </div>
           `
         }
@@ -322,6 +323,39 @@
     }, 'GET', company_url, auth)
   }
   
+  function harvestStopButton(type) {
+    var timer_button = document.getElementById('harvest_timer_button')
+    var stop_timer_button = document.createElement('button')
+    stop_timer_button.classList.add('btn', 'btn-warning')
+    stop_timer_button.id = 'harvest_stop_timer_button'
+    stop_timer_button.setAttribute('data-toggle', 'tooltip')
+    stop_timer_button.setAttribute('data-placement', 'right')
+    stop_timer_button.setAttribute('title', 'Click to stop timer')
+    stop_timer_button.value = type
+    stop_timer_button.onclick = harvestStopTimer(type)
+    stop_timer_button.innerHTML = `
+      <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
+    `
+
+    timer_button.parentNode.replaceChild(stop_timer_button, timer_button)
+  }
+
+  function harvestStartButton(type) {
+    var stop_timer_button = document.getElementById('harvest_stop_timer_button')
+    var timer_button = document.createElement('button')
+    timer_button.classList.add('btn', 'btn-success')
+    timer_button.id = 'harvest_timer_button'
+    timer_button.setAttribute('data-toggle', 'tooltip')
+    timer_button.setAttribute('data-placement', 'right')
+    timer_button.setAttribute('title', '\"Start\" defaults to the current time. Leave \"End\" blank to leave Harvest timer running')
+    timer_button.onclick = harvestSendTime(type)
+    timer_button.innerHTML = `
+      <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
+    `
+    stop_timer_button.parentNode.replaceChild(timer_button, stop_timer_button)
+  }
+
+
   function harvestSendTime(option) {
     var project_id = document.getElementById('harvest_projects').value
     var task_id = document.getElementById('harvest_tasks').value
@@ -336,53 +370,56 @@
 
     if (option == 'duration') {
       var duration = document.getElementById('harvest_duration_input').value
-      if (duration > 0) time_entry['hours'] =  duration
       console.log(`harvest_time >>> sending duration time entry to harvest\n> project: ${project_id}  task: ${task_id}\n> hours: ${duration}`)
+      if (duration > 0) time_entry['hours'] =  duration
+      else addStopButton('duration')
     } else {
       var start = document.getElementById('harvest_start_input').value
       var end = document.getElementById('harvest_end_input').value
       console.log(`harvest_time >>> sending start/end time entry to harvest\n> project: ${project_id}  task: ${task_id}\n> start: ${start}  end: ${end}`)
       if (start != null || undefined) time_entry['started_time'] = start
       if (end != null || undefined) time_entry['ended_time'] = end
+      else addStopButton('start_end')
     }
 
-    sendHarvestTimeEntry(time_entry).then(() => {
-      console.log('harvest_time >>> success!')
-      var harvest_authed_view = document.getElementById('harvest_authed_view')
-      var harvest_time_sent = document.createElement('div')
-      harvest_time_sent.innerHTML = `
-        <div class=success">
-            Time entry sent to Harvest
-        </div>
-      `
-      harvest_authed_view.appendChild(harvest_time_sent)
-
-      addTimeToSamanage(time_entry)
-    }).catch(e => console.log(e))
+    sendHarvestTimeEntry(time_entry)
   }
 
 
   function sendHarvestTimeEntry(time_entry) {
-    return new Promise((resolve, reject) => {
-      var account_id = document.getElementById('harvest_account').value
-      var time_url = 'https://api.harvestapp.com/v2/time_entries'
-      var payload = JSON.stringify({
-        headers: {
-          "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
-          "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
-          "Harvest-Account-Id": account_id,
-          "Content-Type": "application/json"
-        },
-        data: time_entry
-      })
-
-      platformWidgetHelper.callSamanageAPI((response) => {
-        console.log(`harvest_time >>> send time entry response:\n${JSON.stringify(response)}`)
-        response = JSON.parse(response)
-        if (response.error) return reject(response.error)
-        return resolve()
-      }, 'POST', time_url, payload)
+    var account_id = document.getElementById('harvest_account').value
+    var time_url = 'https://api.harvestapp.com/v2/time_entries'
+    var payload = JSON.stringify({
+      headers: {
+        "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
+        "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
+        "Harvest-Account-Id": account_id,
+        "Content-Type": "application/json"
+      },
+      data: time_entry
     })
+
+    platformWidgetHelper.callSamanageAPI((response) => {
+      console.log(`harvest_time >>> send time entry response:\n${JSON.stringify(response)}`)
+      response = JSON.parse(response)
+      if (response.error) console.log(response.error)
+      else {
+        console.log('harvest_time >>> success!')
+        document.getElementById('harvest_time_response_msg').innerHTML = `
+          <div class=success">
+              Success!
+          </div>
+        `
+        // call function to start timer
+        if (!time_entry.hours && !time_entry.ended_time) {
+          console.log('>>> starting timer now')
+          harvest_context.harvest.user_data.active_timers[account_id][response.id] = { type: document.getElementById('harvest_stop_timer_button').value }
+          document.getElementById('harvest_stop_timer_button').value = response.id
+        }
+        // addTimeToSamanage(time_entry)
+      } 
+      
+    }, 'POST', time_url, payload)
   }
 
 
@@ -414,9 +451,30 @@
     platformWidgetHelper.callSamanageAPI((response) => {
         console.log(`harvest_time >>> send time entry response:\n${JSON.stringify(response)}`)
         response = JSON.parse(response)
-        if (response.error) return reject(response.error)
-        return resolve()
+        if (response.error) console.log(response.error)
       }, 'POST', url, payload)
+  }
+
+  function harvestStopTimer() {
+    var account_id = document.getElementById('harvest_account')
+    var time_id = harvest_context.harvest.user_data.active_timers[account_id]
+    var stop_url = `https://api.harvestapp.com/v2/time_entries/${time_id}/stop`
+    var payload = JSON.stringify({
+      headers: {
+        "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
+        "User-Agent": "Samanage + Harvest Time Tracking (devin.janus@samanage.com)",
+        "Harvest-Account-Id": account_id,
+        "Content-Type": "application/json"
+      }
+    })
+
+    platformWidgetHelper.callSamanageAPI((response) => {
+      console.log('Stop Response: ' + response)
+      var harvest_stop_button = document.getElementById('harvest_stop_timer_button')
+      var type = harvest_context.harvest.user_data.active_timers[account_id][harvest_stop_button.value].type
+      delete harvest_context.harvest.user_data.active_timers[account_id][harvest_stop_button.value]
+      harvestStartButton(type)
+    }, 'PATCH', stop_url, payload)
   }
   
 </script>
