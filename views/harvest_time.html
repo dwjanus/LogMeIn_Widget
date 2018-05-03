@@ -68,7 +68,7 @@
       response = JSON.parse(response)
       console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}\nuser accounts: ${response.accounts.length}`)
       harvest_context.harvest.user_data = response.user
-      harvest_context.harvest.user_data['active_']
+      harvest_context.harvest.user_data['active_timers'] = {}
       harvest_context.harvest.user_data['accounts'] = []
 
       var promise_accounts = []
@@ -382,10 +382,18 @@
         if (!time_entry.hours && !time_entry.ended_time) {
           var type = document.getElementById('harvest_stop_timer_button').value
           console.log(`>>> starting ~${type}~ timer now`)
-          harvest_context.harvest.user_data['active_timers'][response.id] = { account: account_id, type: type }
+          harvest_context.harvest.user_data.active_timers[response.id] = { account: account_id, type: type }
           document.getElementById('harvest_stop_timer_button').value = response.id
           document.getElementById('harvest_stop_timer_button').onclick = harvestStopTimer(type)
         }
+
+        var duration = document.getElementById('harvest_duration_input').value
+        var start_time = document.getElementById('harvest_start_input').value
+        var end_time = document.getElementById('harvest_end_input').value
+        if (duration) duration.value = null
+        if (start_time) start_time.value = null
+        if (end_time) end_time.value = null
+        
         // addTimeToSamanage(time_entry)
       } 
       
