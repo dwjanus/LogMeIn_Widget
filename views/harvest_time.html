@@ -372,14 +372,14 @@
       var duration = document.getElementById('harvest_duration_input').value
       console.log(`harvest_time >>> sending duration time entry to harvest\n> project: ${project_id}  task: ${task_id}\n> hours: ${duration}`)
       if (duration > 0) time_entry['hours'] =  duration
-      else addStopButton('duration')
+      else harvestStopButton('duration')
     } else {
       var start = document.getElementById('harvest_start_input').value
       var end = document.getElementById('harvest_end_input').value
       console.log(`harvest_time >>> sending start/end time entry to harvest\n> project: ${project_id}  task: ${task_id}\n> start: ${start}  end: ${end}`)
       if (start != null || undefined) time_entry['started_time'] = start
       if (end != null || undefined) time_entry['ended_time'] = end
-      else addStopButton('start_end')
+      else harvestStopButton('start_end')
     }
 
     sendHarvestTimeEntry(time_entry)
