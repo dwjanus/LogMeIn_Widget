@@ -450,8 +450,8 @@
     platformWidgetHelper.callSamanageAPI((response) => {
       console.log('Stop Response: ' + response)
       var harvest_stop_button = document.getElementById('harvest_stop_timer_button')
-      var type = harvest_context.harvest.user_data.active_timers[harvest_stop_button.value].type
-      delete harvest_context.harvest.user_data.active_timers[harvest_stop_button.value]
+      var type = harvest_context.harvest.user_data.active_timers[time_id].type
+      delete harvest_context.harvest.user_data.active_timers[time_id]
       harvestStartButton(type)
     }, 'PATCH', stop_url, payload)
   }
