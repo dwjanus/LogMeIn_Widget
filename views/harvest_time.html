@@ -65,7 +65,7 @@
 
   harvestUserData = (response) => {
     if (!response.error) {
-      console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}`)
+      console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}\nuser accounts: ${response.accounts.length}`)
       response = JSON.parse(response)
       harvest_context.harvest.user_data = response.user
       harvest_context.harvest.user_data['accounts'] = []
@@ -89,7 +89,7 @@
       }).then(() => {
         populateAccountDD()
         populateProjectTaskDD()
-        return populateTimeEntryForm()
+        populateTimeEntryForm()
       }).catch((e) => {
         console.log(e)
       })
@@ -188,42 +188,9 @@
           </form>
       </div>
     `
-    
-    // <button id="harvest_send_time_button" class="btn btn-to-external" onclick="harvestSendTime();">
-    //     Send Time Tracks From Samanage &nbsp; <span><i class="fas fa-chevron-right fa-sm"></i></span>
-    // </button>
-
-    // var samanage_times_table = document.createElement('table')
-    // samanage_times_table.id = 'samanage_times_table'
-    // samanage_times_table.className = 'table'
-
-    // var samanage_times_table_header = document.createElement('thead')
-    // samanage_times_table_header.innerHTML = `
-    //   <tr>    
-    //       <th>Created At</th>
-    //       <th>Time Spent</th>
-    //       <th>Notes</th>
-    //   </tr>
-    // `
-
-    // var samanage_times_table_body = document.createElement('tbody')
-
-    // samanage_times_table.appendChild(samanage_times_table_header)
-    // samanage_times_table.appendChild(samanage_times_table_body)
-    
-    // for (var i = 0; i < samanage_times.length; i++) {
-    //   var timestamp = new Date(samanage_times[i].created_at)
-    //   var tr = samanage_times_table_body.insertRow(-1)
-    //   tr.innerHTML = `
-    //       <td>${timestamp.toDateString()}</td>
-    //       <td>${samanage_times[i].minutes} minutes</td>
-    //       <td>${samanage_times[i].name}</td>
-    //   `
-    // }
 
     var harvest_login_view = document.getElementById('harvest_auth_buttons')
     harvest_login_view.parentNode.replaceChild(harvest_authed_view, harvest_login_view)
-    // document.getElementById('samanage_table').appendChild(samanage_times_table)
   }
 
   function populateAccountDD() {
