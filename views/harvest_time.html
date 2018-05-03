@@ -68,6 +68,7 @@
       response = JSON.parse(response)
       console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}\nuser accounts: ${response.accounts.length}`)
       harvest_context.harvest.user_data = response.user
+      harvest_context.harvest.user_data['active_']
       harvest_context.harvest.user_data['accounts'] = []
 
       var promise_accounts = []
@@ -381,7 +382,7 @@
         if (!time_entry.hours && !time_entry.ended_time) {
           var type = document.getElementById('harvest_stop_timer_button').value
           console.log(`>>> starting ~${type}~ timer now`)
-          harvest_context.harvest.user_data['active_timers'][account_id][response.id] = { type: type }
+          harvest_context.harvest.user_data['active_timers'][response.id] = { account: account_id, type: type }
           document.getElementById('harvest_stop_timer_button').value = response.id
           document.getElementById('harvest_stop_timer_button').onclick = harvestStopTimer(type)
         }
@@ -427,7 +428,7 @@
   function harvestStopTimer(option) {
     console.log(`harvest_time >>> harvestStopTimer: ${option}`)
     var account_id = document.getElementById('harvest_account')
-    var time_id = harvest_context.harvest.user_data.active_timers[account_id][harvest_stop_button.value]
+    var time_id = harvest_stop_button.value
     var stop_url = `https://api.harvestapp.com/v2/time_entries/${time_id}/stop`
     console.log(` > stop_url: ${stop_url}\n`)
     var payload = JSON.stringify({
@@ -442,8 +443,8 @@
     platformWidgetHelper.callSamanageAPI((response) => {
       console.log('Stop Response: ' + response)
       var harvest_stop_button = document.getElementById('harvest_stop_timer_button')
-      var type = harvest_context.harvest.user_data.active_timers[account_id][harvest_stop_button.value].type
-      delete harvest_context.harvest.user_data.active_timers[account_id][harvest_stop_button.value]
+      var type = harvest_context.harvest.user_data.active_timers[harvest_stop_button.value].type
+      delete harvest_context.harvest.user_data.active_timers[harvest_stop_button.value]
       harvestStartButton(type)
     }, 'PATCH', stop_url, payload)
   }
