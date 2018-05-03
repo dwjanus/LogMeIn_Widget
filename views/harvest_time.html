@@ -400,7 +400,7 @@
 
     platformWidgetHelper.callSamanageAPI((response) => {
       console.log(`harvest_time >>> send time entry response:\n${JSON.stringify(response)}`)
-      response = JSON.parse(response)
+      // response = JSON.parse(response)
       if (response.error) console.log(response.error)
       else {
         console.log('harvest_time >>> success!')
