@@ -412,8 +412,10 @@
         // call function to start timer
         if (!time_entry.hours && !time_entry.ended_time) {
           console.log('>>> starting timer now')
-          harvest_context.harvest.user_data.active_timers[account_id][response.id] = { type: document.getElementById('harvest_stop_timer_button').value }
+          var type = document.getElementById('harvest_stop_timer_button').value
+          harvest_context.harvest.user_data.active_timers[account_id][response.id] = { type: type }
           document.getElementById('harvest_stop_timer_button').value = response.id
+          document.getElementById('harvest_stop_timer_button').onclick = harvestStopTimer(type)
         }
         // addTimeToSamanage(time_entry)
       } 
@@ -455,9 +457,11 @@
   }
 
   function harvestStopTimer(option) {
+    console.log(`harvest_time >>> harvestStopTimer: ${option}`)
     var account_id = document.getElementById('harvest_account')
     var time_id = harvest_context.harvest.user_data.active_timers[account_id][harvest_stop_button.value]
     var stop_url = `https://api.harvestapp.com/v2/time_entries/${time_id}/stop`
+    console.log(` > stop_url: ${stop_url}\n`)
     var payload = JSON.stringify({
       headers: {
         "Authorization": `Bearer ${harvest_context.harvest.tokens.access_token}`,
