@@ -65,8 +65,8 @@
 
   harvestUserData = (response) => {
     if (!response.error) {
-      console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}\nuser accounts: ${response.accounts.length}`)
       response = JSON.parse(response)
+      console.log(`harvest_time >>> got user data back:\n${JSON.stringify(response)}\nuser accounts: ${response.accounts.length}`)
       harvest_context.harvest.user_data = response.user
       harvest_context.harvest.user_data['accounts'] = []
 
