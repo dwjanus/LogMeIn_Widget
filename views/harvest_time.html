@@ -89,7 +89,7 @@
       }).then(() => {
         populateAccountDD()
         populateProjectTaskDD()
-        populateTimeEntryForm()
+        return populateTimeEntryForm()
       }).catch((e) => {
         console.log(e)
       })
@@ -330,7 +330,7 @@
     stop_timer_button.setAttribute('data-placement', 'right')
     stop_timer_button.setAttribute('title', 'Click to stop timer')
     stop_timer_button.value = type
-    stop_timer_button.onclick = harvestStopTimer(type.toString())
+    // stop_timer_button.onclick = harvestStopTimer(type.toString())
     stop_timer_button.innerHTML = `
       <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
     `
@@ -346,7 +346,7 @@
     timer_button.setAttribute('data-toggle', 'tooltip')
     timer_button.setAttribute('data-placement', 'right')
     timer_button.setAttribute('title', '\"Start\" defaults to the current time. Leave \"End\" blank to leave Harvest timer running')
-    timer_button.onclick = harvestSendTime(type.toString())
+    // timer_button.onclick = harvestSendTime(type.toString())
     timer_button.innerHTML = `
       <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
     `
@@ -370,7 +370,7 @@
     if (option == 'duration') {
       var duration = document.getElementById('harvest_duration_input').value
       console.log(`harvest_time >>> sending duration time entry to harvest\n> project: ${project_id}  task: ${task_id}\n> hours: ${duration}`)
-      if (duration > 0) time_entry['hours'] =  duration
+      if (duration > 0) time_entry['hours'] = duration
       else harvestStopButton(option)
     } else {
       var start = document.getElementById('harvest_start_input').value
