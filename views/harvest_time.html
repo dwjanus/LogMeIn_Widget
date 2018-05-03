@@ -400,7 +400,11 @@
 
     platformWidgetHelper.callSamanageAPI((response) => {
       console.log(`harvest_time >>> send time entry response:\n${JSON.stringify(response)}`)
-      // response = JSON.parse(response)
+      if (typeof(response) == 'object') {
+        console.log('JSON response >>>')
+        response = JSON.parse(response)
+      }
+
       if (response.error) console.log(response.error)
       else {
         console.log('harvest_time >>> success!')
@@ -411,8 +415,8 @@
         `
         // call function to start timer
         if (!time_entry.hours && !time_entry.ended_time) {
-          console.log('>>> starting timer now')
           var type = document.getElementById('harvest_stop_timer_button').value
+          console.log(`>>> starting ~${type}~ timer now`)
           harvest_context.harvest.user_data.active_timers[account_id][response.id] = { type: type }
           document.getElementById('harvest_stop_timer_button').value = response.id
           document.getElementById('harvest_stop_timer_button').onclick = harvestStopTimer(type)

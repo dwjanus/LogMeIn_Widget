@@ -103,7 +103,7 @@ app.post('/callExternalApi', (req, res) => {
   
     response.on('error', (e) => {
       console.log('[error in post response]' + e)
-      res.error(e)
+      res.send({error: e})
     })
   })
   
@@ -112,7 +112,7 @@ app.post('/callExternalApi', (req, res) => {
 
   request.on('error', (e) => {
     console.log('[Error in new session POST request]\n>> ' + e)
-    res.error(e)
+    res.send({error: e})
   })
 
   request.end()

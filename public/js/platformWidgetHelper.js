@@ -39,10 +39,10 @@ var platformWidgetHelper = (function() {
         body: JSON.stringify({ method: HTTPMethod, url: url, payload: payload })
       }).then((res) => res.text())
         .then((data) => {
-          return callback(data)
+          callback(data)
       }).catch((e) => {
         console.log('\n! >>> Error caught at .catch() in callSamanageAPI(): \n ' + e)
-        return callback({error: e})
+        callback(e)
       })
     },
 
