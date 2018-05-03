@@ -2,7 +2,6 @@
   <div name="harvest_auth" id="harvest_auth">
       <h5>Harvest Time Tracking</h5>
       
-
       <div id="harvest_auth_buttons">
           <div style="height:65px;">
               <button type="button" class="btn" form="harvest_auth" onclick="harvest_time();">Install</button>
@@ -177,7 +176,7 @@
                       </div>
 
                       <div class="col-2 form-group">
-                          <button id="harvest_timer_button" class="btn btn-success" data-toggle="tooltip" data-placement="right" 
+                          <button type="button" id="harvest_timer_button" class="btn btn-success" data-toggle="tooltip" data-placement="right" 
                           title="leave blank to start Harvest timer at current time"
                           onclick="harvestSendTime('duration');">
                               <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
@@ -292,6 +291,7 @@
       
       if (!response.error) {
         if (response.wants_timestamp_timers) {
+          console.log('harvest >>> populateTimeEntryForm() >>> wants timestamp timers')
           var harvest_time_form = document.getElementById('harvest_time_inputs')
           harvest_time_form.innerHTML = `
             <div class="form-row align-items-center">
@@ -305,7 +305,7 @@
                 </div>
 
                 <div class="col-2 form-group">
-                    <button id="harvest_timer_button" class="btn btn-success" data-toggle="tooltip" data-placement="top" 
+                    <button type="button" id="harvest_timer_button" class="btn btn-success" data-toggle="tooltip" data-placement="top" 
                     title="\"Start\" defaults to the current time. Leave \"End\" blank to leave Harvest timer running"
                     onclick="harvestSendTime('start_end');">
                         <span><i class="fas fa-stopwatch fa-sm" style="color: white;"></i></span>
@@ -355,6 +355,7 @@
 
 
   function harvestSendTime(option) {
+    console.log('harvestSendTime >>>')
     var project_id = document.getElementById('harvest_projects').value
     var task_id = document.getElementById('harvest_tasks').value
     var harvest_notes = document.getElementById('harvest_notes').value
