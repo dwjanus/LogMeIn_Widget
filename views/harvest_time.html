@@ -387,9 +387,9 @@
           document.getElementById('harvest_stop_timer_button').onclick = harvestStopTimer(type)
         }
 
-        var duration = document.getElementById('harvest_duration_input').value
-        var start_time = document.getElementById('harvest_start_input').value
-        var end_time = document.getElementById('harvest_end_input').value
+        var duration = document.getElementById('harvest_duration_input')
+        var start_time = document.getElementById('harvest_start_input')
+        var end_time = document.getElementById('harvest_end_input')
         if (duration) duration.value = null
         if (start_time) start_time.value = null
         if (end_time) end_time.value = null
