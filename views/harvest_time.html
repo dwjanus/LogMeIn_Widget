@@ -380,10 +380,11 @@
         `
         // call function to start timer
         if (!time_entry.hours && !time_entry.ended_time) {
+          var active = JSON.parse(response)
           var type = document.getElementById('harvest_stop_timer_button').value
           console.log(`>>> starting ~${type}~ timer now`)
           harvest_context.harvest.user_data.active_timers[response.id] = { account: account_id, type: type }
-          document.getElementById('harvest_stop_timer_button').setAttribute('data-timeid', response.id)
+          document.getElementById('harvest_stop_timer_button').setAttribute('data-timeid', active.id)
         }
 
         var duration = document.getElementById('harvest_duration_input')
