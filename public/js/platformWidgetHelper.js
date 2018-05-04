@@ -66,7 +66,7 @@ var platformWidgetHelper = (function() {
       .catch(e => console.log(`>> Error in getStorage: ${e}`))
     },
 
-    setStorage: (callback, storage) => {
+    setStorage: (storage, callback) => {
       localStorage = storage
       callback(localStorage);
     }

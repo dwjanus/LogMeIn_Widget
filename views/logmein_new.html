@@ -122,7 +122,7 @@
 
     platformWidgetHelper.getUserInfo((user_info) => {
       var user_id = user_info.id
-      platformWidgetHelper.setStorage(user_id, { logmein: { token: code } }, setlocal)
+      platformWidgetHelper.setStorage({user_id: { logmein: { token: code } } }, setlocal)
       saveAuth(code)
     })
 
