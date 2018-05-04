@@ -165,14 +165,14 @@
         </div>
 
         <div style="margin-top: 15px; margin-bottom: 10px;">
-            <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent;" onclick="logmeinSessionView();">
-                New Code &nbsp;
-                <span><i class="fas fa-sync"></i></span>
-            </button>
-
             <button type="button" class="btn btn-sm btn-primary" onclick="postComment();">
                 <span><i class="fas fa-chevron-left"></i></span>  
                 &nbsp; Send Link
+            </button>
+
+            <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent;" onclick="logmeinSessionView();">
+                New Code &nbsp;
+                <span><i class="fas fa-sync"></i></span>
             </button>
         </div>
 
@@ -184,7 +184,6 @@
     }
   }
     
-  
 
   function postComment() {
     console.log('logmein >>> posting comment to ticket...')
