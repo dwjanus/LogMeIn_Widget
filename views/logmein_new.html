@@ -165,9 +165,14 @@
         </div>
 
         <div style="margin-top: 15px; margin-bottom: 10px;">
-            <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent;">
+            <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent;" onclick="logmeinSessionView();">
                 New Code &nbsp;
                 <span><i class="fas fa-sync"></i></span>
+            </button>
+
+            <button type="button" class="btn btn-sm btn-primary" onclick="postComment();">
+                <span><i class="fas fa-chevron-left"></i></span>  
+                &nbsp; Send Link
             </button>
         </div>
 
@@ -176,19 +181,21 @@
         </div>
       `
       current_view.parentNode.replaceChild(logmein_widget_view , current_view)
-
-      // platformWidgetHelper.callSamanageAPI(postComment, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
     }
   }
     
+  
 
-  postComment = (response) => {
-    console.log('>>> Samanage API response:\n' + JSON.stringify(response))
+  function postComment() {
+    console.log('logmein >>> posting comment to ticket...')
+    // platformWidgetHelper.callSamanageAPI((response) => {
+    //   console.log('>>> Samanage API response:\n' + JSON.stringify(response))
     
-    var error_message = document.getElementById('error')
-    if (document.contains(error_message)) {
-      error_message.remove()
-    }
+    //   var error_message = document.getElementById('error')
+    //   if (document.contains(error_message)) {
+    //     error_message.remove()
+    //   }
+    // }, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
   }
 
 
