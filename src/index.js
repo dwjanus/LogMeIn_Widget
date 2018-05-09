@@ -142,7 +142,7 @@ app.get('/storage/:id', (req, res) => {
   // })
 
   console.log('>>> GET at local storage')
-  users.findOne({ id: req.param.id }).then((found) => {
+  users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
       console.log(`localstorage retrieved user: ${found.id}`)
       res.send(JSON.stringify(found))
@@ -154,9 +154,9 @@ app.get('/storage/:id', (req, res) => {
 
 
 app.post('/storage/:id', (req, res) => {
-  const storage = req.body // ?
+  let storage = JSON.parse(req.body) // ?
 
-  users.findOne({ id: req.param.id }).then((found) => {
+  users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
       console.log('>> user found!')
       let updated = _.assignIn(found, storage)
@@ -166,7 +166,7 @@ app.post('/storage/:id', (req, res) => {
       })
     } else {
       console.log('>> user does not exist yet!')
-      let user = { id: req.param.id, storage }
+      let user = { id: req.params.id, storage }
       users.insert(user).then((res) => {
         console.log(`>> user created:\n${util.inspect(res)}`)
         res.send(JSON.stringify(user))

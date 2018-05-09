@@ -137,8 +137,7 @@
 
   getPin = (response) => {
     console.log(`>>> getPin response: \n${response}`)
-    if (typeof(response) == 'string') console.log('>>>>> getPin response type: string')
-    var data = response.toString();
+    var data = response
     if (data.indexOf('OK') == -1) {
       var e = new Error(data)
       handleError(e)
