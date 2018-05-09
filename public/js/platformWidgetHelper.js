@@ -32,7 +32,21 @@ var platformWidgetHelper = (function() {
       })
     },
 
-    callSamanageAPI: function(callback, HTTPMethod, url, payload) {
+    callExternalAPI: function(HTTPMethod, url, payload, callback) {
+      fetch('/callExternalApi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ method: HTTPMethod, url: url, payload: payload })
+      }).then((res) => res.text())
+        .then((data) => {
+          return callback(data)
+      }).catch((e) => {
+        console.log('\n! >>> Error caught at .catch() in callSamanageAPI(): \n ' + e)
+        return callback({error: e})
+      })
+    },
+
+    callSamanageAPI: function(HTTPMethod, url, payload, callback) {
       fetch('/callExternalApi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -55,20 +69,28 @@ var platformWidgetHelper = (function() {
     },
 
     getStorage: (key, callback) => {
-      // var id = this.getUserInfo(user => user.user_id) need to fix
-      var id = key
-
-      fetch(`/storage/${id}`).then((res) => res.text())
-        .then((data) => {
-          console.log(`platformWidgetHelper >>> getStorage >> returning data:\n${data}`)
-          return callback(data)
-        })
-      .catch(e => console.log(`>> Error in getStorage: ${e}`))
+      fetch(`/storage/${key}`).then((res) => res.json()).then((data) => {
+        console.log(`platformWidgetHelper >>> getStorage >> returning data:\n${JSON.stringify(data)}`)
+        return callback(data)
+      }).catch(e => console.log(`>> Error in getStorage: ${e}`))
     },
 
-    setStorage: (storage, callback) => {
-      localStorage = storage
-      callback(localStorage);
+    setStorage: (key, storage, callback) => {
+      fetch(`/storage/${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(storage)
+      }).then((res) => res.json()).then((data) => {
+        console.log(`platformWidgetHelper >>> successfully saved: ${JSON.stringify(storage)}`)
+        if (data.error) {
+          throw new Error(data.error)
+        } else {
+          localStorage = storage
+          return callback(localStorage)
+        }
+      }).catch((e) => {
+        console.log('\nplatformWidgetHelper >>> setStorage Error:\n ' + e)
+      })      
     }
   };
 })();

@@ -17,6 +17,7 @@ const db = monk(process.env.MONGODB_URI)
 const teamviewer_db = db.get('teamviewer')
 const logmein_db = db.get('logmein')
 const harvest_db = db.get('harvest')
+const users = db.get('users')
 const dbs = [
   {
     name: 'teamviewer',
@@ -61,9 +62,9 @@ app.get('/', (req, res) => {
   res.render('layout', {
     partials: {
       ref_console: 'ref_console.html',
-      //logmein: 'logmein_new.html',
+      logmein: 'logmein.html',
       // harvest_time: 'harvest_time.html',
-      teamviewer: 'teamviewer.html'
+      // teamviewer: 'teamviewer.html'
     }
   })
 })
@@ -123,21 +124,51 @@ app.post('/callExternalApi', (req, res) => {
 // -----> Get User data <----- //
 //                             //
 app.get('/storage/:id', (req, res) => {
-  let storage = {}
+  // let storage = {}
   
-  Promise.map(dbs, (db) => {
-    console.log('/storage/id >>> Promise.map >>> ' + db.name)
-    let key = db.name
+  // Promise.map(dbs, (db) => {
+  //   console.log('/storage/id >>> Promise.map >>> ' + db.name)
+  //   let key = db.name
 
-    return db.collection.findOne({user: req.params.id}).then((found) => {
-      if (found) {
-        console.log('/storage/id >>> found')
-        storage[key] = found[key]
-      }
-    })
-  }).then(() => {
-    console.log(`/storage/id >>> returning storage:\n${util.inspect(storage)}`)
-    return res.send(JSON.stringify(storage))
+  //   return db.collection.findOne({user: req.params.id}).then((found) => {
+  //     if (found) {
+  //       console.log('/storage/id >>> found')
+  //       storage[key] = found[key]
+  //     }
+  //   })
+  // }).then(() => {
+  //   console.log(`/storage/id >>> returning storage:\n${util.inspect(storage)}`)
+  //   return res.send(JSON.stringify(storage))
+  // })
+
+  users.findOne({ id: req.param.id }).then((found) => {
+    if (found) {
+      console.log(`localstorage retrieved user: ${found.id}`)
+      res.send(JSON.stringify(found))
+    }
+  }).catch(e => res.send(e))
+})
+
+
+app.post('/storage/:id', (req, res) => {
+  const storage = JSON.parse(req.body)
+
+  users.findOne({ id: req.param.id }).then((found) => {
+    if (found) {
+      console.log('>> user found!')
+      let updated = _.assignIn(found, storage)
+      users.update({ id: found.id }, updated).then((res) => {
+        console.log(`>> user updated:\n${util.inspect(res)}`)
+        res.send(JSON.stringify(updated))
+      })
+    } else {
+      console.log('>> user does not exist yet!')
+      let user = { id: req.param.id, storage }
+      users.insert(user).then((res) => {
+        console.log(`>> user created:\n${util.inspect(res)}`)
+        res.send(JSON.stringify(user))
+      })
+    }
   })
 })
 

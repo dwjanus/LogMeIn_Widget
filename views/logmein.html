@@ -1,27 +1,31 @@
-<div class="widget" id="logmein_widget" style="visibility: visible;">
-    <div name="logmein" id="logmein">
-        <div class="form-header">
-            <h5>LogMeIn Remote Session</h5>
-        </div>
-        
+<div class="widget" id="logmein_widget">
+    <div name="logmein" id="logmein" style="text-align: center; margin: 10px;">
         <div id="logmein_form">
             <form id="logmein_auth">
-                <div class="form-field">
-                    <input type="email" id="logmein_email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
-                    <input type="password" id="logmein_pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
+                <div class="form-group row">
+                    <label for="logmein_email" class="col-3 col-form-label col-form-label-sm" style="text-align: right;">Email</label>
+                    <div class="col-9">
+                        <input type="email" class="form-control form-control-sm" id="logmein_email" name="email" placeholder="Rescue User" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue User'" />
+                    </div>
                 </div>
-            </form>
 
-            <div style="height:65px;">
-                <button type="submit" class="btn" form="logmein_auth">Create Session</button>
-                <button type="button" class="btn" id="hidebtn" onclick="platformWidgetHelper.hide()">Hide Widget</button>
-            </div>
-        </div>    
+                <div class="form-group row">
+                    <label for="logmein_pw" class="col-3 col-form-label col-form-label-sm" style="text-align: right;">Password</label>
+                    <div class="col-9">
+                        <input type="password" class="form-control form-control-sm" id="logmein_pw" name="pw" placeholder="Rescue Password" onFocus="this.placeholder=''" onblur="this.placeholder='Rescue Password'" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" form="logmein_auth">Sign In</button>
+            </form>
+        </div>
     </div>
 </div>
 
 <script>
   var context_id
+  var comment_json
+  var logmein_context = {}
   var logmein_errors = {
     'ERROR': 'An unspecified error occured',
     'INVALID': 'The password or email were incorrect',
@@ -37,13 +41,34 @@
   }
 
   setlocal = (response) => {
-    console.log('local storage set: ' + JSON.stringify(response))
+    console.log('\nlogmein >>> local storage set: ' + JSON.stringify(response))
+  }
+
+  getlocal = (response) => {
+    console.log('\nlogmein >>> getting local storage: ' + response)
+    if (response) {
+      if (typeof(response) == 'object') {
+        response = JSON.parse(response)
+        console.log(`>>> ${JSON.stringify(response)}`)
+        if (response.logmein !== undefined) {
+          console.log('logmein >>> toggling authorized view...')
+          logmein_context['logmein'] = response.logmein
+          toggleLogmeinAuthorizedView()
+        }
+      }
+    }
   }
 
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
       context_id = response.context_id
+      logmein_context = response
       platformWidgetHelper.show()
+      platformWidgetHelper.getUserInfo((user_info) => {
+        var user_id = user_info.id
+        console.log(`\nlogmein >>> current user: ${user_id}`)
+        platformWidgetHelper.getStorage(user_id, getlocal)
+      })
     }
   }
 
@@ -53,122 +78,142 @@
 
   function logmein(event) {
     event.preventDefault()
-    console.log('>>> logmein() called')
+    console.log('widget >>> logmein() called')
     var email = document.getElementById("logmein_email").value
     var pw = document.getElementById("logmein_pw").value
     var url = `https://secure.logmeinrescue.com/api/requestAuthCode.aspx?email=${email}&pwd=${pw}`
 
-    getAuth(url)
-      .then(getPin)
-      .then(postComment)
-    .catch(e => console.log(`${e}`))
+    platformWidgetHelper.callExternalAPI('GET', url, null, getAuth)
   }
 
-  function getAuth(url) {
-    console.log('logmein >>> retrieving authcode')
-    return fetch(url).then((res) => res.text()).then((data) => {
-      if (data.indexOf('OK') == -1) throw new Error(data)
-      var code = data.split('AUTHCODE:')[1]
-      saveAuth(code) 
-      return code
-    }).catch((err) => {
-      handleError(err)
-      return Promise.reject('logmein >>> Error at getAuth: ' + err)
-    })
-  }
+  function toggleLogmeinAuthorizedView() {
+    var logmein_authed_view = document.createElement('div')
 
-  function getPin(code) {
-    console.log('logmein >>> requesting pin')
+    logmein_authed_view.className = 'logmein_authed_view'
+    logmein_authed_view.id = 'logmein_authed_view'
 
-    var url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
-
-    return fetch(url).then((res) => res.text()).then((data) => {
-      if (data.indexOf('OK') == -1) throw new Error(data)
-      var pin = data.split('PINCODE:')[1]
-      return pin
-    }).catch((err) => {
-      handleError(err)
-      return Promise.reject('logmein >> Error at Pin Request: ' + err)
-    })
-  }
-
-  function postComment(pin) {
-    var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
-    var click = "window.open('" + link + "', '_blank')"
-    var comment_json = {
-      comment: {
-        body: `Go here to launch your Rescue session: ${link}`,
-        is_private: false
-      }
-    }
-
-    console.log(`logmein >>> incident id: ${context_id} retrieved from context handler`)
-    console.log(`logmein >>> about to post comment: ${JSON.stringify(comment_json)}`)
-
-    platformWidgetHelper.callSamanageAPI((response) => {
-      console.log('>>> Samanage API response:\n' + response)
-    }, 'POST', `https://api.samanage.com/incidents/${context_id}/comments.json`, JSON.stringify(comment_json))
-  
-    var error_message = document.getElementById('error')
-    if (document.contains(error_message)) {
-      error_message.remove()
-    }
-
-    var form = document.getElementById('logmein_form')
-    var success = document.createElement('div')
-    success.innerHTML = `
-      <div class="success">
-          <p id="success">Success!</p> 
-          <p style="font-size: 12px; margin-top: 5px;">Your session Pin is:</p>
-          <p id="pin">${pin}</p>
-      </div>
-      <div style="padding-top: 15px;">
-          <button type="button" class="btn session" id="session" onclick="${click}">
-              Go to Session
+    logmein_authed_view.innerHTML = `
+      <div class="logmein_generate_session" id="logmein_generate_session">
+          <button id="logmein_generate_button" class="btn btn-primary" onclick="logmeinSessionView();">
+              Generate Session Code
           </button>
       </div>
     `
-    form.parentNode.replaceChild(success, form)
+    var logmein_form = document.getElementById('logmein_form')
+    logmein_form.parentNode.replaceChild(logmein_authed_view, logmein_form)
   }
 
-  function saveAuth(code) {
-    let body_json = { logmein: { token: code } }
-    console.log(`logmein >>> saving authcode... \nbody_json = ${JSON.stringify(body_json)}`)
+  function logmeinSessionView() {
+    var code = logmein_context.logmein.token
+    var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
 
-    fetch(`/logmein/${context.assignee.user_id}/save`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body_json)
-    }).then((res) => res.json())
-      .then((data) => {
-        console.log(`logmein >>> successfully saved authcode: ${JSON.stringify(data)}`)
-        if (data.error) {
-          throw new Error(data.error)
-        } else {
-          context['logmein_data'] = { token: data.token }
-          return
+    platformWidgetHelper.callExternalAPI('GET', pin_url, null, getPin)
+  }
+
+  getAuth = (response) => {
+    console.log(`logmein >>> getAuth response: \n${response}`)
+    var code = response.split('AUTHCODE:')[1]
+    logmein_context['logmein'] = { token: code }
+    console.log(`logmein >>> logmein_context => \n${JSON.stringify(logmein_context)}`)
+
+    platformWidgetHelper.getUserInfo((user_info) => {
+      console.log(`logmein >>> platform.getUserInfo: \n${JSON.stringify(user_info)}`)
+      logmein_context['logmein'] = { token: code }
+      var user_id = user_info.id
+      var logmein_storage = {
+        logmein: {
+          token: code
         }
-      })
-    .catch((e) => {
-      console.log('\nlogmein >>> Error caught at .catch() in saveAuth(): \n ' + e)
+      }
+      
+      console.log(`logmein >>> setting local storage...\nkey: ${user_id}\nstorage: ${JSON.stringify(logmein_storage)}`)
+      platformWidgetHelper.setStorage(user_id, logmein_storage, setlocal)
     })
+
+
+    var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
+    platformWidgetHelper.callExternalAPI('GET', pin_url, null, getPin)
   }
+
+  getPin = (response) => {
+    console.log(`>>> getPin response: \n${response}`)
+    if (typeof(response) == 'string') console.log('>>>>> getPin response type: string')
+    var data = response.toString();
+    if (data.indexOf('OK') == -1) {
+      var e = new Error(data)
+      handleError(e)
+    } else {
+      var pin = data.split('PINCODE:')[1]
+      var link = `https://secure.logmeinrescue.com/R?i=2&Code=${pin}`
+      var click = "window.open('" + link + "', '_blank')"      
+      comment_json = {
+        comment: {
+          body: `Go here to launch your Rescue session: ${link}`,
+          is_private: false
+        }
+      }
+
+      var current_view = document.getElementById('logmein_authed_view')
+      if (current_view == undefined || null) current_view = document.getElementById('logmein_form')
+
+      var logmein_widget_view = document.createElement('div')
+      
+      logmein_widget_view.className = 'logmein_widget_view'
+      logmein_widget_view.id = 'logmein_widget_view'
+      logmein_widget_view.innerHTML = `
+        <div class="success">
+            <p style="margin-top: 10px;">Your session Pin is:</p>
+            <h6 id="pin">${pin}</h6>
+        </div>
+
+        <div style="margin-top: 15px; margin-bottom: 10px;">
+            <button type="button" class="btn btn-sm btn-primary" onclick="postComment();">
+                <span><i class="fas fa-chevron-left"></i></span>  
+                &nbsp; Send Link &nbsp;
+            </button>
+
+            <button type="button" class="btn btn-sm btn-outline-dark" onclick="logmeinSessionView();">
+                New Code &nbsp;
+                <span><i class="fas fa-sync"></i></span>
+            </button>
+        </div>
+      `
+      current_view.parentNode.replaceChild(logmein_widget_view , current_view)
+    }
+  }
+    
+
+  function postComment() {
+    console.log(`>>> about to post comment: ${JSON.stringify(comment_json)}`)
+    // platformWidgetHelper.callSamanageAPI('POST', `/incidents/${context_id}/comments.json`, comment_json, (response) => {
+    //   console.log('>>> Samanage API response:\n' + JSON.stringify(response))
+    //   var error_message = document.getElementById('error')
+    //   if (document.contains(error_message)) {
+    //     error_message.remove()
+    //   }
+    // })
+  }
+
 
   const handleError = (e) => {
+    console.log(`logmein >>> handling error: ${e}`)
     var parsedError = e.toString().split('Error: ')[1].trim()
     var details
-    console.log(`logmein >> Error code to handle: ${parsedError}`)
     if (parsedError in logmein_errors) {
-      details = logmein_errors[parsedError]
+      if (parsedError == 'INVALID_SECRETAUTHCODE') {
+        var logmein_form = document.getElementById('logmein_form')
+        var logmein_generate_session = document.getElementById('logmein_generate_session')
+        logmein_generate.parentNode.replaceChild(logmein_form, logmein_generate_session)
+
+      } else details = logmein_errors[parsedError] 
     } else {
       details = 'An unknown error occured'
     }
-    
-    console.log(`   >>>> Details: ${details}`)
+
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
     error.innerHTML =  `<div class="error" id="error"><p>${e}</p><p>${details}</p></div>`
-    
+
     var error_message = document.getElementById('error')
     if (document.contains(error_message)) {
       parent = error_message.parentNode
@@ -179,3 +224,5 @@
   }
 </script>
 
+</body>
+</html>
