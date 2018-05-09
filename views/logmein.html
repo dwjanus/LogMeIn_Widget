@@ -48,7 +48,6 @@
     console.log('\nlogmein >>> getting local storage: ' + response)
     if (response) {
       if (typeof(response) == 'object') {
-        response = JSON.parse(response)
         console.log(`>>> ${JSON.stringify(response)}`)
         if (response.logmein !== undefined) {
           console.log('logmein >>> toggling authorized view...')
@@ -147,9 +146,7 @@
       var click = "window.open('" + link + "', '_blank')"      
       comment_json = {
         comment: {
-          body: `<![CDATA[
-                    Click <a href="${link}">here</a> to launch your Rescue session.
-                ]]>`,
+          body: `<![CDATA[<p>Click <a href="${link}">here</a> to launch your Rescue session.</p>`,
           is_private: false
         }
       }
