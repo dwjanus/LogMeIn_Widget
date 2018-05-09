@@ -155,7 +155,7 @@ app.get('/storage/:id', (req, res) => {
 
 app.post('/storage/:id', (req, res) => {
   console.log(`/storage/id [POST] req.body:\n${util.inspect(req.body)}`)
-  let storage = req.body[Object.keys(req.body)[0]]
+  const storage = req.body
 
   users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
@@ -167,7 +167,8 @@ app.post('/storage/:id', (req, res) => {
       })
     } else {
       console.log('>> user does not exist yet!')
-      let user = { id: req.params.id, storage }
+      let user = { id: req.params.id }
+      _.assignIn(user, req.body)
       users.insert(user).then((user) => {
         console.log(`>> user created:\n${util.inspect(user)}`)
         return res.send(JSON.stringify(user))
