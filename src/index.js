@@ -145,7 +145,7 @@ app.get('/storage/:id', (req, res) => {
   users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
       console.log(`localstorage retrieved user: ${found.id}`)
-      res.send(JSON.stringify(found))
+      return res.send(JSON.stringify(found))
     } else {
       console.log('>>> user not found')
     }
@@ -154,22 +154,23 @@ app.get('/storage/:id', (req, res) => {
 
 
 app.post('/storage/:id', (req, res) => {
+  console.log(`/storage/id [POST] req.body:\n${util.inspect(req.body)}`)
   let storage = req.body
 
   users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
       console.log('>> user found!')
       let updated = _.assignIn(found, storage)
-      users.update({ id: found.id }, updated).then((res) => {
-        console.log(`>> user updated:\n${util.inspect(res)}`)
-        res.send(JSON.stringify(updated))
+      users.update({ id: found.id }, updated).then((user) => {
+        console.log(`>> user updated:\n${util.inspect(user)}`)
+        return res.send(JSON.stringify(updated))
       })
     } else {
       console.log('>> user does not exist yet!')
       let user = { id: req.params.id, storage }
-      users.insert(user).then((res) => {
-        console.log(`>> user created:\n${util.inspect(res)}`)
-        res.send(JSON.stringify(user))
+      users.insert(user).then((user) => {
+        console.log(`>> user created:\n${util.inspect(user)}`)
+        return res.send(JSON.stringify(user))
       })
     }
   })

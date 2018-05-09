@@ -147,7 +147,9 @@
       var click = "window.open('" + link + "', '_blank')"      
       comment_json = {
         comment: {
-          body: `Go here to launch your Rescue session: ${link}`,
+          body: `<![CDATA[
+                    Click <a href="${link}">here</a> to launch your Rescue session.
+                ]]>`,
           is_private: false
         }
       }
