@@ -154,7 +154,7 @@ app.get('/storage/:id', (req, res) => {
 
 
 app.post('/storage/:id', (req, res) => {
-  let storage = JSON.parse(req.body) // ?
+  let storage = req.body
 
   users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
