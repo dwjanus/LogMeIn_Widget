@@ -155,7 +155,7 @@ app.get('/storage/:id', (req, res) => {
 
 app.post('/storage/:id', (req, res) => {
   console.log(`/storage/id [POST] req.body:\n${util.inspect(req.body)}`)
-  let storage = req.body
+  let storage = req.body[Object.keys(req.body)[0]]
 
   users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
