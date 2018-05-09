@@ -141,17 +141,20 @@ app.get('/storage/:id', (req, res) => {
   //   return res.send(JSON.stringify(storage))
   // })
 
+  console.log('>>> GET at local storage')
   users.findOne({ id: req.param.id }).then((found) => {
     if (found) {
       console.log(`localstorage retrieved user: ${found.id}`)
       res.send(JSON.stringify(found))
+    } else {
+      console.log('>>> user not found')
     }
   }).catch(e => res.send(e))
 })
 
 
 app.post('/storage/:id', (req, res) => {
-  const storage = JSON.parse(req.body)
+  const storage = req.body // ?
 
   users.findOne({ id: req.param.id }).then((found) => {
     if (found) {

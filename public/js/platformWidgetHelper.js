@@ -76,10 +76,11 @@ var platformWidgetHelper = (function() {
     },
 
     setStorage: (key, storage, callback) => {
+      console.log(`platformWidgetHelper >>> setStorage: ${JSON.stringify(storage)}`)
       fetch(`/storage/${key}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: storage
+        body: JSON.stringify(storage)
       }).then((res) => res.json()).then((data) => {
         console.log(`platformWidgetHelper >>> successfully saved: ${JSON.stringify(storage)}`)
         if (data.error) {
