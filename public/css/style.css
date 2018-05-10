@@ -34,6 +34,11 @@ h6 {
   font-family: -apple-system, 'Segoe UI', sans-serif;
 }
 
+.btn-primary { 
+  background-color: #05aaff !important;
+  border-color: #05aaff !important;
+}
+
 .info {
   min-height: 100%;
   background: #fff;
