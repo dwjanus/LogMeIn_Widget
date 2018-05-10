@@ -60,7 +60,7 @@
     payload.headers["User-Agent"] = "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
     var auth = JSON.stringify(payload)
 
-    platformWidgetHelper.callSamanageAPI(harvestUserData, 'GET', accounts_url, auth)
+    platformWidgetHelper.callSamanageAPI('GET', accounts_url, auth, harvestUserData)
   }
 
   harvestUserData = (response) => {
@@ -448,7 +448,7 @@
       }
     })
 
-    platformWidgetHelper.callExternalAPI('PATCH', stop_url, payload, (response) => {
+    platformWidgetHelper.callSamanageAPI('PATCH', stop_url, payload, (response) => {
       console.log('Stop Response: ' + response)
       var harvest_stop_button = document.getElementById('harvest_stop_timer_button')
       var type = harvest_context.harvest.user_data.active_timers[time_id].type
