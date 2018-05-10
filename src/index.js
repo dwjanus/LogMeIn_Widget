@@ -63,8 +63,8 @@ app.get('/', (req, res) => {
     partials: {
       ref_console: 'ref_console.html',
       logmein: 'logmein.html',
-      // harvest_time: 'harvest_time.html',
-      // teamviewer: 'teamviewer.html'
+      harvest_time: 'harvest_time.html',
+      teamviewer: 'teamviewer.html'
     }
   })
 })

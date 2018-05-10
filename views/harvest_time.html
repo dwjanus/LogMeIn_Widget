@@ -112,7 +112,7 @@
         }
       })
 
-      platformWidgetHelper.callSamanageAPI((response) => {
+      platformWidgetHelper.callSamanageAPI('GET', projects_url, auth, (response) => {
         console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
         response = JSON.parse(response)
 
@@ -125,7 +125,7 @@
             return resolve()
           }
         })
-      }, 'GET', projects_url, auth)
+      })
     })
   }
 
@@ -254,7 +254,7 @@
       }
     })
 
-    platformWidgetHelper.callSamanageAPI((response) => {
+    platformWidgetHelper.callSamanageAPI('GET', company_url, auth, (response) => {
       console.log(`harvest_time company time config >>> got response:\n${JSON.stringify(response)}`)
       response = JSON.parse(response)
       
@@ -287,7 +287,7 @@
       } else {
         console.log(response.error)
       }
-    }, 'GET', company_url, auth)
+    })
   }
   
   function harvestStopButton(type) {
@@ -367,7 +367,7 @@
       data: time_entry
     })
 
-    platformWidgetHelper.callSamanageAPI((response) => {
+    platformWidgetHelper.callSamanageAPI('POST', time_url, payload, (response) => {
       console.log(`harvest_time >>> send time entry response:\n${response}`)
 
       if (response.error) console.log(response.error)
@@ -397,7 +397,7 @@
         // addTimeToSamanage(time_entry)
       } 
       
-    }, 'POST', time_url, payload)
+    })
   }
 
 
@@ -426,11 +426,11 @@
       data: time_track_json
     })
 
-    platformWidgetHelper.callSamanageAPI((response) => {
+    platformWidgetHelper.callSamanageAPI('POST', url, payload, (response) => {
         console.log(`harvest_time >>> send time entry response:\n${JSON.stringify(response)}`)
         response = JSON.parse(response)
         if (response.error) console.log(response.error)
-      }, 'POST', url, payload)
+      })
   }
 
   function harvestStopTimer(option) {
@@ -448,13 +448,13 @@
       }
     })
 
-    platformWidgetHelper.callSamanageAPI((response) => {
+    platformWidgetHelper.callExternalAPI('PATCH', stop_url, payload, (response) => {
       console.log('Stop Response: ' + response)
       var harvest_stop_button = document.getElementById('harvest_stop_timer_button')
       var type = harvest_context.harvest.user_data.active_timers[time_id].type
       delete harvest_context.harvest.user_data.active_timers[time_id]
       harvestStartButton(type)
-    }, 'PATCH', stop_url, payload)
+    })
   }
   
 </script>
