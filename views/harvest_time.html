@@ -254,8 +254,8 @@
     for (var j = 0; j < found_project.task_assignments.length; j++) {
       var task_option = document.createElement('OPTION')
 
-      task_option.innerHTML = project_assignment.task_assignments[j].task.name
-      task_option.value = project_assignment.task_assignments[j].task.id
+      task_option.innerHTML = found_project.task_assignments[j].task.name
+      task_option.value = found_project.task_assignments[j].task.id
       task_option.setAttribute('class', 'form-control')
       new_tasks.options.add(task_option)
     }
