@@ -152,7 +152,7 @@
               <div class="form-group row" style="margin-bottom: 5px;">
                   <label for="harvest_projects" class="col-2 col-form-label col-form-label-sm">Project</label>
                   <div class="col-10">
-                      <select class="form-control form-control-sm harvest_dropdown" id="harvest_projects" name="harvest_projects"></select>
+                      <select class="form-control form-control-sm harvest_dropdown" id="harvest_projects" name="harvest_projects" onchange="newTasks();"></select>
                   </div>                  
               </div>
 
@@ -240,7 +240,7 @@
     if (harvest_context.harvest.user_data.accounts.length == 1) document.getElementById('harvest_account_row').style.display = 'none'
   }
 
-  document.getElementById('harvest_projects').onchange = () => {
+  function newTasks() {
     var account_id = document.getElementById('harvest_account').value
     var found_account = harvest_context.harvest.user_data.accounts.find(x => x.id == account_id)
     var project_id = document.getElementById('harvest_projects').value
