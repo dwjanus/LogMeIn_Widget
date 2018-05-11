@@ -216,7 +216,6 @@
     var found_account = harvest_context.harvest.user_data.accounts.find(x => x.id == account_id)
     var all_projects = found_account.project_assignments
 
-
     console.log(`harvest_time >>> found account in context: ${found_account}\n\n${all_projects}`)
     
     for (var i = 0; i < all_projects.length; i++) {
@@ -239,6 +238,29 @@
     }
 
     if (harvest_context.harvest.user_data.accounts.length == 1) document.getElementById('harvest_account_row').style.display = 'none'
+  }
+
+  document.getElementById('harvest_projects').onchange = () => {
+    var account_id = document.getElementById('harvest_account').value
+    var found_account = harvest_context.harvest.user_data.accounts.find(x => x.id == account_id)
+    var project_id = document.getElementById('harvest_projects').value
+    var found_project = found_account.project_assignments.find(x => x.id == project_id)
+    var old_tasks = document.getElementById('harvest_tasks')
+    var new_tasks = document.createElement('SELECT')
+    new_tasks.className = "form-control form-control-sm harvest_dropdown"
+    new_tasks.id = "harvest_tasks"
+    new_tasks.name = "harvest_tasks"
+
+    for (var j = 0; j < found_project.task_assignments.length; j++) {
+      var task_option = document.createElement('OPTION')
+
+      task_option.innerHTML = project_assignment.task_assignments[j].task.name
+      task_option.value = project_assignment.task_assignments[j].task.id
+      task_option.setAttribute('class', 'form-control')
+      new_tasks.options.add(task_option)
+    }
+
+    tasks.parentNode.replaceChild(new_tasks, old_tasks)
   }
 
   function populateTimeEntryForm() {
