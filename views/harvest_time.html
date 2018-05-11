@@ -244,7 +244,7 @@
     var account_id = document.getElementById('harvest_account').value
     var found_account = harvest_context.harvest.user_data.accounts.find(x => x.id == account_id)
     var project_id = document.getElementById('harvest_projects').value
-    var found_project = found_account.project_assignments.find(x => x.id == project_id)
+    var found_project = found_account.project_assignments.find(x => x.project.id == project_id)
     var old_tasks = document.getElementById('harvest_tasks')
     var new_tasks = document.createElement('SELECT')
     new_tasks.className = "form-control form-control-sm harvest_dropdown"
