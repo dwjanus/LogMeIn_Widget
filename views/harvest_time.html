@@ -1,11 +1,13 @@
-<div class="widget" id="harvest_widget_auth" style="visibility: visible;">
-  <div name="harvest_auth" id="harvest_auth">
-      <h5>Harvest Time Tracking</h5>
+<div class="widget" id="harvest_widget">
+  <div class="harvest_widget_auth" id="harvest_widget_auth" style="text-align: center; margin: 10px;">
+      <h5>Harvest Time Tracking</h5>  
       
-      <div id="harvest_auth_buttons">
-          <div style="height:65px;">
-              <button type="button" class="btn" form="harvest_auth" onclick="harvest_time();">Install</button>
-          </div>   
+      <div name="harvest_auth" id="harvest_auth">
+          <div id="harvest_auth_buttons">
+              <div style="height:65px;">
+                  <button type="button" class="btn" form="harvest_auth" onclick="harvest_time();">Install</button>
+              </div>   
+          </div>
       </div>
   </div>
 </div>
@@ -13,40 +15,66 @@
 <script>
   var harvest_context = {}
   var context_id
+  var current_user = {}
 
   setlocal = (response) => {
     console.log('harvest >> local storage set: \n> ' + JSON.stringify(response))
   }
 
+  // fetch(`/harvest/data/${harvest_context.samanage.assignee.user_id}`)
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     harvest_context['harvest'] = data
+  //     console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
+  //     if (harvest_context.harvest.tokens) {
+  //       if (!harvest_context.harvest.user_data) getHarvestUserData()
+  //       toggleHarvestAuthorizedView()
+  //     }
+  //   })
+  // .catch(e => console.log(`>> ERROR >> ${e}`))
+
+  getlocal = (response) => {
+    console.log('\nharvest_time >>> getting local storage: ' + response)
+    if (response) {
+      console.log('harvest_time >>> getlocal response is type: ' + typeof(response))
+      response = JSON.parse(response)
+      if (response.harvest !== undefined) {
+        harvest_context['harvest'] = response.harvest
+        console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
+
+        if (harvest_context.harvest.tokens) {
+          if (!harvest_context.harvest.user_data) getHarvestUserData()
+          console.log('harvest >>> toggling authorized view...') 
+          toggleHarvestAuthorizedView()
+        }
+      }
+    }
+  }
+
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
-      harvest_context['samanage'] = response
       context_id = response.context_id
+      harvest_context['samanage'] = response
+      platformWidgetHelper.show()
+      platformWidgetHelper.getUserInfo((user_info) => {
+        current_user = user_info
+        console.log(`\nharvest_time >>> current user: ${current_user.id}`)
+        platformWidgetHelper.getStorage(current_user.id, getlocal)
+      })
     }
   }
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  fetch(`/harvest/data/${harvest_context.samanage.assignee.user_id}`)
-    .then((res) => res.json())
-    .then((data) => {
-      harvest_context['harvest'] = data
-      console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
-      if (harvest_context.harvest.tokens) {
-        if (!harvest_context.harvest.user_data) getHarvestUserData()
-        toggleHarvestAuthorizedView()
-      }
-    })
-  .catch(e => console.log(`>> ERROR >> ${e}`))
 
   function harvest_time() {
     console.log('>>> harvest_time() called')
-    launchHarvestAuth(harvest_context.harvest.harvest_id)
+    launchHarvestAuth(harvest_context.harvest.harvest_id) // <---- this is our problem
   }
 
   function launchHarvestAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/harvest/oauth"
-    var url = `https://id.getharvest.com/oauth2/authorize?client_id=${client_id}&response_type=code&state=${harvest_context.samanage.assignee.user_id}`
+    var url = `https://id.getharvest.com/oauth2/authorize?client_id=${client_id}&response_type=code&state=${current_user.id}`
 
     console.log(`harvest >>> client_id: ${client_id}`)
     console.log(`harvest >>> url: ${url}`)
@@ -428,7 +456,7 @@
     var time_track_json = {
       time_track: {
         name: time_entry.notes,
-        creator_id: harvest_context.samanage.assignee.user_id,
+        creator_id: current_user.id,
         minutes_parsed
       }
     }

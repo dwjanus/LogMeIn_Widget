@@ -148,6 +148,15 @@ app.get('/storage/:id', (req, res) => {
       return res.send(JSON.stringify(found))
     } else {
       console.log('>>> user not found')
+      let response_json = {
+        harvest_id: process.env.HARVEST_ID
+      }
+      let user = { id: req.params.id }
+      _.assignIn(user, req.body)
+      users.insert(user).then((user) => {
+        console.log(`>> user created:\n${util.inspect(user)}`)
+        return res.send(JSON.stringify(user))
+      })
     }
   }).catch(e => res.send(e))
 })
@@ -538,11 +547,28 @@ app.get('/harvest/oauth', (req, res) => {
 
       let harvest = result
 
-      harvest_db.findOne({user: req.query.state}).then((found) => {
-        if (!found) {
-          harvest_db.insert({user: req.query.state, harvest})
+
+
+      users.findOne({ id: req.query.state }).then((found) => {
+        if (found) {
+          console.log('>> user found!')
+          if (found.harvest) console.log('> user already has harvest authentication')
+          else {
+            console.log('>> adding harvest info to user')
+            let updated = _.assignIn(found, harvest)
+            users.update({ id: found.id }, updated).then((user) => {
+              console.log(`>> user updated:\n${util.inspect(user)}`)
+              return res.send(JSON.stringify(updated))
+            })
+          }
         } else {
-          console.log('> user already has harvest authentication')
+          console.log('>> user does not exist yet!')
+          let user = { id: req.query.state }
+          _.assignIn(user, harvest)
+          users.insert(user).then((user) => {
+            console.log(`>> user created:\n${util.inspect(user)}`)
+            return res.send(JSON.stringify(user))
+          })
         }
 
         res.redirect('/harvest/authorized?' + query)

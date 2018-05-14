@@ -71,7 +71,7 @@ var platformWidgetHelper = (function() {
     getStorage: (key, callback) => {
       fetch(`/storage/${key}`).then((res) => res.json()).then((data) => {
         console.log(`platformWidgetHelper >>> getStorage >> returning data:\n${JSON.stringify(data)}`)
-        return callback(data)
+        return callback(JSON.stringify(data))
       }).catch(e => console.log(`>> Error in getStorage: ${e}`))
     },
 

@@ -49,13 +49,12 @@
   getlocal = (response) => {
     console.log('\nlogmein >>> getting local storage: ' + response)
     if (response) {
-      if (typeof(response) == 'object') {
-        console.log(`>>> ${JSON.stringify(response)}`)
-        if (response.logmein !== undefined) {
-          console.log('logmein >>> toggling authorized view...')
-          logmein_context['logmein'] = response.logmein
-          toggleLogmeinAuthorizedView()
-        }
+      console.log('logmein >>> getlocal response is type: ' + typeof(response))
+      response = JSON.parse(response)
+      if (response.logmein !== undefined) {
+        console.log('logmein >>> toggling authorized view...')
+        logmein_context['logmein'] = response.logmein
+        toggleLogmeinAuthorizedView()
       }
     }
   }
@@ -212,7 +211,7 @@
 
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
-    error.innerHTML =  `<div class="error" id="error"><p>${e}</p><p>${details}</p></div>`
+    error.innerHTML =  `<div class="error" id="error" style="margin-top: 15px;"><p>${e}</p><p>${details}</p></div>`
 
     var error_message = document.getElementById('error')
     if (document.contains(error_message)) {
