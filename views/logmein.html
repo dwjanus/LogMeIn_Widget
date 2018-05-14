@@ -112,27 +112,33 @@
 
   getAuth = (response) => {
     console.log(`logmein >>> getAuth response: \n${response}`)
-    var code = response.split('AUTHCODE:')[1]
-    logmein_context['logmein'] = { token: code }
-    console.log(`logmein >>> logmein_context => \n${JSON.stringify(logmein_context)}`)
-
-    platformWidgetHelper.getUserInfo((user_info) => {
-      console.log(`logmein >>> platform.getUserInfo: \n${JSON.stringify(user_info)}`)
+    var data = response
+    if (data.indexOf('OK') == -1) {
+      var e = new Error(data)
+      handleError(e)
+    } else {
+      var code = response.split('AUTHCODE:')[1]
       logmein_context['logmein'] = { token: code }
-      var user_id = user_info.id
-      var logmein_storage = {
-        "logmein": {
-          "token": code
+      console.log(`logmein >>> logmein_context => \n${JSON.stringify(logmein_context)}`)
+
+      platformWidgetHelper.getUserInfo((user_info) => {
+        console.log(`logmein >>> platform.getUserInfo: \n${JSON.stringify(user_info)}`)
+        logmein_context['logmein'] = { token: code }
+        var user_id = user_info.id
+        var logmein_storage = {
+          "logmein": {
+            "token": code
+          }
         }
-      }
-      
-      console.log(`logmein >>> setting local storage...\nkey: ${user_id}\nstorage: ${JSON.stringify(logmein_storage)}`)
-      platformWidgetHelper.setStorage(user_id, logmein_storage, setlocal)
-    })
+        
+        console.log(`logmein >>> setting local storage...\nkey: ${user_id}\nstorage: ${JSON.stringify(logmein_storage)}`)
+        platformWidgetHelper.setStorage(user_id, logmein_storage, setlocal)
+      })
 
 
-    var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
-    platformWidgetHelper.callExternalAPI('GET', pin_url, null, getPin)
+      var pin_url = `https://secure.logmeinrescue.com/api/requestPINCode.aspx?notechconsole=1&authcode=${code}&tracking0=${context_id}`
+      platformWidgetHelper.callExternalAPI('GET', pin_url, null, getPin)
+    } 
   }
 
   getPin = (response) => {
