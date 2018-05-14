@@ -117,6 +117,8 @@
       var e = new Error(data)
       handleError(e)
     } else {
+      if (document.contains(document.getElementById('logmein_error'))) document.getElementById('logmein_error').remove()
+
       var code = response.split('AUTHCODE:')[1]
       logmein_context['logmein'] = { token: code }
       console.log(`logmein >>> logmein_context => \n${JSON.stringify(logmein_context)}`)
@@ -209,7 +211,6 @@
         var logmein_form = document.getElementById('logmein_form')
         var logmein_generate_session = document.getElementById('logmein_generate_session')
         logmein_generate.parentNode.replaceChild(logmein_form, logmein_generate_session)
-
       } else details = logmein_errors[parsedError] 
     } else {
       details = 'An unknown error occured'
@@ -217,7 +218,7 @@
 
     var logmein = document.getElementById('logmein')
     var error = document.createElement('div')
-    error.innerHTML =  `<div class="error" id="error" style="margin-top: 15px;"><p>${e}</p><p>${details}</p></div>`
+    error.innerHTML =  `<div class="error" id="logmein_error" style="margin-top: 15px;"><p>${e}</p><p>${details}</p></div>`
 
     var error_message = document.getElementById('error')
     if (document.contains(error_message)) {
