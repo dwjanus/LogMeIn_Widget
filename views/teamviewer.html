@@ -168,7 +168,7 @@
       data: body_json
     })
     
-    platformWidgetHelper.callExternalApi('POST', new_session_url, payload, (response) => {
+    platformWidgetHelper.callExternalAPI('POST', new_session_url, payload, (response) => {
       console.log(`>>> response data: ${JSON.stringify(response)}`)
       var data = JSON.parse(response)
       if (data.error) {  // throw new Error(data.error)
