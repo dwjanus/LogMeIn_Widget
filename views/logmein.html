@@ -67,7 +67,7 @@
       platformWidgetHelper.getUserInfo((user_info) => {
         var user_id = user_info.id
         console.log(`\nlogmein >>> current user: ${user_id}`)
-        platformWidgetHelper.getStorage(user_id, getlocal)
+        platformWidgetHelper.getStorage(user_id.toString(), getlocal)
       })
     }
   }
@@ -134,7 +134,7 @@
         }
         
         console.log(`logmein >>> setting local storage...\nkey: ${user_id}\nstorage: ${JSON.stringify(logmein_storage)}`)
-        platformWidgetHelper.setStorage(user_id, logmein_storage, setlocal)
+        platformWidgetHelper.setStorage(user_id.toString(), logmein_storage, setlocal)
       })
 
 
