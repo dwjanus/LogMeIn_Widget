@@ -168,26 +168,30 @@
       data: body_json
     })
     
-    platformWidgetHelper.callExternalAPI('POST', new_session_url, payload, (response) => {
-      console.log(`>>> response data: ${JSON.stringify(response)}`)
-      var data = JSON.parse(response)
-      if (data.error) {  // throw new Error(data.error)
-        console.log('teamviewer >>> Error caught in createTeamviewerSession:\n>> ' + data.error)
-        if (data.error == "Error: token_expired") return refreshTeamviewerOauth()
-      } else {
-        teamviewer_context.teamviewer['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
-        var teamviewer_code = document.getElementById("teamviewer_code")
-        if (typeof(teamviewer_code) != 'undefined' && teamviewer_code != null) teamviewer_code.innerHTML = `${teamviewer_context.teamviewer.session_data.code}`
-        var tech_session = document.getElementById("tech_session")
-        if (typeof(tech_session) != 'undefined' && tech_session != null) tech_session.onclick = `"window.open('${teamviewer_context.teamviewer.session_data.supporter_link}', '_blank');"`
-        var tech_link_tt = document.getElementById("tech_link_tt")
-        if (typeof(tech_link_tt) != 'undefined' && tech_link_tt != null) tech_link_tt.innerHTML = `${teamviewer_context.teamviewer.session_data.supporter_link}`
-        var customer_link_tt = document.getElementById("customer_link_tt")
-        if (typeof(customer_link_tt) != 'undefined' && customer_link_tt != null) customer_link_tt.innerHTML = `${teamviewer_context.teamviewer.session_data.end_customer_link}`
-        var teamviewer_custom_message = document.getElementById("teamviewer_custom_message")
-        if (typeof(teamviewer_custom_message) != 'undefined' && teamviewer_custom_message != null) teamviewer_custom_message.innerHTML = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.teamviewer.session_data.end_customer_link}`
-      }
+    return new Promise((resolve, reject) => {
+      platformWidgetHelper.callExternalAPI('POST', new_session_url, payload, (response) => {
+        console.log(`>>> response data: ${JSON.stringify(response)}`)
+        var data = JSON.parse(response)
+        if (data.error) {  // throw new Error(data.error)
+          console.log('teamviewer >>> Error caught in createTeamviewerSession:\n>> ' + data.error)
+          if (data.error == "Error: token_expired") return resolve(refreshTeamviewerOauth())
+        } else {
+          teamviewer_context.teamviewer['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
+          var teamviewer_code = document.getElementById("teamviewer_code")
+          if (typeof(teamviewer_code) != 'undefined' && teamviewer_code != null) teamviewer_code.innerHTML = `${teamviewer_context.teamviewer.session_data.code}`
+          var tech_session = document.getElementById("tech_session")
+          if (typeof(tech_session) != 'undefined' && tech_session != null) tech_session.onclick = `"window.open('${teamviewer_context.teamviewer.session_data.supporter_link}', '_blank');"`
+          var tech_link_tt = document.getElementById("tech_link_tt")
+          if (typeof(tech_link_tt) != 'undefined' && tech_link_tt != null) tech_link_tt.innerHTML = `${teamviewer_context.teamviewer.session_data.supporter_link}`
+          var customer_link_tt = document.getElementById("customer_link_tt")
+          if (typeof(customer_link_tt) != 'undefined' && customer_link_tt != null) customer_link_tt.innerHTML = `${teamviewer_context.teamviewer.session_data.end_customer_link}`
+          var teamviewer_custom_message = document.getElementById("teamviewer_custom_message")
+          if (typeof(teamviewer_custom_message) != 'undefined' && teamviewer_custom_message != null) teamviewer_custom_message.innerHTML = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.teamviewer.session_data.end_customer_link}`
+          return resolve()
+        }
+      })
     })
+    
   }
 
   function linkToTicket() {
