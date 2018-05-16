@@ -198,6 +198,7 @@ app.get('/:widget/info', (req, res) => {
       return res.send(JSON.stringify(found))
     } else {
       console.log('>> that widget does not exist yet!')
+      return res.send(null)
     }
   })
 })
