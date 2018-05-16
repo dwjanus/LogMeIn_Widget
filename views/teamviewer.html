@@ -52,17 +52,6 @@
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  // fetch(`/tv/data/${teamviewer_context.assignee.user_id}`)
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     teamviewer_context['tv_data'] = data
-  //     console.log('teamviewer >> context object:\n' + JSON.stringify(teamviewer_context))
-  //     if (teamviewer_context.tv_data.tokens) {
-  //       toggleTeamviewerAuthorizedView()
-  //     }
-  //   })
-  // .catch(e => console.log(`>> ERROR >> ${e}`))
-
   function teamviewer() {
     console.log('>>> teamviewer() called')
     platformWidgetHelper.getCredentials('teamviewer', (response) => {
@@ -148,7 +137,7 @@
   }
 
   function createTeamviewerSession() {
-    var new_session_url = "webapi.teamviewer.com/api/v1/sessions"
+    var new_session_url = "https://webapi.teamviewer.com/api/v1/sessions"
 
     var body_json = {
       groupname: "Samanage",
@@ -163,7 +152,7 @@
     var payload = JSON.stringify({ 
       headers: { 
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${teamviewer_context.teamviewer.access_token}`
+        'Authorization': `Bearer ${teamviewer_context.teamviewer.tokens.access_token}`
       },
       data: body_json
     })
