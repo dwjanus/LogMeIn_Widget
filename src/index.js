@@ -189,8 +189,7 @@ app.post('/storage/:id', (req, res) => {
 
 
 app.get('/:widget/info', (req, res) => {
-  console.log(`/widgets/___ [GET] req.body:\n${util.inspect(req.body)}`)
-  const storage = req.body
+  console.log(`/${req.params.widget}/info [GET] req.body:\n${util.inspect(req.body)}`)
 
   system_db.findOne({ name: req.params.widget }).then((found) => {
     if (found) {
@@ -198,7 +197,7 @@ app.get('/:widget/info', (req, res) => {
       return res.send(JSON.stringify(found))
     } else {
       console.log('>> that widget does not exist yet!')
-      return res.send(null)
+      return res.send(null) //JSON.stringify({error: none})
     }
   })
 })
