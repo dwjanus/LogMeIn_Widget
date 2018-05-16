@@ -270,9 +270,9 @@ app.get('/tv/oauth', (req, res) => {
         }
       }
 
-      users.findOne({user: req.query.state}).then((found) => {
+      users.findOne({id: req.query.state}).then((found) => {
         if (!found) {
-          users.insert({user: req.query.state, teamviewer_data})
+          users.insert({id: req.query.state, teamviewer_data})
         } else {
           console.log('> user already has teamviewer authentication')
         }
@@ -301,7 +301,7 @@ app.get('/tv/:id/oauth/', (req, res) => {
 
   const id = req.params.id
 
-  teamviewer_db.findOne({user: id}).then((found) => {
+  users.findOne({user: id}).then((found) => {
     if (found) {
       console.log(`>> user found: \n${util.inspect(found)}`)
       let postData = querystring.stringify({
@@ -335,14 +335,14 @@ app.get('/tv/:id/oauth/', (req, res) => {
             console.log(`teamviewer >>> error: ${result.error_code}\n${result.error} -- ${result.error_description}`)
             res.send(result)
           } else {
-            let teamviewer = {
+            let teamviewer_data = {
               teamviewer: {
                 tokens: result
               }
             }
       
-            users.update({ user: id }, { user: id, teamviewer: teamviewer })
-            res.send(teamviewer)
+            users.update({ user: id }, { user: id, teamviewer_data })
+            res.send(teamviewer_data.teamviewer)
           }
         })
     
