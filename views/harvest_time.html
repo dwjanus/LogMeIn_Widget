@@ -48,7 +48,7 @@
       platformWidgetHelper.getUserInfo((user_info) => {
         current_user = user_info
         console.log(`\nharvest_time >>> current user: ${current_user.id}`)
-        platformWidgetHelper.getStorage(current_user.id, getlocal)
+        platformWidgetHelper.getStorage(current_user.id.toString(), getlocal)
       })
     }
   }

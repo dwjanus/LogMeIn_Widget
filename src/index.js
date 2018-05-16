@@ -514,7 +514,9 @@ app.get('/harvest/oauth', (req, res) => {
         user_id: req.query.state
       })
 
-      let harvest = result
+      let harvest = {
+        tokens: result
+      }
 
       users.findOne({ id: req.query.state }).then((found) => {
         if (found) {
@@ -522,7 +524,7 @@ app.get('/harvest/oauth', (req, res) => {
           if (found.harvest) console.log('> user already has harvest authentication')
           else {
             console.log('>> adding harvest info to user')
-            let updated = _.assignIn(found, {harvest: harvest})
+            let updated = _.assignIn(found, harvest)
             users.update({ id: found.id }, updated).then((user) => {
               console.log(`>> user updated:\n${util.inspect(user)}`)
               return res.send(JSON.stringify(updated))
@@ -531,7 +533,7 @@ app.get('/harvest/oauth', (req, res) => {
         } else {
           console.log('>> user does not exist yet!')
           let user = { id: req.query.state }
-          _.assignIn(user, {harvest: harvest})
+          _.assignIn(user, harvest)
           users.insert(user).then((user) => {
             console.log(`>> user created:\n${util.inspect(user)}`)
             return res.send(JSON.stringify(user))
