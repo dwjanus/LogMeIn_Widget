@@ -59,7 +59,8 @@
   function harvest_time() {
     console.log('>>> harvest_time() called')
     platformWidgetHelper.getCredentials('harvest', (response) => {
-      if (response !== null) launchHarvestAuth(response.harvest.client_id)
+      let data = JSON.parse(response)
+      if (data !== null) launchHarvestAuth(data.client_id)
     })
     
   }

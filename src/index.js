@@ -189,11 +189,11 @@ app.post('/storage/:id', (req, res) => {
 
 
 app.get('/:widget/info', (req, res) => {
-  console.log(`/${req.params.widget}/info [GET] req.body:\n${util.inspect(req.body)}`)
+  console.log(`[GET] /${req.params.widget}/info`)
 
   system_db.findOne({ name: req.params.widget }).then((found) => {
     if (found) {
-      console.log('>> widget data found!')
+      console.log('>> widget data found!\n' + util.inspect(found))
       return res.send(JSON.stringify(found))
     } else {
       console.log('>> that widget does not exist yet!')
