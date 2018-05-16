@@ -278,8 +278,8 @@ app.get('/tv/oauth', (req, res) => {
             console.log('>> adding teamviewer info to user')
             let updated = _.assignIn(found, teamviewer_data)
             users.update({ id: found.id }, updated).then((user) => {
-              console.log(`>> user updated:\n${util.inspect(user)}`)
-              return res.send(JSON.stringify(updated))
+              console.log(`>> user updated`)
+              // return res.send(JSON.stringify(updated))
             })
           }
         } else {
@@ -288,7 +288,7 @@ app.get('/tv/oauth', (req, res) => {
           _.assignIn(user, teamviewer_data)
           users.insert(user).then((user) => {
             console.log(`>> user created:\n${util.inspect(user)}`)
-            return res.send(JSON.stringify(user))
+            // return res.send(JSON.stringify(user))
           })
         }
 
@@ -475,7 +475,7 @@ app.get('/harvest/oauth', (req, res) => {
             let updated = _.assignIn(found, harvest_data)
             users.update({ id: found.id }, updated).then((user) => {
               console.log(`>> user updated:\n${util.inspect(user)}`)
-              return res.send(JSON.stringify(updated))
+              // return res.send(JSON.stringify(updated))
             })
           }
         } else {
@@ -484,7 +484,7 @@ app.get('/harvest/oauth', (req, res) => {
           _.assignIn(user, harvest_data)
           users.insert(user).then((user) => {
             console.log(`>> user created:\n${util.inspect(user)}`)
-            return res.send(JSON.stringify(user))
+            // return res.send(JSON.stringify(user))
           })
         }
 
