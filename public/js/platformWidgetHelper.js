@@ -92,6 +92,13 @@ var platformWidgetHelper = (function() {
       }).catch((e) => {
         console.log('\nplatformWidgetHelper >>> setStorage Error:\n ' + e)
       })      
+    },
+
+    getCredentials: (key, callback) => {
+      fetch(`/${key}/info`).then((res) => res.json()).then((data) => {
+        console.log(`platformWidgetHelper >>> getCredentials >> returning data:\n${JSON.stringify(data)}`)
+        return callback(JSON.stringify(data))
+      }).catch(e => console.log(`>> Error in getStorage: ${e}`))
     }
   };
 })();

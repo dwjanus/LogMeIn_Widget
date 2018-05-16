@@ -187,6 +187,22 @@ app.post('/storage/:id', (req, res) => {
 })
 
 
+app.get('/:widget/info', (req, res) => {
+  console.log(`/widgets/___ [GET] req.body:\n${util.inspect(req.body)}`)
+  const storage = req.body
+
+  system.findOne({ name: req.params.widget }).then((found) => {
+    if (found) {
+      console.log('>> widget data found!')
+      return res.send(JSON.stringify(found))
+    } else {
+      console.log('>> that widget does not exist yet!')
+    }
+  })
+})
+
+
+
 //                          //
 // -----> TeamViewer <----- //
 //                          //
@@ -451,21 +467,6 @@ app.get('/tv/:id/oauth/', (req, res) => {
 //                       //
 // -----> LogMeIn <----- //
 //                       //
-app.post('/logmein/:id/save', (req, res) => {
-  const id = req.params.id
-  const logmein = req.body
-
-  console.log(`\n[POST] /logmein/${id}/save\n--> logmein: ${util.inspect(logmein)}`)
-  logmein_db.findOne({user: id}).then((found) => {
-    if (!found) {
-      console.log(`   logmein_db >> user not found, inserting now...`)
-      logmein_db.insert({ user: id, logmein })
-    } else {
-      console.log('   logmein_db >> user already has logmein authentication')
-    }
-    res.send(logmein)
-  })
-})
 
 
 app.post('/logmein/data', (req, res) => {
@@ -602,23 +603,6 @@ app.get('/harvest/authorized', (req, res, next) => {
   })
 })
 
-
-app.get('/harvest/data/:id', (req, res) => {
-  console.log('\n[GET] /harvest/data ---> user: ' + req.params.id)
-
-  let id = req.params.id
-  let response_json = {
-    harvest_id: process.env.HARVEST_ID
-  }
-
-  harvest_db.findOne({user: id}).then((found) => {
-    if (found) {
-      console.log('[GET] /harvest/data ---> harvest tokens found:\n' + util.inspect(found))
-      response_json['tokens'] = found.harvest
-    }
-    res.send(response_json)
-  })
-})
 
 
 // Search bar feature

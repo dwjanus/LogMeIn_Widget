@@ -21,17 +21,6 @@
     console.log('harvest >> local storage set: \n> ' + JSON.stringify(response))
   }
 
-  // fetch(`/harvest/data/${harvest_context.samanage.assignee.user_id}`)
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     harvest_context['harvest'] = data
-  //     console.log('harvest >> context object:\n' + JSON.stringify(harvest_context))
-  //     if (harvest_context.harvest.tokens) {
-  //       if (!harvest_context.harvest.user_data) getHarvestUserData()
-  //       toggleHarvestAuthorizedView()
-  //     }
-  //   })
-  // .catch(e => console.log(`>> ERROR >> ${e}`))
 
   getlocal = (response) => {
     console.log('\nharvest_time >>> getting local storage: ' + response)
@@ -69,7 +58,10 @@
 
   function harvest_time() {
     console.log('>>> harvest_time() called')
-    launchHarvestAuth(harvest_context.harvest.harvest_id) // <---- this is our problem
+    platformWidgetHelper.getCredentials('harvest', (response) => {
+      if (response !== null) launchHarvestAuth(response.harvest.client_id)
+    })
+    
   }
 
   function launchHarvestAuth(client_id) {
@@ -88,7 +80,7 @@
     payload.headers["User-Agent"] = "Samanage + Harvest Time Tracking (devin.janus@samanage.com)"
     var auth = JSON.stringify(payload)
 
-    platformWidgetHelper.callSamanageAPI('GET', accounts_url, auth, harvestUserData)
+    platformWidgetHelper.callExternalAPI('GET', accounts_url, auth, harvestUserData)
   }
 
   harvestUserData = (response) => {
@@ -140,7 +132,7 @@
         }
       })
 
-      platformWidgetHelper.callSamanageAPI('GET', projects_url, auth, (response) => {
+      platformWidgetHelper.callExternalAPI('GET', projects_url, auth, (response) => {
         console.log(`harvest_time >>> get tasks response:\n${JSON.stringify(response)}`)
         response = JSON.parse(response)
 
@@ -304,7 +296,7 @@
       }
     })
 
-    platformWidgetHelper.callSamanageAPI('GET', company_url, auth, (response) => {
+    platformWidgetHelper.callExternalAPI('GET', company_url, auth, (response) => {
       console.log(`harvest_time company time config >>> got response:\n${JSON.stringify(response)}`)
       response = JSON.parse(response)
       
@@ -417,7 +409,7 @@
       data: time_entry
     })
 
-    platformWidgetHelper.callSamanageAPI('POST', time_url, payload, (response) => {
+    platformWidgetHelper.callExternalAPI('POST', time_url, payload, (response) => {
       console.log(`harvest_time >>> send time entry response:\n${response}`)
 
       if (response.error) console.log(response.error)
@@ -498,7 +490,7 @@
       }
     })
 
-    platformWidgetHelper.callSamanageAPI('PATCH', stop_url, payload, (response) => {
+    platformWidgetHelper.callExternalAPI('PATCH', stop_url, payload, (response) => {
       console.log('Stop Response: ' + response)
       var harvest_stop_button = document.getElementById('harvest_stop_timer_button')
       var type = harvest_context.harvest.user_data.active_timers[time_id].type
