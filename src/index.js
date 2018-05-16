@@ -14,25 +14,8 @@ import _ from 'lodash'
 const app = express()
 const port = process.env.port ||  process.env.PORT || 8000
 const db = monk(process.env.MONGODB_URI)
-const teamviewer_db = db.get('teamviewer')
-const logmein_db = db.get('logmein')
-const harvest_db = db.get('harvest')
 const users = db.get('users')
 const system_db = db.get('system')
-const dbs = [
-  {
-    name: 'teamviewer',
-    collection: teamviewer_db
-  },
-  {
-    name: 'logmein',
-    collection: logmein_db
-  },
-  { 
-    name: 'harvest',
-    collection: harvest_db
-  }
-]
 
 
 if (!port) {
@@ -125,23 +108,6 @@ app.post('/callExternalApi', (req, res) => {
 // -----> Get User data <----- //
 //                             //
 app.get('/storage/:id', (req, res) => {
-  // let storage = {}
-  
-  // Promise.map(dbs, (db) => {
-  //   console.log('/storage/id >>> Promise.map >>> ' + db.name)
-  //   let key = db.name
-
-  //   return db.collection.findOne({user: req.params.id}).then((found) => {
-  //     if (found) {
-  //       console.log('/storage/id >>> found')
-  //       storage[key] = found[key]
-  //     }
-  //   })
-  // }).then(() => {
-  //   console.log(`/storage/id >>> returning storage:\n${util.inspect(storage)}`)
-  //   return res.send(JSON.stringify(storage))
-  // })
-
   console.log('>>> GET at local storage')
   users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
@@ -549,15 +515,13 @@ app.get('/harvest/oauth', (req, res) => {
 
       let harvest = result
 
-
-
       users.findOne({ id: req.query.state }).then((found) => {
         if (found) {
           console.log('>> user found!')
           if (found.harvest) console.log('> user already has harvest authentication')
           else {
             console.log('>> adding harvest info to user')
-            let updated = _.assignIn(found, harvest)
+            let updated = _.assignIn(found, {harvest: harvest})
             users.update({ id: found.id }, updated).then((user) => {
               console.log(`>> user updated:\n${util.inspect(user)}`)
               return res.send(JSON.stringify(updated))
@@ -566,7 +530,7 @@ app.get('/harvest/oauth', (req, res) => {
         } else {
           console.log('>> user does not exist yet!')
           let user = { id: req.query.state }
-          _.assignIn(user, harvest)
+          _.assignIn(user, {harvest: harvest})
           users.insert(user).then((user) => {
             console.log(`>> user created:\n${util.inspect(user)}`)
             return res.send(JSON.stringify(user))
