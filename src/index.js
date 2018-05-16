@@ -16,6 +16,7 @@ const port = process.env.port ||  process.env.PORT || 8000
 const db = monk(process.env.MONGODB_URI)
 const users = db.get('users')
 const system_db = db.get('system')
+const teamviewer_db = db.get('teamviewer')
 
 
 if (!port) {
