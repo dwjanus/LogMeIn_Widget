@@ -18,6 +18,7 @@ const teamviewer_db = db.get('teamviewer')
 const logmein_db = db.get('logmein')
 const harvest_db = db.get('harvest')
 const users = db.get('users')
+const system_db = db.get('system')
 const dbs = [
   {
     name: 'teamviewer',
@@ -191,7 +192,7 @@ app.get('/:widget/info', (req, res) => {
   console.log(`/widgets/___ [GET] req.body:\n${util.inspect(req.body)}`)
   const storage = req.body
 
-  system.findOne({ name: req.params.widget }).then((found) => {
+  system_db.findOne({ name: req.params.widget }).then((found) => {
     if (found) {
       console.log('>> widget data found!')
       return res.send(JSON.stringify(found))
