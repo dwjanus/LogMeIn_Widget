@@ -62,7 +62,6 @@
       let data = JSON.parse(response)
       if (data !== null) launchHarvestAuth(data.client_id)
     })
-    
   }
 
   function launchHarvestAuth(client_id) {
@@ -72,7 +71,13 @@
     console.log(`harvest >>> client_id: ${client_id}`)
     console.log(`harvest >>> url: ${url}`)
 
-    window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
+    var win = window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
+    var win_timer = setInterval(function() {
+      if (win.closed) {
+        toggleHarvestAuthorizedView()
+        clearInterval(win_timer)
+      }
+    }, 100)
   }
 
   function getHarvestUserData() {

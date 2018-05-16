@@ -13,39 +13,67 @@
 <script>
   var teamviewer_context = {}
   var context_id
+  var current_user = {}
 
   setlocal = (response) => {
     console.log('teamviewer >> local storage set: \n> ' + JSON.stringify(response))
   }
 
+
+  getlocal = (response) => {
+    console.log('\nteamviewer >>> getting local storage: ' + response)
+    if (response) {
+      console.log('teamviewer >>> getlocal response is type: ' + typeof(response))
+      response = JSON.parse(response)
+      if (response.teamviewer !== undefined) {
+        teamviewer_context['teamviewer'] = response.teamviewer
+        console.log('teamviewer >> context object:\n' + JSON.stringify(teamviewer_context))
+
+        if (teamviewer_context.teamviewer.tokens) {
+          console.log('teamviewer >>> toggling authorized view...') 
+          toggleTeamviewerAuthorizedView()
+        }
+      }
+    }
+  }
+
   contextRecievedHandler = (response) => {
     if (response.context_type == 'Incident') {
-      teamviewer_context = response
       context_id = response.context_id
+      teamviewer_context['samanage'] = response
+      platformWidgetHelper.show()
+      platformWidgetHelper.getUserInfo((user_info) => {
+        current_user = user_info
+        console.log(`\nteamviewer >>> current user: ${current_user.id}`)
+        platformWidgetHelper.getStorage(current_user.id.toString(), getlocal)
+      })
     }
   }
 
   platformWidgetHelper.getContextObject(contextRecievedHandler)
 
-  fetch(`/tv/data/${teamviewer_context.assignee.user_id}`)
-    .then((res) => res.json())
-    .then((data) => {
-      teamviewer_context['tv_data'] = data
-      console.log('teamviewer >> context object:\n' + JSON.stringify(teamviewer_context))
-      if (teamviewer_context.tv_data.tokens) {
-        toggleTeamviewerAuthorizedView()
-      }
-    })
-  .catch(e => console.log(`>> ERROR >> ${e}`))
+  // fetch(`/tv/data/${teamviewer_context.assignee.user_id}`)
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     teamviewer_context['tv_data'] = data
+  //     console.log('teamviewer >> context object:\n' + JSON.stringify(teamviewer_context))
+  //     if (teamviewer_context.tv_data.tokens) {
+  //       toggleTeamviewerAuthorizedView()
+  //     }
+  //   })
+  // .catch(e => console.log(`>> ERROR >> ${e}`))
 
   function teamviewer() {
     console.log('>>> teamviewer() called')
-    launchTeamviewerAuth(teamviewer_context.tv_data.tv_id)
+    platformWidgetHelper.getCredentials('teamviewer', (response) => {
+      let data = JSON.parse(response)
+      if (data !== null) launchTeamviewerAuth(data.client_id)
+    })
   }
 
   function launchTeamviewerAuth(client_id) {
     var redirect = "https://samanage-widgets.herokuapp.com/tv/oauth"
-    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}&state=${teamviewer_context.assignee.user_id}`
+    var url = `https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect}&state=${current_user.id}`
 
     console.log(`teamviewer >>> client_id: ${client_id}`)
     console.log(`teamviewer >>> url: ${url}`)
@@ -86,26 +114,26 @@
       tv_widget_view.innerHTML = `
         <div class="teamviewer_session success">
             <small class="text-muted">Session Code: </small>
-            <div id="teamviewer_code">${teamviewer_context.session_data.code}</div>
+            <div id="teamviewer_code">${teamviewer_context.teamviewer.session_data.code}</div>
         </div>
         
         <div style="margin-top: 5px; margin-bottom: 10px;">
             <div class="tv_buttons">
-                <button type="button" id="tech_session" class="btn btn-link btn-sm" onclick="window.open('${teamviewer_context.session_data.supporter_link}', '_blank');">
+                <button type="button" id="tech_session" class="btn btn-link btn-sm" onclick="window.open('${teamviewer_context.teamviewer.session_data.supporter_link}', '_blank');">
                     <small class="text-muted">go to session</small>
-                    <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${teamviewer_context.session_data.supporter_link}</span>
+                    <span class="tooltip" id="tech_link_tt" style="font-size: 9px;">${teamviewer_context.teamviewer.session_data.supporter_link}</span>
                 </button>
             </div>
         </div>
 
         <div class="teamviewer_custom_msg_area">
-            <textarea class="custom_message" id="teamviewer_custom_message" rows="4">Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}</textarea>
+            <textarea class="custom_message" id="teamviewer_custom_message" rows="4">Please use the link below to connect to your remote support session:\n\n${teamviewer_context.teamviewer.session_data.end_customer_link}</textarea>
         </div>
 
         <div class="d-flex justify-content-center" style="margin-top: 5px;">
             <button type="button" id="customer_session" class="btn btn-primary tv_buttons" style="margin-left: 5px; margin-right: 5px;" onclick="linkToTicket();">
                 <span><i class="fas fa-chevron-left fa-sm" style="color: white;"></i></span> &nbsp; Post Customer Link to ticket
-                <span class="tooltip" id="customer_link_tt">${teamviewer_context.session_data.end_customer_link}</span>
+                <span class="tooltip" id="customer_link_tt">${teamviewer_context.teamviewer.session_data.end_customer_link}</span>
             </button>
 
             <button type="button" class="btn btn-sm btn-outline-dark" style="background-color:transparent; margin-left: 5px; margin-right: 5px;" onclick="createteamviewersession();">
@@ -120,42 +148,45 @@
   }
 
   function createTeamviewerSession() {
-    let body_json = {
+    var new_session_url = "webapi.teamviewer.com/api/v1/sessions"
+
+    var body_json = {
       groupname: "Samanage",
-      description:  `Incident #${teamviewer_context.number} - ${teamviewer_context.description}`,
+      description:  `Incident #${teamviewer_context.samanage.number} - ${teamviewer_context.samanage.description}`,
       end_customer: {
-        name: teamviewer_context.requester.name
+        name: teamviewer_context.samanage.requester.name
       },
       waiting_message: 'Please wait while your Service Agent connects to the session', // this should be configurable for the customer later
-      custom_api: `{ "incident_id": ${teamviewer_context.context_id} }`
+      custom_api: `{ "incident_id": ${context_id} }`
     }
 
-    return fetch(`/tv/sessions/new/${teamviewer_context.assignee.user_id}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body_json)
-    }).then((res) => res.json())
-      .then((data) => {
-        console.log(`>>> response data: ${JSON.stringify(data)}`)
-        if (data.error) {
-          throw new Error(data.error)
-        } else {
-          teamviewer_context['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
-          var teamviewer_code = document.getElementById("teamviewer_code")
-          if (typeof(teamviewer_code) != 'undefined' && teamviewer_code != null) teamviewer_code.innerHTML = `${teamviewer_context.session_data.code}`
-          var tech_session = document.getElementById("tech_session")
-          if (typeof(tech_session) != 'undefined' && tech_session != null) tech_session.onclick = `"window.open('${teamviewer_context.session_data.supporter_link}', '_blank');"`
-          var tech_link_tt = document.getElementById("tech_link_tt")
-          if (typeof(tech_link_tt) != 'undefined' && tech_link_tt != null) tech_link_tt.innerHTML = `${teamviewer_context.session_data.supporter_link}`
-          var customer_link_tt = document.getElementById("customer_link_tt")
-          if (typeof(customer_link_tt) != 'undefined' && customer_link_tt != null) customer_link_tt.innerHTML = `${teamviewer_context.session_data.end_customer_link}`
-          var teamviewer_custom_message = document.getElementById("teamviewer_custom_message")
-          if (typeof(teamviewer_custom_message) != 'undefined' && teamviewer_custom_message != null) teamviewer_custom_message.innerHTML = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}`
-        }
-      })
-    .catch((e) => {
-      console.log('teamviewer >>> Error caught in createTeamviewerSession:\n>> ' + e)
-      if (e == "Error: token_expired") return refreshTeamviewerOauth()
+    var payload = JSON.stringify({ 
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${teamviewer_context.teamviewer.access_token}`
+      },
+      data: body_json
+    })
+    
+    platformWidgetHelper.callExternalApi('POST', new_session_url, payload, (response) => {
+      console.log(`>>> response data: ${JSON.stringify(response)}`)
+      var data = JSON.parse(response)
+      if (data.error) {  // throw new Error(data.error)
+        console.log('teamviewer >>> Error caught in createTeamviewerSession:\n>> ' + data.error)
+        if (data.error == "Error: token_expired") return refreshTeamviewerOauth()
+      } else {
+        teamviewer_context.teamviewer['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
+        var teamviewer_code = document.getElementById("teamviewer_code")
+        if (typeof(teamviewer_code) != 'undefined' && teamviewer_code != null) teamviewer_code.innerHTML = `${teamviewer_context.teamviewer.session_data.code}`
+        var tech_session = document.getElementById("tech_session")
+        if (typeof(tech_session) != 'undefined' && tech_session != null) tech_session.onclick = `"window.open('${teamviewer_context.teamviewer.session_data.supporter_link}', '_blank');"`
+        var tech_link_tt = document.getElementById("tech_link_tt")
+        if (typeof(tech_link_tt) != 'undefined' && tech_link_tt != null) tech_link_tt.innerHTML = `${teamviewer_context.teamviewer.session_data.supporter_link}`
+        var customer_link_tt = document.getElementById("customer_link_tt")
+        if (typeof(customer_link_tt) != 'undefined' && customer_link_tt != null) customer_link_tt.innerHTML = `${teamviewer_context.teamviewer.session_data.end_customer_link}`
+        var teamviewer_custom_message = document.getElementById("teamviewer_custom_message")
+        if (typeof(teamviewer_custom_message) != 'undefined' && teamviewer_custom_message != null) teamviewer_custom_message.innerHTML = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.teamviewer.session_data.end_customer_link}`
+      }
     })
   }
 
@@ -163,7 +194,7 @@
     console.log('!! This is where we would call the SamanageApi !!')
     var message_area = document.getElementById("teamviewer_custom_message")
     var comment_body = message_area.innerHTML
-    if (message_area.innerHTML.length < 1) comment_body = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.session_data.end_customer_link}`
+    if (message_area.innerHTML.length < 1) comment_body = `Please use the link below to connect to your remote support session:\n\n${teamviewer_context.teamviewer.session_data.end_customer_link}`
 
     var comment_json = {
       comment: {
@@ -175,7 +206,7 @@
 
   function refreshTeamviewerOauth() {
     console.log('teamviewer >>> refreshing oauth')
-    return fetch(`/tv/${teamviewer_context.assignee.user_id}/oauth`)
+    return fetch(`/tv/${current_user.id}/oauth`)
       .then((res) => res.json())
       .then((data) => {
         console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
@@ -184,4 +215,3 @@
       .catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
   }
 </script>
-<!-- <script type="text/javascript" src="https://integratedchat.teamviewer.com/widget"></script> -->

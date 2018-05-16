@@ -16,7 +16,6 @@ const port = process.env.port ||  process.env.PORT || 8000
 const db = monk(process.env.MONGODB_URI)
 const users = db.get('users')
 const system_db = db.get('system')
-const teamviewer_db = db.get('teamviewer')
 
 
 if (!port) {
@@ -116,9 +115,6 @@ app.get('/storage/:id', (req, res) => {
       return res.send(JSON.stringify(found))
     } else {
       console.log('>>> user not found')
-      let response_json = {
-        harvest_id: process.env.HARVEST_ID
-      }
       let user = { id: req.params.id }
       _.assignIn(user, req.body)
       users.insert(user).then((user) => {
@@ -174,23 +170,6 @@ app.get('/:widget/info', (req, res) => {
 //                          //
 // -----> TeamViewer <----- //
 //                          //
-app.get('/tv/data/:id', (req, res) => {
-  console.log('\n[GET] /tv/data ---> user: ' + req.params.id)
-
-  let id = req.params.id
-  let response_json = {
-    tv_id: process.env.TEAMVIEWER_ID
-  }
-
-  teamviewer_db.findOne({user: id}).then((found) => {
-    if (found) {
-      console.log('[GET] /tv/data ---> teamveiwer tokens found:\n' + util.inspect(found))
-      response_json['tokens'] = found.teamviewer
-    }
-    res.send(response_json)
-  })
-})
-
 app.get('/tv/authorized', (req, res, next) => {
   console.log('[GET] /tv/authorized -->\n' + util.inspect(req.query))
   const postData = JSON.stringify({
@@ -285,11 +264,15 @@ app.get('/tv/oauth', (req, res) => {
         user_id: req.query.state
       })
 
-      let teamviewer = result
+      let teamviewer_data = {
+        teamviewer: {
+          tokens: result
+        }
+      }
 
-      teamviewer_db.findOne({user: req.query.state}).then((found) => {
+      users.findOne({user: req.query.state}).then((found) => {
         if (!found) {
-          teamviewer_db.insert({user: req.query.state, teamviewer})
+          users.insert({user: req.query.state, teamviewer_data})
         } else {
           console.log('> user already has teamviewer authentication')
         }
@@ -312,61 +295,7 @@ app.get('/tv/oauth', (req, res) => {
 })
 
 
-app.post('/tv/sessions/new/:id', (req, res) => {
-  console.log('\n[POST] recieved at /tv/sessions/new/' + req.params.id)
-
-  let id = req.params.id
-  let postData = JSON.stringify(req.body)
-
-  console.log(`\nrequest body: ${util.inspect(req.body)}`)
-
-  teamviewer_db.findOne({user: id}).then((found) => {
-    if (found) {
-      console.log('> teamviewer user found in db')
-      
-      let options = {
-        host: 'webapi.teamviewer.com',
-        path: '/api/v1/sessions',
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${found.teamviewer.access_token}`
-        }
-      }
-
-      const request = https.request(options, (response) => {
-        let result = ''
-    
-        response.on('data', (chunk) => {
-          result += chunk
-        })
-    
-        response.on('end', () => {
-          console.log(`>>> end\n${util.inspect(result)}`)
-          result = JSON.parse(result)
-          let teamviewer = result
-          res.send(teamviewer)
-        })
-    
-        response.on('error', (e) => {
-          console.log('[error in post response]' + e)
-        })
-      })
-    
-      request.on('error', (e) => {
-        console.log('[Error in new session POST request]\n>> ' + e)
-        res.send({error: e})
-      })
-
-      request.write(postData)
-      request.end()
-    } else {
-      res.sendStatus(500)
-    }
-  })
-})
-
-
+// this is to refresh oauth, will abstractify later
 app.get('/tv/:id/oauth/', (req, res) => {
   console.log(`[GET] /tv/:id/oauth >>> id: ${req.params.id}`)
 
@@ -406,9 +335,13 @@ app.get('/tv/:id/oauth/', (req, res) => {
             console.log(`teamviewer >>> error: ${result.error_code}\n${result.error} -- ${result.error_description}`)
             res.send(result)
           } else {
-            let teamviewer = result
+            let teamviewer = {
+              teamviewer: {
+                tokens: result
+              }
+            }
       
-            teamviewer_db.update({ user: id }, { user: id, teamviewer: teamviewer })
+            users.update({ user: id }, { user: id, teamviewer: teamviewer })
             res.send(teamviewer)
           }
         })
@@ -435,8 +368,6 @@ app.get('/tv/:id/oauth/', (req, res) => {
 //                       //
 // -----> LogMeIn <----- //
 //                       //
-
-
 app.post('/logmein/data', (req, res) => {
   console.log(`[POST] at /data ==> request: ${util.inspect(req.body)}`)
 
