@@ -271,10 +271,25 @@ app.get('/tv/oauth', (req, res) => {
       }
 
       users.findOne({id: req.query.state}).then((found) => {
-        if (!found) {
-          users.insert({id: req.query.state, teamviewer_data})
+        if (found) {
+          console.log('>> user found!')
+          if (found.teamviewer) console.log('> user already has teamviewer authentication')
+          else {
+            console.log('>> adding teamviewer info to user')
+            let updated = _.assignIn(found, teamviewer_data)
+            users.update({ id: found.id }, updated).then((user) => {
+              console.log(`>> user updated:\n${util.inspect(user)}`)
+              return res.send(JSON.stringify(updated))
+            })
+          }
         } else {
-          console.log('> user already has teamviewer authentication')
+          console.log('>> user does not exist yet!')
+          let user = { id: req.query.state }
+          _.assignIn(user, teamviewer_data)
+          users.insert(user).then((user) => {
+            console.log(`>> user created:\n${util.inspect(user)}`)
+            return res.send(JSON.stringify(user))
+          })
         }
 
         res.redirect('/tv/authorized?' + query)
