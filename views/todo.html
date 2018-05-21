@@ -1,9 +1,9 @@
 <div class="widget" id="todo_widget">
     <div name="todo" id="todo">
         <div id="todo_header" class="todo-header">
-            <h2>To do</h2>
+            <h5>To do</h5>
             <input type="text" id="title_input" placeholder="Title...">
-            <span onclick="newElement()" class="btn-primary" id="add_todo_button">Add</span>
+            <span onclick="addTodo()" class="btn-primary" id="add_todo_button">Add</span>
         </div>
           
         <ul id="todo_list" class="todo-list">
@@ -40,7 +40,7 @@ input {
 .btn-primary {
   width: 300px;
   height: 34px;
-  color: #FFFFFF;
+  color: #FFFFFF !important;
   border: 1px, solid, #D8DDE6;
   font-size: 14px;
   background: #0069D5;
@@ -52,11 +52,10 @@ input {
 
 /* Style the "Add" button */
 #add_todo_button {
-  padding: 10px;
+  padding: 2px;
+  margin-left: 10px;
   width: 25%;
-  background: #d9d9d9;
-  color: #555;
-  float: left;
+  float: right;
   text-align: center;
   transition: 0.3s;
 }
@@ -177,7 +176,7 @@ list.addEventListener('click', function(ev) {
 }, false);
 
 // Create a new list item when clicking on the "Add" button
-function newElement() {
+function addTodo() {
   var li = document.createElement("li");
   var inputValue = document.getElementById("title_input").value;
   var t = document.createTextNode(inputValue);
@@ -185,7 +184,7 @@ function newElement() {
   if (inputValue === '') {
     alert("You must write something!");
   } else {
-    document.getElementById("myUL").appendChild(li);
+    document.getElementById("todo_list").appendChild(li);
   }
   document.getElementById("title_input").value = "";
 
