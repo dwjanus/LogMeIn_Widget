@@ -122,7 +122,7 @@ input {
   position: absolute;
   right: 0;
   top: 0;
-  padding: 12px 16px 12px 16px;
+  padding: 6px 8px 6px 8px;
 }
 
 .close:hover {
@@ -178,6 +178,8 @@ list.addEventListener('click', function(ev) {
 // Create a new list item when clicking on the "Add" button
 function addTodo() {
   var li = document.createElement("li");
+  li.classList.add('checked')
+  li.classList.toggle('checked')
   var inputValue = document.getElementById("title_input").value;
   var t = document.createTextNode(inputValue);
   li.appendChild(t);
