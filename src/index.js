@@ -48,7 +48,8 @@ app.get('/', (req, res) => {
       ref_console: 'ref_console.html',
       logmein: 'logmein.html',
       harvest_time: 'harvest_time.html',
-      teamviewer: 'teamviewer.html'
+      teamviewer: 'teamviewer.html',
+      todos: 'todo.html'
     }
   })
 })
