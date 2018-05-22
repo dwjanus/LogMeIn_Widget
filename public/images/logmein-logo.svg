@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="1047px" height="301px" viewBox="0 0 1047 301" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
-    <title>Group</title>
+    <title>LogMein Logo</title>
     <desc>Created with Sketch.</desc>
+    <style>
+    #logmein {
+        fill: #54698D;
+    }
+    </style>
     <defs>
         <polygon id="path-1" points="0.06 0.313 112.544849 0.313 112.544849 180.594 0.06 180.594"></polygon>
         <polygon id="path-3" points="607.058232 0.488 1046.42 0.488 1046.42 300.94 607.058232 300.94"></polygon>
