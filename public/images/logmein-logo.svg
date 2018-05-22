@@ -3,17 +3,12 @@
     <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
     <title>LogMein Logo</title>
     <desc>Created with Sketch.</desc>
-    <style>
-    #logmein {
-        fill: #54698D;
-    }
-    </style>
     <defs>
         <polygon id="path-1" points="0.06 0.313 112.544849 0.313 112.544849 180.594 0.06 180.594"></polygon>
         <polygon id="path-3" points="607.058232 0.488 1046.42 0.488 1046.42 300.94 607.058232 300.94"></polygon>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="logmein">
+        <g id="logmein" fill="#54698D">
             <g id="Group">
                 <g id="Group-3" transform="translate(0.000000, 58.000000)">
                     <mask id="mask-2" fill="white">
