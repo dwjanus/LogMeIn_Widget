@@ -70,7 +70,8 @@
     var win = window.open(url, "", "width=650px, height=750px, alwaysRaised=yes")
     var win_timer = setInterval(function() {
       if (win.closed) {
-        toggleTeamviewerAuthorizedView()
+        // toggleTeamviewerAuthorizedView()
+        platformWidgetHelper.getStorage(current_user.id.toString(), getlocal)
         clearInterval(win_timer)
       }
     }, 100)
