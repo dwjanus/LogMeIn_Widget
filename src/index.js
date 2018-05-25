@@ -317,7 +317,7 @@ app.get('/tv/:id/oauth/', (req, res) => {
 
   const id = req.params.id
 
-  users.findOne({user: id}).then((found) => {
+  users.findOne({ id: req.params.id }).then((found) => {
     if (found) {
       console.log(`>> user found: \n${util.inspect(found)}`)
       let postData = querystring.stringify({
@@ -357,8 +357,10 @@ app.get('/tv/:id/oauth/', (req, res) => {
               }
             }
       
-            users.update({ user: id }, { user: id, teamviewer_data })
-            res.send(teamviewer_data.teamviewer)
+            users.update({ id: found.id }, teamviewer_data).then((user) => {
+              console.log(`>> user updated:\n${util.inspect(user)}`)
+              res.send(JSON.stringify(teamviewer_data))
+            })
           }
         })
     
