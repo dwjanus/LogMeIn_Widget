@@ -280,7 +280,7 @@ app.get('/tv/oauth', (req, res) => {
             let updated = _.assignIn(found, teamviewer_data)
             users.update({ id: found.id }, updated).then((user) => {
               console.log(`>> user updated`)
-              // return res.send(JSON.stringify(updated))
+              return res.send(JSON.stringify(updated))
             })
           }
         } else {
@@ -289,7 +289,7 @@ app.get('/tv/oauth', (req, res) => {
           _.assignIn(user, teamviewer_data)
           users.insert(user).then((user) => {
             console.log(`>> user created:\n${util.inspect(user)}`)
-            // return res.send(JSON.stringify(user))
+            return res.send(JSON.stringify(user))
           })
         }
 
