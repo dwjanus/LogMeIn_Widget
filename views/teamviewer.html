@@ -164,7 +164,7 @@
         var data = JSON.parse(response)
         if (data.error) {  // throw new Error(data.error)
           console.log('teamviewer >>> Error caught in createTeamviewerSession:\n>> ' + data.error)
-          if (data.error == "Error: token_expired") return resolve(refreshTeamviewerOauth())
+          if (data.error == "token_expired") return resolve(refreshTeamviewerOauth())
         } else {
           teamviewer_context.teamviewer['session_data'] = { code: data.code, end_customer_link: data.end_customer_link, supporter_link: data.supporter_link }
           var teamviewer_code = document.getElementById("teamviewer_code")
