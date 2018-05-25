@@ -133,6 +133,7 @@
       teamviewer_authed_view.parentNode.replaceChild(tv_widget_view, teamviewer_authed_view)
     }).catch((e) => {
       console.log('teamviewer >>> createTeamviewerSession() Error caught in teamviewerSessionView()\n>> ' + e)
+      if (e == 'token_expired') refreshTeamviewerOauth()
     })
   }
 
@@ -179,8 +180,7 @@
           return resolve()
         }
       })
-    })
-    
+    }) 
   }
 
   function linkToTicket() {
