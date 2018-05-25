@@ -356,10 +356,10 @@ app.get('/tv/:id/oauth/', (req, res) => {
                 tokens: result
               }
             }
-      
-            users.update({ id: found.id }, teamviewer_data).then((user) => {
+            let updated = _.assignIn(found, teamviewer_data)
+            users.update({ id: found.id }, updated).then((user) => {
               console.log(`>> user updated:\n${util.inspect(user)}`)
-              res.send(JSON.stringify(teamviewer_data))
+              res.send(JSON.stringify(updated))
             })
           }
         })
