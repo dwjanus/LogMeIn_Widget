@@ -322,7 +322,7 @@ app.get('/tv/:id/oauth/', (req, res) => {
       console.log(`>> user found: \n${util.inspect(found)}`)
       let postData = querystring.stringify({
         grant_type: 'refresh_token',
-        refresh_token: found.teamviewer.refresh_token,
+        refresh_token: found.teamviewer.tokens.refresh_token,
         client_id: process.env.TEAMVIEWER_ID,
         client_secret: process.env.TEAMVIEWER_SECRET
       })
