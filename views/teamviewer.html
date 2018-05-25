@@ -203,6 +203,7 @@
       .then((res) => res.json())
       .then((data) => {
         console.log(`>>> refresh token response data: ${JSON.stringify(data)}`)
+        teamviewer_context.teamviewer = data.teamviewer
         return createTeamviewerSession()
       })
       .catch(err => console.log('\nteamviewer >>> unable to refresh token: ' + err))
