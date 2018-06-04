@@ -49,7 +49,8 @@ app.get('/', (req, res) => {
       logmein: 'logmein.html',
       harvest_time: 'harvest_time.html',
       teamviewer: 'teamviewer.html',
-      todos: 'todo.html'
+      todos: 'todo.html',
+      timer: 'timer.html'
     }
   })
 })
