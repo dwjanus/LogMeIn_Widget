@@ -7,8 +7,8 @@
     
     <div id="controls">
         <button id="start" onclick="startTimer();">Start</button>
+        <button id="pause">Pause</button>
         <button id="stop">Stop</button>
-        <button id="reset">Reset</button>
     </div>
 </div>
 
@@ -33,13 +33,15 @@ var hours = 0
 var mins = 0
 var seconds = 0
 
-document.getElementById('stop').onclick = () => clearTimeout(timex)
+document.getElementById('pause').onclick = () => clearTimeout(timex)
 
-document.getElementById('reset').onclick = () => {
+document.getElementById('stop').onclick = () => {
   hours = 0;      mins = 0;      seconds = 0;
   document.getElementById('hours').innerText = '00:'
   document.getElementById('mins').innerText = '00:'
   document.getElementById('seconds').innerText = '00:'
+
+  // here we calculate the difference and send to time tracks in Samanage
 }
 
 function startTimer () {
