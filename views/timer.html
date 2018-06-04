@@ -1,22 +1,22 @@
 <div class="widget" id="timer_widget">
     <div id="timer">
         <div class="wrapper">
-            <div class="pie spinner"></div>
-            <div class="pie filler"></div>
-            <div class="mask"></div>
+            <div class="pie spinner" id="hours-spinner"></div>
+            <div class="pie filler" id="hours-filler"></div>
+            <div class="mask" id="hours-mask"></div>
         </div>    
         
         
         <div class="wrapper">
-            <div class="pie spinner"></div>
-            <div class="pie filler"></div>
-            <div class="mask"></div>
+            <div class="pie spinner" id="mins-spinner"></div>
+            <div class="pie filler" id="mins-filler"></div>
+            <div class="mask" id="mins-mask"></div>
         </div>
         
         <div class="wrapper">
-            <div class="pie spinner"></div>
-            <div class="pie filler"></div>
-            <div class="mask"></div>
+            <div class="pie spinner" id="sec-spinner"></div>
+            <div class="pie filler" id="sec-filler"></div>
+            <div class="mask" id="sec-mask"></div>
         </div>
 
         <span id="hours" class="timer-text">00:</span>
@@ -73,7 +73,18 @@
   border-radius: 100% 0 0 100% / 50% 0 0 50%;
   z-index: 200;
   border-right: none;
-  animation: rota 5s linear infinite;
+}
+
+.wrapper .spinner #hours-spinner {
+  animation: rota 1200s linear infinite;
+}
+
+.wrapper .spinner #mins-spinner {
+  animation: rota 60s linear infinite;
+}
+
+.wrapper .spinner #sec-spinner {
+  animation: rota 1s linear infinite;
 }
 
 .wrapper:hover .spinner,
@@ -87,8 +98,19 @@
   left: 50%;
   opacity: 0;
   z-index: 100;
-  animation: opa 5s steps(1, end) infinite reverse;
   border-left: none;
+}
+
+.wrapper .filler #hours-filler {
+  animation: opa 1200s steps(1, end) infinite reverse;
+}
+
+.wrapper .filler #mins-filler {
+  animation: opa 60s steps(1, end) infinite reverse;
+}
+
+.wrapper .filler #sec-filler {
+  animation: opa 1s steps(1, end) infinite reverse;
 }
 
 .wrapper .mask {
@@ -98,7 +120,18 @@
   background: inherit;
   opacity: 1;
   z-index: 300;
-  animation: opa 5s steps(1, end) infinite;
+}
+
+.wrapper .mask #hours-mask {
+  animation: opa 1200s steps(1, end) infinite;
+}
+
+.wrapper .mask #mins-mask {
+  animation: opa 60s steps(1, end) infinite;
+}
+
+.wrapper .mask #sec-mask {
+  animation: opa 1s steps(1, end) infinite;
 }
 
 @keyframes rota {
