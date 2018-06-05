@@ -196,11 +196,11 @@ function setAnimationState(state) {
   var masks = document.getElementsByClassName('mask')
 
   for (var i = 0; i < pies.length; i++) {
-    pies[i].style.animationPlayState = state
+    pies[i].style.animationPlayState = `${state} !important`
   }
 
   for (var i = 0; i < masks.length; i++) {
-    masks[i].style.animationPlayState = state
+    masks[i].style.animationPlayState = `${state} !important`
   }
 }
 
