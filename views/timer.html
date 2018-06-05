@@ -161,7 +161,7 @@ var hours = 0
 var mins = 0
 var seconds = 0
 
-document.getElementById('pause').onclick = () => clearTimeout(timex); setAnimationState(paused);
+document.getElementById('pause').onclick = () => clearTimeout(timex); setAnimationState('paused');
 
 document.getElementById('stop').onclick = () => {
   hours = 0;      mins = 0;      seconds = 0;
@@ -196,20 +196,20 @@ function setAnimationState(state) {
   var masks = document.getElementsByClassName('mask')
 
   for (var i = 0; i < pies.length; i++) {
-    pies[i].style['animation-play-state'] = state
+    pies[i].style['animation-play-state'] = (state == 'running' ? running : paused)
     // if (pies[i].style['animation-play-state'] == 'paused') pies[i].style['animation-play-state'] = 'running'
     // else pies[i].style['animation-play-state'] = 'paused'
   }
 
   for (var i = 0; i < masks.length; i++) {
-    masks[i].style['animation-play-state'] = state
+    masks[i].style['animation-play-state'] = (state == 'running' ? running : paused)
     // if (masks[i].style['animation-play-state'] == 'paused') masks[i].style['animation-play-state'] = 'running'
     // else masks[i].style['animation-play-state'] = 'paused'
   }
 }
 
 function startTimer () {
-  setAnimationState(running)
+  setAnimationState('running')
   timex = setTimeout(function() {
     seconds++
     if (seconds > 59) {
