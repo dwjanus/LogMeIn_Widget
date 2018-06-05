@@ -192,15 +192,20 @@ function resetAnimation() {
 }
 
 function setAnimationState(state) {
-  var pies = document.getElementsByClassName('pie')
-  var masks = document.getElementsByClassName('mask')
+  // var pies = document.getElementsByClassName('pie')
+  // var masks = document.getElementsByClassName('mask')
 
-  for (var i = 0; i < pies.length; i++) {
-    pies[i].style.animationPlayState = `${state} !important`
-  }
+  // for (var i = 0; i < pies.length; i++) {
+  //   pies[i].style.animationPlayState = `${state} !important`
+  // }
 
-  for (var i = 0; i < masks.length; i++) {
-    masks[i].style.animationPlayState = `${state} !important`
+  // for (var i = 0; i < masks.length; i++) {
+  //   masks[i].style.animationPlayState = `${state} !important`
+  // }
+
+  var wrappers = document.getElementsByClassName('wrapper')
+  for (var i = 0; i < wrappers.length; i++) {
+    wrappers[i].style.animationPlayState = `${state} !important`
   }
 }
 
