@@ -79,9 +79,9 @@
   border-right: none;
 }
 
-.wrapper:hover .spinner,
-.wrapper:hover .filler,
-.wrapper:hover .mask {
+.wrapper .spinner,
+.wrapper .filler,
+.wrapper .mask {
   animation-play-state: 'paused';
 }
 
@@ -162,10 +162,7 @@ var hours = 0
 var mins = 0
 var seconds = 0
 
-document.getElementById('pause').onclick = () => {
-  clearTimeout(timex)
-  setAnimationState('paused')
-}
+document.getElementById('pause').onclick = () => clearTimeout(timex)
 
 document.getElementById('stop').onclick = () => {
   hours = 0;      mins = 0;      seconds = 0;
