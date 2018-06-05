@@ -31,12 +31,88 @@ h6 {
   height: 100vh !important;
   margin: 0 auto 0 auto;
   background: #002a55;
-  font-family: -apple-system, 'Segoe UI', sans-serif;
 }
 
-.btn-primary { 
-  background-color: #05aaff !important;
-  border-color: #05aaff !important;
+.widget {
+  margin-left: 26px;
+  margin-right: 26px;
+  margin-top: 10px;
+  font-family:'Open Sans', jaf-bernina-sans, tahoma, geneva, sans-serif;
+  background: #FFFFFF;
+  border: 1px, solid, #D8DDE6;
+  font-size: 14px;
+  color: #54698D;
+  text-align: center;
+  width: inherit;
+  min-width: 300px !important;
+  max-width: 425px !important;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  flex-shrink: 0;
+  height: auto !important;
+}
+
+.btn-primary {
+  width: 100%;
+  max-width: 332px;
+  min-width: 220px;
+  height: 34px;
+  color: #FFFFFF;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #D8DDE6;
+  font-size: 14px;
+  background: #0069D5;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: lighter;
+  padding: 0%;
+}
+
+.btn-primary:active:hover {
+  background: #1688FD;
+}
+
+.btn-primary-inverted {
+  width: 100%;
+  max-width: 332px;
+  min-width: 220px;
+  height: 34px;
+  background: #FFFFFF;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #D8DDE6;
+  font-size: 14px;
+  color: #0069D5;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: lighter;
+  padding: 0%;
+}
+
+.btn-primary-inverted:active:hover {
+  background: #1688FD;
+  color: #FFFFFF;
+}
+
+button:focus {
+  outline: none;
+  -webkit-box-shadow: 0px 0px 5px 1px , rgba(22, 136, 253, 0.50);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(22, 136, 253, 0.50);
+  box-shadow: 0px 0px 5px 1px rgba(22, 136, 253, 0.50);
+}
+
+button:disabled {
+  background: #FFFFFF;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #D8DDE6;
+  color: #D8DDE6;
 }
 
 .info {
@@ -80,19 +156,6 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-.widget {
-  background: #fff;
-  border-radius: 5px;
-  border: #1980b9 2px solid;
-  padding: 10px;
-  max-width: 425px !important;
-  min-width: 300px !important;
-  margin: 10px;
-  text-align: center;
-  flex-shrink: 0;
-  height: auto !important;
-}
-
 @media screen and (max-width: 1275px) {
   .widget {
     width: 296px;
@@ -106,9 +169,22 @@ tr:nth-child(even) {
 }
 
 
+input {
+  width: 98%;
+  max-width: 322px;
+  min-width: 220px;
+  height: 32px;
+  border-style: solid !important;
+  border-color: #D8DDE6 !important;
+  border-width: 1px !important;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: 10px;
+  padding-left: 7px;
+}
+
 input:focus {
   outline: none;
-  border-color: rgba(0,0,0,.3);
 }
 
 .session {

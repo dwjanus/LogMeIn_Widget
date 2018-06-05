@@ -33,15 +33,14 @@
     </div>
     
     <div id="controls">
-        <button id="start" onclick="startTimer();">Start</button>
-        <button id="pause">Pause</button>
-        <button id="stop">Stop</button>
+        <button class="btn-primary" id="start" onclick="startTimer();">Start</button>
+        <button class="btn-primary" id="pause">Pause</button>
+        <button class="btn-primary" id="stop">Stop</button>
     </div>
 </div>
 
 <style>
 #timer {
-  font-size:18px;
   margin:0 auto;
 }
 
@@ -49,8 +48,8 @@
   margin:0 auto;
 }
 
-#controls button {
-  font-size:14px;
+#controls .btn-primary {
+  width: 33%;
 }
 
 .timer-numbers {
@@ -58,6 +57,7 @@
   align-self: center;
   margin: auto;
   justify-self: center;
+  font-size: 16px;
 }
 
 .timer-label {
