@@ -81,7 +81,7 @@
 .wrapper .spinner,
 .wrapper .filler,
 .wrapper .mask {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
 }
 
 .wrapper .filler {
@@ -103,47 +103,38 @@
 
 .wrapper .mask#hours-mask, {
   animation: opa 1200s steps(1, end) infinite;
-  animation-play-state: inherit;
 }
 
 .wrapper .mask#mins-mask {
   animation: opa 60s steps(1, end) infinite;
-  animation-play-state: inherit;
 }
 
 .wrapper .mask#sec-mask {
   animation: opa 1s steps(1, end) infinite;
-  animation-play-state: inherit;
 }
 
 .wrapper .filler#hours-filler {
   animation: opa 1200s steps(1, end) infinite reverse;
-  animation-play-state: inherit;
 }
 
 .wrapper .filler#mins-filler {
   animation: opa 60s steps(1, end) infinite reverse;
-  animation-play-state: inherit;
 }
 
 .wrapper .filler#sec-filler {
   animation: opa 1s steps(1, end) infinite reverse;
-  animation-play-state: inherit;
 }
 
 .wrapper .spinner#hours-spinner {
   animation: rota 1200s linear infinite;
-  animation-play-state: inherit;
 }
 
 .wrapper .spinner#mins-spinner {
   animation: rota 60s linear infinite;
-  animation-play-state: inherit;
 }
 
 .wrapper .spinner#sec-spinner {
   animation: rota 1s linear infinite;
-  animation-play-state: inherit;
 }
 
 @keyframes rota {
