@@ -3,6 +3,7 @@
         <div class="timer-label">
             <div>Hours</div>
             <div class="wrapper">
+                <span id="hours" class="timer-numbers">00</span>
                 <div class="pie spinner" id="hours-spinner"></div>
                 <div class="pie filler" id="hours-filler"></div>
                 <div class="mask" id="hours-mask"></div>
@@ -13,6 +14,7 @@
         <div class="timer-label">
             <div>Mins</div>
             <div class="wrapper">
+                <span id="mins" class="timer-numbers">00</span>
                 <div class="pie spinner" id="mins-spinner"></div>
                 <div class="pie filler" id="mins-filler"></div>
                 <div class="mask" id="mins-mask"></div>
@@ -22,18 +24,12 @@
         <div class="timer-label">
             <div>Sec</div>
             <div class="wrapper">
+                <span id="seconds" class="timer-numbers">00</span> 
                 <div class="pie spinner" id="sec-spinner"></div>
                 <div class="pie filler" id="sec-filler"></div>
                 <div class="mask" id="sec-mask"></div>
             </div>
-        </div>
-        
-      <div class="timer-numbers">
-          <span id="hours" class="timer-text">00:</span>
-          <span id="mins" class="timer-text">00:</span>
-          <span id="seconds" class="timer-text">00</span> 
-      </div>
-        
+        </div>        
     </div>
     
     <div id="controls">
@@ -55,6 +51,13 @@
 
 #controls button {
   font-size:14px;
+}
+
+.timer-numbers {
+  z-index: 400;
+  align-self: center;
+  margin: auto;
+  justify-self: center;
 }
 
 .timer-label {
@@ -189,8 +192,8 @@ document.getElementById('pause').onclick = () => { clearTimeout(timex); setAnima
 
 document.getElementById('stop').onclick = () => {
   hours = 0;      mins = 0;      seconds = 0;
-  document.getElementById('hours').innerText = '00:'
-  document.getElementById('mins').innerText = '00:'
+  document.getElementById('hours').innerText = '00'
+  document.getElementById('mins').innerText = '00'
   document.getElementById('seconds').innerText = '00'
 
   resetAnimation()
@@ -238,12 +241,12 @@ function startTimer () {
       if (mins > 59) {
         mins = 0
         hours++
-        if (hours < 10) document.getElementById("hours").innerText = '0'+hours+':'
-        else document.getElementById("hours").innerText = hours+':'
+        if (hours < 10) document.getElementById("hours").innerText = '0'+hours
+        else document.getElementById("hours").innerText = hours
       }
                        
-    if (mins < 10) document.getElementById("mins").innerText = '0'+mins+':' 
-    else document.getElementById("mins").innerText = mins+':'
+    if (mins < 10) document.getElementById("mins").innerText = '0'+mins 
+    else document.getElementById("mins").innerText = mins
   }
 
   if (seconds < 10) document.getElementById("seconds").innerText = '0'+seconds
