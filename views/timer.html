@@ -233,6 +233,8 @@ function setAnimationState(state) {
 
 function startTimer () {
   setAnimationState('running')
+  document.getElementById('start').disabled = true
+
   timex = setTimeout(function() {
     seconds++
     if (seconds > 59) {
