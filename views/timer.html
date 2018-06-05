@@ -33,12 +33,12 @@
     </div>
     
     <div id="controls">
-        <button class="btn-primary" id="start" onclick="startTimer();">
+        <button type="button" class="btn-primary" id="start" onclick="startTimer();">
             <i class="fas fa-stopwatch fa-sm" style="color: white;"></i>
             <span class="fa-layers-text fa-inverse" data-fa-transform="shrink-11.5" style="font-weight:200">Start</span>
         </button>
-        <button class="btn-primary" id="pause"><span><i class="fas fa-pause fa-sm" style="color: white;"></i></span></button>
-        <button class="btn-primary" id="stop"><span><i class="fas fa-stop fa-sm" style="color: white;"></i></span></button>
+        <button type="button" class="btn-primary" id="pause"><span><i class="fas fa-pause fa-sm" style="color: white;"></i></span></button>
+        <button type="button" class="btn-primary" id="stop"><span><i class="fas fa-stop fa-sm" style="color: white;"></i></span></button>
     </div>
 </div>
 
@@ -238,7 +238,6 @@ function setAnimationState(state) {
 
 function startTimer () {
   setAnimationState('running')
-  document.getElementById('start').disabled = true
 
   timex = setTimeout(function() {
     seconds++
