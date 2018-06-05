@@ -169,8 +169,9 @@
 var hours = 0
 var mins = 0
 var seconds = 0
+var timex
 
-document.getElementById('pause').onclick = () => clearTimeout(timex); setAnimationState('paused');
+document.getElementById('pause').onclick = () => { clearTimeout(timex); setAnimationState('paused'); }
 
 document.getElementById('stop').onclick = () => {
   hours = 0;      mins = 0;      seconds = 0;
@@ -205,11 +206,11 @@ function setAnimationState(state) {
   var masks = document.getElementsByClassName('mask')
 
   for (var i = 0; i < pies.length; i++) {
-    pies[i].style.animationPlayState = `${state}`
+    pies[i].style.animationPlayState = state
   }
 
   for (var i = 0; i < masks.length; i++) {
-    masks[i].style.animationPlayState = `${state}`
+    masks[i].style.animationPlayState = state
   }
 
   // var wrappers = document.getElementsByClassName('wrapper')
