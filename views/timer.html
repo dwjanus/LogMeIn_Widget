@@ -81,7 +81,7 @@
 .wrapper .spinner,
 .wrapper .filler,
 .wrapper .mask {
-  animation-play-state: 'paused';
+  animation-play-state: paused;
 }
 
 .wrapper .filler {
@@ -161,7 +161,7 @@ var hours = 0
 var mins = 0
 var seconds = 0
 
-document.getElementById('pause').onclick = () => clearTimeout(timex)
+document.getElementById('pause').onclick = () => clearTimeout(timex); setAnimationState(paused);
 
 document.getElementById('stop').onclick = () => {
   hours = 0;      mins = 0;      seconds = 0;
@@ -188,8 +188,7 @@ function resetAnimation() {
     masks[i].style.animation = 'none'
     masks[i].offsetHeight
     masks[i].style.animation = null
-  } 
-  
+  }
 }
 
 function setAnimationState(state) {
@@ -210,7 +209,7 @@ function setAnimationState(state) {
 }
 
 function startTimer () {
-  setAnimationState('running')
+  setAnimationState(running)
   timex = setTimeout(function() {
     seconds++
     if (seconds > 59) {
