@@ -4,7 +4,7 @@
             <div class="pie spinner" id="hours-spinner"></div>
             <div class="pie filler" id="hours-filler"></div>
             <div class="mask" id="hours-mask"></div>
-        </div>    
+        </div>
         
         
         <div class="wrapper">
@@ -19,9 +19,12 @@
             <div class="mask" id="sec-mask"></div>
         </div>
 
-        <span id="hours" class="timer-text">00:</span>
-        <span id="mins" class="timer-text">00:</span>
-        <span id="seconds" class="timer-text">00</span> 
+      <div>
+          <span id="hours" class="timer-text">00:</span>
+          <span id="mins" class="timer-text">00:</span>
+          <span id="seconds" class="timer-text">00</span> 
+      </div>
+        
     </div>
     
     <div id="controls">
@@ -49,6 +52,7 @@
 .wrapper {
   position: relative;
   margin: 10px auto;
+  display: inline-flex;
   background: white;
   width: 50px;
   height: 50px;
@@ -75,22 +79,10 @@
   border-right: none;
 }
 
-.wrapper .spinner#hours-spinner {
-  animation: rota 1200s linear infinite;
-}
-
-.wrapper .spinner#mins-spinner {
-  animation: rota 60s linear infinite;
-}
-
-.wrapper .spinner#sec-spinner {
-  animation: rota 1s linear infinite;
-}
-
 .wrapper:hover .spinner,
 .wrapper:hover .filler,
 .wrapper:hover .mask {
-  animation-play-state: running;
+  animation-play-state: 'paused';
 }
 
 .wrapper .filler {
@@ -99,6 +91,27 @@
   opacity: 0;
   z-index: 100;
   border-left: none;
+}
+
+.wrapper .mask {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  background: inherit;
+  opacity: 1;
+  z-index: 300;
+}
+
+.wrapper .mask#hours-mask, {
+  animation: opa 1200s steps(1, end) infinite;
+}
+
+.wrapper .mask#mins-mask {
+  animation: opa 60s steps(1, end) infinite;
+}
+
+.wrapper .mask#sec-mask {
+  animation: opa 1s steps(1, end) infinite;
 }
 
 .wrapper .filler#hours-filler {
@@ -113,25 +126,16 @@
   animation: opa 1s steps(1, end) infinite reverse;
 }
 
-.wrapper .mask {
-  width: 50%;
-  height: 100%;
-  position: absolute;
-  background: inherit;
-  opacity: 1;
-  z-index: 300;
+.wrapper .spinner#hours-spinner {
+  animation: rota 1200s linear infinite;
 }
 
-.wrapper .mask#hours-mask {
-  animation: opa 1200s steps(1, end) infinite;
+.wrapper .spinner#mins-spinner {
+  animation: rota 60s linear infinite;
 }
 
-.wrapper .mask#mins-mask {
-  animation: opa 60s steps(1, end) infinite;
-}
-
-.wrapper .mask#sec-mask {
-  animation: opa 1s steps(1, end) infinite;
+.wrapper .spinner#sec-spinner {
+  animation: rota 1s linear infinite;
 }
 
 @keyframes rota {
@@ -158,7 +162,10 @@ var hours = 0
 var mins = 0
 var seconds = 0
 
-document.getElementById('pause').onclick = () => clearTimeout(timex)
+document.getElementById('pause').onclick = () => {
+  clearTimeout(timex)
+  setAnimationState('paused')
+}
 
 document.getElementById('stop').onclick = () => {
   hours = 0;      mins = 0;      seconds = 0;
@@ -166,10 +173,48 @@ document.getElementById('stop').onclick = () => {
   document.getElementById('mins').innerText = '00:'
   document.getElementById('seconds').innerText = '00'
 
+  resetAnimation()
+
   // here we calculate the difference and send to time tracks in Samanage
 }
 
+function resetAnimation() {
+  var pies = document.getElementsByClassName('pie')
+  var masks = document.getElementsByClassName('mask')
+
+  for (var i = 0; i < pies.length; i++) {
+    pies[i].style.animation = 'none'
+    pies[i].offsetHeight
+    pies[i].style.animation = null
+  }
+
+  for (var i = 0; i < masks.length; i++) {
+    masks[i].style.animation = 'none'
+    masks[i].offsetHeight
+    masks[i].style.animation = null
+  } 
+  
+}
+
+function setAnimationState(state) {
+  var pies = document.getElementsByClassName('pie')
+  var masks = document.getElementsByClassName('mask')
+
+  for (var i = 0; i < pies.length; i++) {
+    pies[i].style['animation-play-state'] = state
+    // if (pies[i].style['animation-play-state'] == 'paused') pies[i].style['animation-play-state'] = 'running'
+    // else pies[i].style['animation-play-state'] = 'paused'
+  }
+
+  for (var i = 0; i < masks.length; i++) {
+    masks[i].style['animation-play-state'] = state
+    // if (masks[i].style['animation-play-state'] == 'paused') masks[i].style['animation-play-state'] = 'running'
+    // else masks[i].style['animation-play-state'] = 'paused'
+  }
+}
+
 function startTimer () {
+  setAnimationState('running')
   timex = setTimeout(function() {
     seconds++
     if (seconds > 59) {
