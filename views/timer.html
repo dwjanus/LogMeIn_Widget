@@ -196,13 +196,13 @@ function setAnimationState(state) {
   var masks = document.getElementsByClassName('mask')
 
   for (var i = 0; i < pies.length; i++) {
-    pies[i].style['animation-play-state'] = (state == 'running' ? running : paused)
+    state == 'running' ? pies[i].style['animation-play-state'] = running : pies[i].style['animation-play-state'] = paused
     // if (pies[i].style['animation-play-state'] == 'paused') pies[i].style['animation-play-state'] = 'running'
     // else pies[i].style['animation-play-state'] = 'paused'
   }
 
   for (var i = 0; i < masks.length; i++) {
-    masks[i].style['animation-play-state'] = (state == 'running' ? running : paused)
+    state == 'running' ? masks[i].style['animation-play-state'] = running : masks[i].style['animation-play-state'] = paused
     // if (masks[i].style['animation-play-state'] == 'paused') masks[i].style['animation-play-state'] = 'running'
     // else masks[i].style['animation-play-state'] = 'paused'
   }
