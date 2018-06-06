@@ -308,7 +308,7 @@ function checkStoredTime() {
   if (stored_time) {
     console.log(`>>> Stored Time retrieved: ${stored_time}`)
     var stored = JSON.parse(stored_time)
-    var date_time = stored.time_at_storage
+    var date_time = new Date(stored.time_at_storage)
     var now = new Date()
     hours = (now.getHours() - date_time.getHours()) + stored.hours
     mins = (now.getMinutes() - date_time.getMinutes()) + stored.mins
