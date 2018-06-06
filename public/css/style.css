@@ -313,7 +313,6 @@ input:checked + .slider:before {
 }
 
 .teamviewer_session {
-  width: 345px;
   text-align: center;
   padding-right: 10px;
   padding-left: 10px;
@@ -359,7 +358,6 @@ input:checked + .slider:before {
   text-indent: 0%;
   resize: none;
   height: 80px;
-  width: 325px;
   min-width: 295px;
 }
 
