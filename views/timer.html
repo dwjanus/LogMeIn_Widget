@@ -229,6 +229,11 @@ document.getElementById('stop').onclick = () => {
   resetAnimation()
 
   // here we calculate the difference and send to time tracks in Samanage
+
+  hours = 0;
+  mins = 0;
+  seconds = 0;
+  if (localStorage.getItem('stored_time')) localStorage.removeItem('stored_time')
 }
 
 function resetAnimation() {
@@ -309,6 +314,7 @@ function cacheTime() {
 
 function checkStoredTime() {
   var stored_time = localStorage.getItem('stored_time')
+
   if (stored_time) {
     console.log(`>>> Stored Time retrieved: ${stored_time}`)
     var stored = JSON.parse(stored_time)
