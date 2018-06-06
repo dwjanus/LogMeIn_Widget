@@ -309,9 +309,10 @@ function checkStoredTime() {
     var stored = JSON.parse(stored_time)
     var date_time = stored_time.time_at_storage
     var now = new Date()
-    hours = (current_time.getHours() - date_time.getHours()) + stored.hours
-    mins = (current_time.getMinutes() - date_time.getMinutes()) + stored.mins
-    seconds = (current_time.getSeconds() - date_time.getSeconds()) + stored.seconds
+    hours = (now.getHours() - date_time.getHours()) + stored.hours
+    mins = (now.getMinutes() - date_time.getMinutes()) + stored.mins
+    seconds = (now.getSeconds() - date_time.getSeconds()) + stored.seconds
+    localStorage.removeItem('stored_time')
   }
 }
   
