@@ -193,6 +193,30 @@ var mins = 0
 var seconds = 0
 var timex
 
+Date.prototype.addHours = function(h) {
+  this.setHours(this.getHours() + h)
+  return this
+}
+
+Date.prototype.addMinutes = function(m) {
+  this.setMinutes(this.getMinutes() + m)
+  return this
+}
+
+Date.prototype.addSeconds = function(s) {
+  this.setSeconds(this.getSeconds() + s)
+  return this
+}
+
+// change to window.parent for deployment to stage
+window.onbeforeunload = function () {
+  cacheTime()
+}
+
+window.onload = function () {
+  checkStoredTime()
+}
+
 document.getElementById('pause').onclick = () => { clearTimeout(timex); setAnimationState('paused'); }
 
 document.getElementById('stop').onclick = () => {
@@ -261,6 +285,34 @@ function startTimer () {
   startTimer()
   }, 1000)
 }
-    
+
+function cacheTime() {
+  var now = new Date()
+  var current_time = JSON.stringify({
+    time_at_storage: now,
+    hours: hours,
+    mins: mins,
+    seconds: seconds
+  })
   
-  </script>
+  // current_date_time.addHours(hours)
+  // current_date_time.addMinutes(mins)
+  // current_date_time.addSeconds(seconds)
+
+  localStorage.setItem('stored_time', current_time)
+}
+
+function checkStoredTime() {
+  var stored_time = localStorage.getItem('stored_time')
+  if (stored_time) {
+    console.log(`>>> Stored Time retrieved: ${stored_time}`)
+    var stored = JSON.parse(stored_time)
+    var date_time = stored_time.time_at_storage
+    var now = new Date()
+    hours = (current_time.getHours() - date_time.getHours()) + stored.hours
+    mins = (current_time.getMinutes() - date_time.getMinutes()) + stored.mins
+    seconds = (current_time.getSeconds() - date_time.getSeconds()) + stored.seconds
+  }
+}
+  
+</script>
