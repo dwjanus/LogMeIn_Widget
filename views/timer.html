@@ -192,6 +192,7 @@ var hours = 0
 var mins = 0
 var seconds = 0
 var timex
+var timer_state
 
 Date.prototype.addHours = function(h) {
   this.setHours(this.getHours() + h)
@@ -231,6 +232,7 @@ document.getElementById('stop').onclick = () => {
 }
 
 function resetAnimation() {
+  timer_state = 'paused'
   var pies = document.getElementsByClassName('pie')
   var masks = document.getElementsByClassName('mask')
 
@@ -248,6 +250,7 @@ function resetAnimation() {
 }
 
 function setAnimationState(state) {
+  timer_state = state
   var pies = document.getElementsByClassName('pie')
   var masks = document.getElementsByClassName('mask')
 
@@ -292,7 +295,8 @@ function cacheTime() {
     time_at_storage: now,
     hours: hours,
     mins: mins,
-    seconds: seconds
+    seconds: seconds,
+    timer_state 
   })
   
   // current_date_time.addHours(hours)
@@ -314,6 +318,7 @@ function checkStoredTime() {
     mins = (now.getMinutes() - date_time.getMinutes()) + stored.mins
     seconds = (now.getSeconds() - date_time.getSeconds()) + stored.seconds
     localStorage.removeItem('stored_time')
+    setAnimationState(stored.timer_state)
   }
 }
   
