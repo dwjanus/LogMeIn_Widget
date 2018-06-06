@@ -192,7 +192,7 @@ var hours = 0
 var mins = 0
 var seconds = 0
 var timex
-var timer_state
+var timer_state = 'paused'
 
 Date.prototype.addHours = function(h) {
   this.setHours(this.getHours() + h)
@@ -230,9 +230,9 @@ document.getElementById('stop').onclick = () => {
 
   // here we calculate the difference and send to time tracks in Samanage
 
-  hours = 0;
-  mins = 0;
-  seconds = 0;
+  hours = 0
+  mins = 0
+  seconds = 0
   if (localStorage.getItem('stored_time')) localStorage.removeItem('stored_time')
 }
 
@@ -323,8 +323,9 @@ function checkStoredTime() {
     hours = (now.getHours() - date_time.getHours()) + parseInt(stored.hours)
     mins = (now.getMinutes() - date_time.getMinutes()) + parseInt(stored.mins)
     seconds = (now.getSeconds() - date_time.getSeconds()) + parseInt(stored.seconds)
+    startTimer()
+    if (stored.timer_state !== 'running') setAnimationState(stored.timer_state)
     localStorage.removeItem('stored_time')
-    setAnimationState(stored.timer_state)
   }
 }
   
