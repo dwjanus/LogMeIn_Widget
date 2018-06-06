@@ -323,8 +323,19 @@ function checkStoredTime() {
     hours = (now.getHours() - date_time.getHours()) + parseInt(stored.hours)
     mins = (now.getMinutes() - date_time.getMinutes()) + parseInt(stored.mins)
     seconds = (now.getSeconds() - date_time.getSeconds()) + parseInt(stored.seconds)
-    startTimer()
-    if (stored.timer_state !== 'running') setAnimationState(stored.timer_state)
+    if (stored.timer_state == 'running') startTimer()
+    else {
+      setAnimationState(stored.timer_state)
+      if (hours < 10) document.getElementById("hours").innerText = '0'+hours
+      else document.getElementById("hours").innerText = hours
+                   
+      if (mins < 10) document.getElementById("mins").innerText = '0'+mins 
+      else document.getElementById("mins").innerText = mins
+  
+      if (seconds < 10) document.getElementById("seconds").innerText = '0'+seconds
+      else  document.getElementById("seconds").innerText = seconds
+    }
+    
     localStorage.removeItem('stored_time')
   }
 }
