@@ -318,14 +318,23 @@ function checkStoredTime() {
   if (stored_time) {
     console.log(`>>> Stored Time retrieved: ${stored_time}`)
     var stored = JSON.parse(stored_time)
-    var date_time = new Date(stored.time_at_storage)
-    var now = new Date()
-    hours = (now.getHours() - date_time.getHours()) + parseInt(stored.hours)
-    mins = (now.getMinutes() - date_time.getMinutes()) + parseInt(stored.mins)
-    seconds = (now.getSeconds() - date_time.getSeconds()) + parseInt(stored.seconds)
-    if (stored.timer_state == 'running') startTimer()
-    else {
+
+    if (stored.timer_state == 'running') {
+      var date_time = new Date(stored.time_at_storage)
+      var now = new Date()
+
+      hours = (now.getHours() - date_time.getHours()) + parseInt(stored.hours)
+      mins = (now.getMinutes() - date_time.getMinutes()) + parseInt(stored.mins)
+      seconds = (now.getSeconds() - date_time.getSeconds()) + parseInt(stored.seconds)
+
+      startTimer()
+    } else {
       setAnimationState(stored.timer_state)
+      
+      hours = parseInt(stored.hours)
+      mins = parseInt(stored.mins)
+      seconds = parseInt(stored.seconds)
+
       if (hours < 10) document.getElementById("hours").innerText = '0'+hours
       else document.getElementById("hours").innerText = hours
                    
@@ -335,7 +344,7 @@ function checkStoredTime() {
       if (seconds < 10) document.getElementById("seconds").innerText = '0'+seconds
       else  document.getElementById("seconds").innerText = seconds
     }
-    
+
     localStorage.removeItem('stored_time')
   }
 }
