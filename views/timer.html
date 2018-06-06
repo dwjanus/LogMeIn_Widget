@@ -314,9 +314,9 @@ function checkStoredTime() {
     var stored = JSON.parse(stored_time)
     var date_time = new Date(stored.time_at_storage)
     var now = new Date()
-    hours = (now.getHours() - date_time.getHours()) + stored.hours
-    mins = (now.getMinutes() - date_time.getMinutes()) + stored.mins
-    seconds = (now.getSeconds() - date_time.getSeconds()) + stored.seconds
+    hours = (now.getHours() - date_time.getHours()) + parseInt(stored.hours)
+    mins = (now.getMinutes() - date_time.getMinutes()) + parseInt(stored.mins)
+    seconds = (now.getSeconds() - date_time.getSeconds()) + parseInt(stored.seconds)
     localStorage.removeItem('stored_time')
     setAnimationState(stored.timer_state)
   }
