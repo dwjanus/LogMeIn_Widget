@@ -6,7 +6,8 @@
             <button class="button btn-sm btn-outline-dark" onclick="addUrl()" id="add_feed_button">Add</button>
         </div>
           
-        <output>Loading...</output>
+        <div id="no_urls_message"></div>
+
         <template>
             <h5></h5>
             <h6></h6>
@@ -45,7 +46,7 @@ input {
 <script>
 const DOMPARSER = new DOMParser().parseFromString.bind(new DOMParser())
 var current_user
-var rss_urls
+var rss_urls = []
 var hasBegun
 
 
@@ -63,7 +64,7 @@ getlocal = (response) => {
       rss_urls = response.rss.urls
       toggleFeedView()
     } else {
-      toggleNoUrlsView()
+      document.getElementById('no_urls_message').innerHTML = 'Currently you have no feeds, try adding one now'
     }
   }
 }
@@ -75,6 +76,7 @@ platformWidgetHelper.getUserInfo((user_info) => {
 })
 
 function toggleFeedView () {
+  document.getElementById('no_urls_message').innerHTML = ""
   hasBegun = true
   rss_urls.forEach((u) => {
     try {
@@ -116,7 +118,7 @@ processFeed = (response) => {
   try {
     let doc = DOMPARSER(response, "text/xml")
     let heading = document.createElement('h4')
-    
+
     heading.textContent = url.hostname
     frag.appendChild(heading)
     doc.querySelectorAll('item').forEach((item) => {
