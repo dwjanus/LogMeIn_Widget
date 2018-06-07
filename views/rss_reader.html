@@ -1,0 +1,142 @@
+<div class="widget" id="reader_widget">
+    <div name="reader" id="reader">
+        <div id="reader_header" class="reader-header">
+            <h5>RSS Reader</h5>
+            <input type="text" id="url" placeholder="Enter a Url">
+            <button class="button btn-sm btn-outline-dark" onclick="addUrl()" id="add_feed_button">Add</button>
+        </div>
+          
+        <output>Loading...</output>
+        <template>
+            <h5></h5>
+            <h6></h6>
+            <a href='#'></a>
+            <p></p>
+        </template>
+    </div>
+</div>
+
+<style>
+.widget {
+  margin-left: 26px;
+  margin-right: 26px;
+  margin-top: 30px;
+  margin-bottom: 16px;
+  font-family:'Open Sans', jaf-bernina-sans, tahoma, geneva, sans-serif;
+  background: #FFFFFF;
+  border: 1px, solid, #D8DDE6;
+  font-size: 14px;
+  color: #54698D;
+  text-align: center;
+  width: 345px;
+}
+
+input {
+  margin-top: 10px;
+  margin-bottom: 18px;
+  width: 70%;
+  height: 34px;
+  border: 1px, solid, #D8DDE6;
+  border-radius: 4px;
+  padding: 10px;
+}
+</style>
+
+<script>
+const DOMPARSER = new DOMParser().parseFromString.bind(new DOMParser())
+var current_user
+var rss_urls
+var hasBegun
+
+
+setlocal = (response) => {
+  console.log('\nlogmein >>> local storage set: ' + JSON.stringify(response))
+}
+
+getlocal = (response) => {
+  console.log('\nrss reader >>> getting local storage: ' + response)
+  if (response) {
+    console.log('rss reader >>> getlocal response is type: ' + typeof(response))
+    response = JSON.parse(response)
+    if (response.rss !== undefined) {
+      console.log('rss >>> populating reader view...')
+      rss_urls = response.rss.urls
+      toggleFeedView()
+    } else {
+      toggleNoUrlsView()
+    }
+  }
+}
+
+platformWidgetHelper.getUserInfo((user_info) => {
+  current_user = user_info.id
+  console.log(`\nrss reader >>> current user: ${current_user}`)
+  platformWidgetHelper.getStorage(current_user.toString(), getlocal)
+})
+
+function toggleFeedView () {
+  hasBegun = true
+  rss_urls.forEach((u) => {
+    try {
+      var url = new URL(u)
+      platformWidgetHelper.callExternalApi('GET', url, null, parseFeedUrl)
+    } catch (e) {
+      console.error(`URL invalid: ${e}`)
+      return
+    }
+  })
+}
+
+function addUrl () {
+  var url = document.getElementById('url').value
+  rss_urls.push(url)
+  var rss_storage = {
+    "rss": {
+      "urls": rss_urls
+    }
+  }
+
+  platformWidgetHelper.setStorage(current_user.toString(), rss_storage, setlocal)
+  toggleFeedView()
+}
+
+parseFeedUrl = (response) => {
+  try {
+    let doc = DOMPARSER(response, 'text/html')
+    var feedUrl = doc.querySelector('link[type="application/rss+xml"]').href
+    platformWidgetHelper.callExternalApi('GET', feedUrl, null, processFeed)
+  } catch (e) {
+    console.error(`Error in parsing the website: ${e}`)
+  }
+}
+
+processFeed = (response) => {
+  var frag = document.createDocumentFragment()
+  
+  try {
+    let doc = DOMPARSER(response, "text/xml")
+    let heading = document.createElement('h4')
+    
+    heading.textContent = url.hostname
+    frag.appendChild(heading)
+    doc.querySelectorAll('item').forEach((item) => {
+      let temp = document.importNode(document.querySelector('template').content, true);
+      let i = item.querySelector.bind(item)
+      let t = temp.querySelector.bind(temp)
+      t('h5').textContent = !!i('title') ? i('title').textContent : '-'
+      t('a').textContent = t('a').href = !!i('link') ? i('link').textContent : '#'
+      t('p').innerHTML = !!i('description') ? i('description').textContent : '-'
+      t('h6').textContent = url.hostname
+      frag.appendChild(temp)
+    })
+  } catch (e) {
+    console.error(`Error in parsing the feed: ${e}`)
+  }
+
+  if (hasBegun) {
+    document.querySelector('output').textContent = ''; 
+    hasBegun = false;
+  }
+  document.querySelector('output').appendChild(frag)
+}
+</script>

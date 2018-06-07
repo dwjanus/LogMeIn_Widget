@@ -46,11 +46,11 @@ app.get('/', (req, res) => {
   res.render('layout', {
     partials: {
       ref_console: 'ref_console.html',
-      logmein: 'logmein.html',
       harvest_time: 'harvest_time.html',
       teamviewer: 'teamviewer.html',
       todos: 'todo.html',
-      timer: 'timer.html'
+      timer: 'timer.html',
+      rss: 'rss_reader.html'
     }
   })
 })
